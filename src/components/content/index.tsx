@@ -1,13 +1,13 @@
 import { useHtml } from "@/state/html";
-import { useNavbar } from "@/state/navbar";
+import { usePanel } from "@/state/panel";
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-const listener = (setNavbar: (active: string) => void) => (e: Event) => {
+const listener = (setPanel: (active: string) => void) => (e: Event) => {
   const clickedElement = e?.composedPath()?.[0] as unknown as Element;
   if (clickedElement) {
     if (clickedElement.attributes.getNamedItem("alt")?.value === "logo") {
-      setNavbar("logo");
+      setPanel("logo");
       return;
     }
   }
@@ -17,7 +17,7 @@ export default function Content() {
   const [html, loadHtml] = useHtml(
     useShallow((state) => [state.html, state.loadHtml]),
   );
-  const [setNavbar] = useNavbar(useShallow((state) => [state.set]));
+  const [setPanel] = usePanel(useShallow((state) => [state.set]));
 
   const shadowHost = useRef<HTMLDivElement>(null);
 
@@ -33,12 +33,12 @@ export default function Content() {
 
       if (shadowRoot) {
         shadowRoot.innerHTML = html;
-        shadowRoot.addEventListener("click", listener(setNavbar));
+        shadowRoot.addEventListener("click", listener(setPanel));
       }
     }
 
     return () =>
-      shadowHost.current?.removeEventListener("click", listener(setNavbar));
+      shadowHost.current?.removeEventListener("click", listener(setPanel));
   }, [html]);
 
   return <div className="w-2/3" ref={shadowHost} />;

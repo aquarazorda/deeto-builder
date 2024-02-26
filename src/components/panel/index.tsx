@@ -1,4 +1,4 @@
-import { useNavbar } from "@/state/navbar";
+import { usePanel } from "@/state/panel";
 import {
   Accordion,
   AccordionContent,
@@ -7,9 +7,10 @@ import {
 } from "../ui/accordion";
 import LogoSelector from "./logo-selector";
 import { useShallow } from "zustand/react/shallow";
+import Fonts from "./fonts";
 
 export default function Panel() {
-  const [active, set] = useNavbar(
+  const [active, set] = usePanel(
     useShallow((state) => [state.active, state.set]),
   );
 
@@ -26,6 +27,12 @@ export default function Panel() {
           <AccordionTrigger>Logo</AccordionTrigger>
           <AccordionContent>
             <LogoSelector />
+          </AccordionContent>
+        </AccordionItem>
+        <AccordionItem value="fonts" className="px-2">
+          <AccordionTrigger>Fonts</AccordionTrigger>
+          <AccordionContent>
+            <Fonts />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="color" className="px-2">
