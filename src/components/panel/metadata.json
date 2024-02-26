@@ -1,0 +1,76 @@
+[
+  {
+    "sectionTitle": "Section 1",
+    "elements": [
+      {
+        "selectors": ["title", "#pageheader"],
+        "behaviour": "textInput",
+        "defaultValue": "Hello World",
+        "title": "Enter your Page title"
+      },
+      {
+        "selectors": ["#deeto-givi-button", "#pageheader"],
+        "behaviour": "colorPicker",
+        "defaultValue": "#000000",
+        "title": "Text #1"
+      },
+      {
+        "selectors": ["#deeto-givi-button", "#pageheader"],
+        "behaviour": "colorPicker",
+        "defaultValue": "#000000",
+        "title": "Text #2"
+      },
+      {
+        "selectors": ["#deeto-givi-button", "#pageheader"],
+        "behaviour": "fontSelection",
+        "defaultValue": "Ariel",
+        "title": "Pick a font"
+      },
+      {
+        "selectors": ["#headerLogo"],
+        "behaviour": "uploadImage",
+        "defaultValue": "logo.png",
+        "title": "Choose Your Logo"
+      }
+    ]
+  },
+  {
+    "sectionTitle": "Texts",
+    "elements": [
+      {
+        "selectors": [".partnership span"],
+        "behaviour": "textInput",
+        "defaultValue": "In partnership with",
+        "title": "Partnership caption"
+      },
+      {
+        "selectors": ["a .something"],
+        "behaviour": "linkInput",
+        "defaultValue": "http://deeto.com",
+        "title": "Link to Deeto"
+      }
+    ]
+  },
+  {
+    "sectionTitle": "Section 2",
+    "groups": [
+      {
+        "groupTitle": "Form Text",
+        "elements": [
+          {
+            "selectors": ["footer"],
+            "behaviour": "injectHTML",
+            "defaultValue": "",
+            "title": "Upload your own HTML"
+          },
+          {
+            "selectors": ["body"],
+            "behaviour": "injectCSS",
+            "defaultValue": "",
+            "title": "Add your own CSS"
+          }
+        ]
+      }
+    ]
+  }
+]

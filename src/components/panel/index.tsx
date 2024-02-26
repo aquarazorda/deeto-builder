@@ -5,7 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import LogoSelector from "./logo-selector";
+import Images from "./images";
 import { useShallow } from "zustand/react/shallow";
 import Fonts from "./fonts";
 
@@ -24,9 +24,9 @@ export default function Panel() {
         onValueChange={set}
       >
         <AccordionItem value="logo" className="px-2">
-          <AccordionTrigger>Logo</AccordionTrigger>
+          <AccordionTrigger>Images</AccordionTrigger>
           <AccordionContent>
-            <LogoSelector />
+            <Images />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="fonts" className="px-2">
