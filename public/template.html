@@ -7,6 +7,7 @@
       href="//fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/reset.css" />
   </head>
   <style>
     body {
@@ -15,71 +16,323 @@
     }
     container {
       display: flex;
+      position: relative;
       flex-direction: column;
       min-height: 100vh;
       font-family: DM Sans;
+      background-color: #041527;
+      color: #ffffff;
     }
+
     header {
-      background-color: #f2f2f2;
-      padding: 1em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
     }
-    header h1 {
-      margin: 0;
-      font-family: inter;
+
+    .partnership {
+      opacity: 0.7;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+
+      span {
+        font-weight: 500;
+        line-height: 140%;
+      }
+
+      img {
+        width: 80.371px;
+        height: 22.688px;
+        flex-shrink: 0;
+      }
+
+      div {
+        display: flex;
+        width: 97px;
+        height: 33px;
+        padding: 4.813px 8.314px 5.5px 8.314px;
+        justify-content: center;
+        align-items: center;
+      }
     }
-    nav ul {
-      list-style: none;
-      padding: 0;
-    }
-    nav ul li {
-      display: inline;
-      margin-right: 1em;
-    }
+
     inner {
       display: flex;
+      padding: 56px 80px;
+      align-items: center;
+      gap: 56px;
+      flex: 1 0 0;
+      align-self: stretch;
+    }
+
+    article {
+      display: flex;
+      padding-right: 32px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 50px;
+      flex: 1 0 0;
+
+      div {
+        display: flex;
+        padding-right: 32px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 50px;
+        flex: 1 0 0;
+      }
+
+      h1 {
+        font-size: 64px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 120%; /* 76.8px */
+        letter-spacing: -1.28px;
+      }
+
+      h2 {
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%; /* 28px */
+      }
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1 0 0;
+      border-radius: 0px 32px 32px 32px;
+      background: #ffffff;
+
+      > div {
+        display: flex;
+        padding: 24px 32px;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        align-self: stretch;
+      }
+    }
+
+    .form-content {
+      display: flex;
+      padding: 24px 32px;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      align-self: stretch;
+    }
+
+    .form-title {
+      color: #041527;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%; /* 38.4px */
+      letter-spacing: -0.64px;
+    }
+
+    .form-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      flex-direction: column;
+    }
+
+    input[type="text"],
+    input[type="email"] {
+      display: flex;
       flex: 1;
-    }
-    inner div {
-      padding: 1em;
-    }
-    footer {
-      background-color: #f2f2f2;
-      padding: 1em;
-    }
-    .giviButton {
-      background-color: #4caf50;
-      border: none;
-      color: white;
-      padding: 15px 32px;
-      text-align: center;
-      text-decoration: none;
-      display: inline-block;
+      padding: 16px;
+      align-items: center;
+      align-self: stretch;
+      border-radius: 16px;
+      border: 1px solid #e7e7e7;
+      background: #fff;
+      box-shadow: 0px 0px 10px 0px rgba(175, 175, 175, 0.4) inset;
       font-size: 16px;
-      margin: 4px 2px;
-      cursor: pointer;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%; /* 22.4px */
+      letter-spacing: -0.4px;
+
+      &::placeholder {
+        color: #afafaf;
+      }
+    }
+
+    .reward-box {
+      display: flex;
+      padding: 8px 16px;
+      justify-content: center;
+      align-items: center;
+      gap: 16px;
+      background-color: #f4e9dd;
+      border-radius: 16px 100px 100px 0px;
+
+      p {
+        color: #041527;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 150%; /* 27px */
+      }
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      align-self: stretch;
+
+      p {
+        color: #041527;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 150%;
+      }
+
+      input {
+        width: 24px;
+        height: 24px;
+        accent-color: #0057ff;
+      }
+    }
+
+    .form-action {
+      display: flex;
+      padding: 16px;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+
+      button {
+        display: flex;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        display: flex;
+        align-items: flex-start;
+        border-radius: 100px;
+        background-color: #0057ff;
+        color: #ffffff;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%; /* 25.2px */
+        letter-spacing: -0.18px;
+      }
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      padding: 24px 32px;
+      align-items: center;
+      gap: 24px;
+      align-self: stretch;
+      background: #fff;
+
+      div {
+        display: flex;
+        gap: 16px;
+      }
+
+      span {
+        color: #041527;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 24px;
+      }
+
+      a {
+        all: unset;
+        color: #041527;
+        font-family: Inter;
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+      }
     }
   </style>
   <body>
     <container>
       <header>
-        <h1>
-          <img src="" alt="logo" />
-          <div>Hello World</div>
-        </h1>
+        <img src="/images/placeholder-logo.svg" alt="logo" />
+        <div class="partnership">
+          <span>In partnership with </span>
+          <div>
+            <img src="/images/deeto-wordmark.svg" />
+          </div>
+        </div>
       </header>
       <inner>
-        <div>
-          <h2>Sidebar</h2>
-          <p>Sidebar content goes here.</p>
-        </div>
+        <article>
+          <div>
+            <h1>Title will appear here</h1>
+            <h2>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac
+              pretium urna. Mauris eu fringilla sapien, at blandit massa.
+              Vivamus eu risus at turpis euismod semper. Aliquam tempus nibh
+              eget ornare volutpat. Nunc ultricies sem ut pharetra congue. Sed
+              tincidunt erat quis mollis elementum. Ut velit odio, egestas in
+              bibendum vitae, luctus ac augue. Suspendisse potenti.
+            </h2>
+          </div>
+        </article>
         <form>
-          Form here
-          <input type="text" title="Your name here" />
-          <button id="deeto-givi-button">Hello Givi</button>
+          <div class="form-content">
+            <div class="reward-box">
+              <img
+                src="/images/reward-icon.svg"
+                width="20px"
+                height="20px"
+                style="opacity: 0.4"
+              />
+              <p>Between {{$ Range}} reward if approved</p>
+            </div>
+            <p class="form-title">Tell us about yourself</p>
+            <div class="form-inputs">
+              <div style="display: flex; gap: 8px">
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="Your first name *"
+                />
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Your last name *"
+                />
+              </div>
+              <input type="email" name="email" placeholder="Your Email *" />
+              <div class="checkbox-wrapper">
+                <input type="checkbox" name="terms" />
+                <p>{{TOS agreement sentence checkbox will appear here}}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-action">
+            <button>Continue</button>
+          </div>
         </form>
       </inner>
       <footer>
-        <p>&copy; 2018</p>
+        <span>© 2024 Deeto. All rights reserved.</span>
+        <div>
+          <a href="/tos">Deeto TOS</a>
+          <img src="/images/divider.svg" />
+          <a href="/policy">Deeto privacy policy</a>
+        </div>
       </footer>
     </container>
   </body>

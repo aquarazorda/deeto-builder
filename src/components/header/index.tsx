@@ -11,12 +11,13 @@ import { useShallow } from "zustand/react/shallow";
 import { useHtml } from "@/state/html";
 
 export default function Header() {
-  const [undo, redo, history, idx] = useHtml(
+  const [undo, redo, history, idx, save] = useHtml(
     useShallow((state) => [
       state.undo,
       state.redo,
       state.history,
       state.currentIdx,
+      state.save,
     ]),
   );
 
@@ -24,10 +25,10 @@ export default function Header() {
     <div className="flex w-full justify-between items-center py-4">
       <span>Hint: Click on the text areas to edit them</span>
       <div className="flex gap-2 h-full">
-        <Button variant="outline">
+        <Button variant="outline" disabled>
           <TabletSmartphone />
         </Button>
-        <Button variant="outline">
+        <Button variant="outline" disabled>
           <Monitor />
         </Button>
         <Separator orientation="vertical" className="h-auto" />
@@ -45,8 +46,12 @@ export default function Header() {
         >
           <Redo />
         </Button>
-        <Button>
-          <Paintbrush2 /> Edit page
+        <Button
+          disabled={history.length < 2 || idx === 0}
+          onClick={save}
+          className="space-x-2"
+        >
+          <Paintbrush2 /> <span>Save changes</span>
         </Button>
       </div>
     </div>

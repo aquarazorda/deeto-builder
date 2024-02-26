@@ -2,6 +2,7 @@ import { useHtml } from "@/state/html";
 import { usePanel } from "@/state/panel";
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { match } from "ts-pattern";
 
 const listener = (setPanel: (active: string) => void) => (e: Event) => {
   const clickedElement = e?.composedPath()?.[0] as unknown as Element;
@@ -10,6 +11,10 @@ const listener = (setPanel: (active: string) => void) => (e: Event) => {
       setPanel("logo");
       return;
     }
+
+    match(clickedElement.tagName.toLowerCase()).with("h1", "h2", "p", () =>
+      setPanel("color"),
+    );
   }
 };
 
@@ -41,5 +46,5 @@ export default function Content() {
       shadowHost.current?.removeEventListener("click", listener(setPanel));
   }, [html]);
 
-  return <div className="w-2/3" ref={shadowHost} />;
+  return <div className="relative w-full" ref={shadowHost} />;
 }

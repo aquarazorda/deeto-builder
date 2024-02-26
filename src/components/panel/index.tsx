@@ -15,7 +15,7 @@ export default function Panel() {
   );
 
   return (
-    <div className="w-1/3 border- bg-secondary rounded-r-xl">
+    <div className="bg-secondary rounded-r-xl">
       <Accordion
         type="single"
         collapsible

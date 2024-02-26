@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { load, CheerioAPI } from "cheerio";
 import { parseStyleTag, styleTagToString, swapStyleTag } from "./styles";
+import { toast } from "sonner";
 
 type Styles = Record<string, Record<string, string>>;
 
@@ -15,6 +16,7 @@ type HtmlState = {
   setHtml: (html: CheerioAPI) => void;
   undo: () => void;
   redo: () => void;
+  save: () => void;
 };
 
 export const useHtml = create<HtmlState>((set) => ({
@@ -23,6 +25,16 @@ export const useHtml = create<HtmlState>((set) => ({
   history: [],
   currentIdx: 0,
   styles: {},
+  save: () =>
+    set((state) => {
+      toast.success("Changes successfully saved!");
+
+      return {
+        ...state,
+        history: [state.html],
+        currentIdx: 0,
+      };
+    }),
   swapStyles: (styles: Styles) =>
     set((state) => {
       const str = styleTagToString(styles);
