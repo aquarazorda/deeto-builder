@@ -85,5 +85,69 @@
         ]
       }
     ]
+  },
+  {
+    "type": "group",
+    "title": "Texts",
+    "elements": [
+      {
+        "type": "group",
+        "elements": [
+          {
+            "type": "item",
+            "title": "TOS",
+            "behaviour": "text",
+            "defaultValue": "Deeto TOS",
+            "selectors": [".copy #tos"]
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "elements": [
+          {
+            "type": "item",
+            "title": "Privacy Policy",
+            "behaviour": "text",
+            "defaultValue": "Deeto privacy policy",
+            "selectors": [".copy #policy"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "form",
+    "title": "Form",
+    "elements": [
+      {
+        "type": "form-item",
+        "key": "firstName",
+        "title": "Referall First name",
+        "defaultLabel": "Your first name",
+        "item-type": "text"
+      },
+      {
+        "type": "form-item",
+        "key": "firstName",
+        "title": "Reference First name",
+        "defaultLabel": "Your first name",
+        "item-type": "text"
+      },
+      {
+        "type": "form-item",
+        "key": "lastName",
+        "title": "Last name",
+        "defaultLabel": "Your last name",
+        "item-type": "text"
+      },
+      {
+        "type": "form-item",
+        "key": "email",
+        "title": "Email",
+        "defaultLabel": "Your Email",
+        "item-type": "email"
+      }
+    ]
   }
 ]

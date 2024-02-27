@@ -6,6 +6,8 @@ import Background from "./background";
 import Colors from "./colors";
 import { cn } from "@/lib/utils";
 import Fonts from "./fonts";
+import Text from "./text";
+import Form from "./form";
 
 const DrawGroup = ({
   element,
@@ -42,6 +44,7 @@ const DrawItem = ({ element }: { element: Item }) => {
       <Colors item={el} isBackground />
     ))
     .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
+    .with({ behaviour: "text" }, (el) => <Text item={el} />)
     .otherwise(() => <div>Not implemented - {element.behaviour}</div>);
 };
 
@@ -54,7 +57,11 @@ const DrawElement = ({
 }) => {
   return match(element)
     .with({ type: "item" }, (element) => <DrawItem element={element} />)
-    .otherwise((element) => <DrawGroup element={element} isMain={isMain} />);
+    .with({ type: "group" }, (element) => (
+      <DrawGroup element={element} isMain={isMain} />
+    ))
+    .with({ type: "form" }, (element) => <Form form={element} />)
+    .otherwise(() => "Not yet implemented");
 };
 
 export default function ItemGenerator({

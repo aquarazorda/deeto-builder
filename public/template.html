@@ -301,7 +301,7 @@
             </div>
             <p class="form-title">Tell us about yourself</p>
             <div class="form-inputs">
-              <div style="display: flex; gap: 8px">
+              <div style="display: flex; gap: 8px" class="form-group">
                 <input
                   class="input"
                   type="text"
@@ -315,6 +315,21 @@
                   placeholder="Your last name *"
                 />
               </div>
+              <div style="display: flex; gap: 8px" class="form-group">
+                <input
+                  class="input"
+                  type="text"
+                  name="firstName"
+                  placeholder="Your first name *"
+                />
+                <input
+                  class="input"
+                  type="text"
+                  name="lastName"
+                  placeholder="Your last name *"
+                />
+              </div>
+
               <input
                 type="email"
                 class="input"
@@ -335,10 +350,10 @@
       </inner>
       <footer>
         <span>© 2024 Deeto. All rights reserved.</span>
-        <div>
-          <a href="/tos">Deeto TOS</a>
+        <div class="copy">
+          <a href="/tos" id="tos">Deeto TOS</a>
           <img src="/images/divider.svg" />
-          <a href="/policy">Deeto privacy policy</a>
+          <a href="/policy" id="policy">Deeto privacy policy</a>
         </div>
       </footer>
     </container>

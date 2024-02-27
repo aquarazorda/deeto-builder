@@ -1,11 +1,12 @@
 import { create } from "zustand";
 
-export type ItemType = "item" | "group";
+export type ItemType = "item" | "group" | "form";
 export type Behaviour =
   | "image"
   | "background"
   | "color"
   | "color-background"
+  | "text"
   | "font";
 
 type GeneralItem = {
@@ -26,7 +27,22 @@ export type Item = {
   defaultValue: string;
 } & GeneralItem;
 
-export type Element = Group | Item;
+export type FormItem = {
+  type: "form-item";
+  key: string;
+  title: string;
+  defaultLabel: string;
+  itemType: "text" | "number";
+};
+
+export type FormElement = Form | FormItem;
+
+export type Form = {
+  type: "form";
+  elements: FormItem[];
+} & GeneralItem;
+
+export type Element = Group | Item | FormElement;
 
 type Metadata = Element[];
 
