@@ -7,20 +7,23 @@ import useDebouncedCallback from "@/lib/debounced-callback";
 
 export default function Colors({
   item: { title, selectors, defaultValue },
+  isBackground,
 }: {
   item: Item;
+  isBackground?: boolean;
 }) {
   const [styles, swap] = useHtml(
     useShallow((state) => [state.styles, state.swapStyles]),
   );
-  const color = styles?.[selectors[0]]?.color ?? defaultValue;
+  const selector = isBackground ? "background" : "color";
+  const color = styles?.[selectors[0]]?.[selector] ?? defaultValue;
   const changeColor = useDebouncedCallback((color: ColorResult) => {
     const newStyles = { ...styles };
 
-    selectors.forEach((selector) => {
-      const el = newStyles[selector];
-      if (el) el.color = color.hex;
-      else newStyles[selector] = { color: color.hex };
+    selectors.forEach((itemSelector) => {
+      const el = newStyles[itemSelector];
+      if (el) el[selector] = color.hex;
+      else newStyles[itemSelector] = { color: color.hex };
     });
 
     swap(newStyles);

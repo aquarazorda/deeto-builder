@@ -44,6 +44,19 @@
             "selectors": ["h1", "h2"]
           }
         ]
+      },
+      {
+        "type": "group",
+        "title": "Interactive components",
+        "elements": [
+          {
+            "type": "item",
+            "behaviour": "color-background",
+            "title": "Button",
+            "defaultValue": "#0057FF",
+            "selectors": [".form-action button"]
+          }
+        ]
       }
     ]
   }

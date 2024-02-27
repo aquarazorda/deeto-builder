@@ -41,7 +41,7 @@ export default function Panel() {
             >
               <AccordionTrigger>{title}</AccordionTrigger>
               <AccordionContent>
-                <ItemGenerator idx={idx} />
+                <ItemGenerator idx={idx} isMain />
               </AccordionContent>
             </AccordionItem>
           ))}
