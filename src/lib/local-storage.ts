@@ -2,12 +2,14 @@ import * as v from "valibot";
 
 const StorageSchema = v.object({
   layout: v.optional(v.tuple([v.number(), v.number()]), [80, 20]),
+  activeTab: v.optional(v.string()),
 });
 
 const storage = {
   layout: localStorage.getItem("layout")
     ? JSON.parse(localStorage.getItem("layout")!)
     : [],
+  activeTab: JSON.parse(localStorage.getItem("activeTab")) || "",
 };
 
 export const useLocalStorage = () => {

@@ -8,8 +8,10 @@ import {
 import { useShallow } from "zustand/react/shallow";
 import { useEffect } from "react";
 import ItemGenerator from "./item-generator";
+import { useLocalStorage } from "@/lib/local-storage";
 
 export default function Panel() {
+  const { activeTab, set: setLocalStorage } = useLocalStorage();
   const [active, set, load, metadata] = usePanel(
     useShallow((state) => [
       state.active,
@@ -18,6 +20,11 @@ export default function Panel() {
       state.metadata,
     ]),
   );
+
+  const changeTab = (tab: string) => {
+    setLocalStorage("activeTab", tab);
+    set(tab);
+  };
 
   useEffect(() => {
     load();
@@ -28,9 +35,9 @@ export default function Panel() {
       <Accordion
         type="single"
         collapsible
-        defaultValue={metadata?.[0]?.title.toLowerCase()}
+        defaultValue={activeTab}
         value={active}
-        onValueChange={set}
+        onValueChange={changeTab}
       >
         {metadata.length > 0 &&
           metadata.map(({ title }, idx) => (

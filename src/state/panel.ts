@@ -54,14 +54,13 @@ type PanelState = {
 };
 
 export const usePanel = create<PanelState>((set) => ({
-  active: "logo",
+  active: undefined,
   metadata: [],
   set: (active: string) => {
     set((state) => (state.active != active ? { ...state, active } : state));
   },
   loadMetadata: async () => {
     const res = await fetch("/metadata.json").then((res) => res.json());
-    console.log(res);
     set((state) => ({ ...state, metadata: res }));
   },
 }));
