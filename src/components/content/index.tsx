@@ -3,6 +3,7 @@ import { usePanel } from "@/state/panel";
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { match } from "ts-pattern";
+import { innerHTML } from "diffhtml";
 
 const listener = (setPanel: (active: string) => void) => (e: Event) => {
   const clickedElement = e?.composedPath()?.[0] as unknown as Element;
@@ -37,13 +38,14 @@ export default function Content() {
         shadowHost.current?.attachShadow({ mode: "open" });
 
       if (shadowRoot) {
-        shadowRoot.innerHTML = html;
+        innerHTML(shadowRoot, html);
         shadowRoot.addEventListener("click", listener(setPanel));
       }
     }
 
-    return () =>
+    return () => {
       shadowHost.current?.removeEventListener("click", listener(setPanel));
+    };
   }, [html]);
 
   return <div className="relative w-full" ref={shadowHost} />;
