@@ -1,0 +1,23 @@
+[
+  {
+    "type": "group",
+    "title": "Images",
+    "description": "Here you can choose logo or background image",
+    "elements": [
+      {
+        "type": "item",
+        "behaviour": "image",
+        "title": "Logo",
+        "defaultValue": "/images/placeholder-logo.svg",
+        "selectors": ["header img"]
+      },
+      {
+        "type": "item",
+        "behaviour": "background",
+        "title": "Page background",
+        "defaultValue": "#041527",
+        "selectors": ["container"]
+      }
+    ]
+  }
+]

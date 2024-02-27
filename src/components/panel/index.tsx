@@ -5,40 +5,46 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../ui/accordion";
-import Images from "./images";
 import { useShallow } from "zustand/react/shallow";
-import Fonts from "./fonts";
+import { useEffect } from "react";
+import ItemGenerator from "./item-generator";
 
 export default function Panel() {
-  const [active, set] = usePanel(
-    useShallow((state) => [state.active, state.set]),
+  const [active, set, load, metadata] = usePanel(
+    useShallow((state) => [
+      state.active,
+      state.set,
+      state.loadMetadata,
+      state.metadata,
+    ]),
   );
+
+  useEffect(() => {
+    load();
+  }, []);
 
   return (
     <div className="bg-secondary rounded-r-xl">
       <Accordion
         type="single"
         collapsible
-        defaultValue="logo"
+        defaultValue={metadata?.[0]?.title.toLowerCase()}
         value={active}
         onValueChange={set}
       >
-        <AccordionItem value="logo" className="px-2">
-          <AccordionTrigger>Images</AccordionTrigger>
-          <AccordionContent>
-            <Images />
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="fonts" className="px-2">
-          <AccordionTrigger>Fonts</AccordionTrigger>
-          <AccordionContent>
-            <Fonts />
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="color" className="px-2">
-          <AccordionTrigger>Color</AccordionTrigger>
-          <AccordionContent>Test</AccordionContent>
-        </AccordionItem>
+        {metadata.length > 0 &&
+          metadata.map(({ title }, idx) => (
+            <AccordionItem
+              key={idx}
+              value={title.toLowerCase()}
+              className="px-2"
+            >
+              <AccordionTrigger>{title}</AccordionTrigger>
+              <AccordionContent>
+                <ItemGenerator idx={idx} />
+              </AccordionContent>
+            </AccordionItem>
+          ))}
       </Accordion>
     </div>
   );
