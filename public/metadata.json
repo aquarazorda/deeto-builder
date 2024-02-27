@@ -22,6 +22,32 @@
   },
   {
     "type": "group",
+    "title": "Fonts",
+    "description": "Here you can choose fonts",
+    "elements": [
+      {
+        "type": "group",
+        "elements": [
+          {
+            "type": "item",
+            "behaviour": "font",
+            "defaultValue": "Inter",
+            "title": "Inter",
+            "selectors": ["container"]
+          },
+          {
+            "type": "item",
+            "behaviour": "font",
+            "defaultValue": "DM Sans",
+            "title": "DM Sans",
+            "selectors": ["container"]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "type": "group",
     "title": "Colors",
     "description": "Here you can choose colors",
     "elements": [

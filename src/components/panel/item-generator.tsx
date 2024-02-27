@@ -5,6 +5,7 @@ import Images from "./images";
 import Background from "./background";
 import Colors from "./colors";
 import { cn } from "@/lib/utils";
+import Fonts from "./fonts";
 
 const DrawGroup = ({
   element,
@@ -40,6 +41,7 @@ const DrawItem = ({ element }: { element: Item }) => {
     .with({ behaviour: "color-background" }, (el) => (
       <Colors item={el} isBackground />
     ))
+    .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
     .otherwise(() => <div>Not implemented - {element.behaviour}</div>);
 };
 

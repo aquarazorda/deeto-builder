@@ -1,47 +1,45 @@
 import { useHtml } from "@/state/html";
+import { Item } from "@/state/panel";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-const fonts = [
-  { name: "Inter", value: "Inter" },
-  { name: "DM Sans", value: "DM Sans" },
-];
-
-export default function Fonts() {
+export default function Fonts({
+  item: { title, defaultValue, selectors },
+}: {
+  item: Item;
+}) {
   const [styles, swapStyles] = useHtml(
     useShallow((state) => [state.styles, state.swapStyles]),
   );
 
   const activeFont = useMemo(
-    () => styles?.container?.fontFamily?.replace(/"/g, ""),
+    () => styles?.[selectors[0]]?.fontFamily?.replace(/"/g, ""),
     [styles],
   );
 
   return (
     <div className="space-y-2">
-      {fonts.map(({ name, value }) => (
-        <div
-          key={value}
-          onClick={() => {
-            swapStyles({
-              ...styles,
-              container: {
-                ...styles.container,
-                fontFamily: `"${value}"`,
-              },
-            });
-          }}
-          className="border rounded-2xl p-4 bg-cover flex justify-between items-center w-full cursor-pointer"
-          style={{
-            fontFamily: value,
-            backgroundImage:
-              activeFont === value ? "url('/font-bg.jpg')" : undefined,
-          }}
-        >
-          <span className="text-5xl">Aa</span>
-          <span>{name}</span>
-        </div>
-      ))}
+      <div
+        key={title}
+        onClick={() => {
+          swapStyles({
+            ...styles,
+            container: {
+              ...styles.container,
+              fontFamily: `"${defaultValue}"`,
+            },
+          });
+        }}
+        className="border rounded-2xl p-4 bg-cover flex justify-between items-center w-full cursor-pointer"
+        style={{
+          fontFamily: defaultValue,
+          backgroundImage:
+            activeFont === defaultValue ? "url('/font-bg.jpg')" : undefined,
+        }}
+      >
+        <span className="text-5xl">Aa</span>
+        <span>{title}</span>
+      </div>
     </div>
   );
 }
