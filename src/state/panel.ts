@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
 export type ItemType = "item" | "group";
-export type Behaviour = "image" | "background";
+export type Behaviour = "image" | "background" | "color";
 
 type GeneralItem = {
   type: ItemType;

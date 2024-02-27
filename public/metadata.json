@@ -19,5 +19,32 @@
         "selectors": ["container"]
       }
     ]
+  },
+  {
+    "type": "group",
+    "title": "Colors",
+    "description": "Here you can choose colors",
+    "elements": [
+      {
+        "type": "group",
+        "title": "Texts",
+        "elements": [
+          {
+            "type": "item",
+            "behaviour": "color",
+            "title": "Text #1",
+            "defaultValue": "black",
+            "selectors": [".form-title"]
+          },
+          {
+            "type": "item",
+            "behaviour": "color",
+            "title": "Text #2",
+            "defaultValue": "white",
+            "selectors": ["h1", "h2"]
+          }
+        ]
+      }
+    ]
   }
 ]

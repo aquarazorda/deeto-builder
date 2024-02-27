@@ -27,7 +27,7 @@ function App() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50 px-6">
+      <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50 px-6">
         <Header />
         <div className="flex h-full flex-1 pb-4">
           <ResizablePanelGroup
