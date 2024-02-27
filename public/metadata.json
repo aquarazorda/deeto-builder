@@ -123,14 +123,7 @@
       {
         "type": "form-item",
         "key": "firstName",
-        "title": "Referall First name",
-        "defaultLabel": "Your first name",
-        "item-type": "text"
-      },
-      {
-        "type": "form-item",
-        "key": "firstName",
-        "title": "Reference First name",
+        "title": "First name",
         "defaultLabel": "Your first name",
         "item-type": "text"
       },
@@ -147,6 +140,34 @@
         "title": "Email",
         "defaultLabel": "Your Email",
         "item-type": "email"
+      },
+      {
+        "type": "form-item",
+        "key": "referral_firstName",
+        "title": "Referral's first name",
+        "defaultLabel": "Referral's first name",
+        "item-type": "text"
+      },
+      {
+        "type": "form-item",
+        "key": "referral_lastName",
+        "title": "Referral's last name",
+        "defaultLabel": "Referral's last name",
+        "item-type": "text"
+      },
+      {
+        "type": "form-item",
+        "key": "terms",
+        "title": "Terms and conditions",
+        "defaultLabel": "Terms and conditions",
+        "item-type": "checkbox"
+      },
+      {
+        "type": "form-item",
+        "key": "mailbox",
+        "title": "Subscribe to newsletter",
+        "defaultLabel": "Subscribe to newsletter",
+        "item-type": "checkbox"
       }
     ]
   }
