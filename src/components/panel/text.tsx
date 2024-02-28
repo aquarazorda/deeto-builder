@@ -13,9 +13,13 @@ export default function Text({
   const [$, set] = useHtml(useShallow((state) => [state.$, state.setHtml]));
   const text = $(selectors[0])?.text() ?? defaultValue;
 
-  const onChange = useDebouncedCallback((value: string) => {
+  // @ts-expect-error this has name, just a type mismatch
+  const isAtag = $(selectors[0])?.get(0)?.name === "a";
+  const link = isAtag ? $(selectors[0])?.attr("href") : undefined;
+
+  const onChange = useDebouncedCallback((value: string, link?: boolean) => {
     selectors.forEach((selector) => {
-      $(selector).text(value);
+      link ? $(selector).attr("href", value) : $(selector).text(value);
     });
 
     set($);
@@ -23,8 +27,17 @@ export default function Text({
 
   return (
     <div>
-      <Label>{title}</Label>
+      <Label>
+        {title}
+        {isAtag ? " (Link)" : ""}
+      </Label>
       <Input defaultValue={text} onChange={(e) => onChange(e.target.value)} />
+      {isAtag && (
+        <Input
+          defaultValue={link}
+          onChange={(e) => onChange(e.target.value, true)}
+        />
+      )}
     </div>
   );
 }

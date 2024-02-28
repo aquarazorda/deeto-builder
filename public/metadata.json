@@ -95,6 +95,18 @@
         "elements": [
           {
             "type": "item",
+            "title": "Copyright",
+            "behaviour": "text",
+            "defaultValue": "© 2024 Deeto. All rights reserved.",
+            "selectors": ["footer span"]
+          }
+        ]
+      },
+      {
+        "type": "group",
+        "elements": [
+          {
+            "type": "item",
             "title": "TOS",
             "behaviour": "text",
             "defaultValue": "Deeto TOS",
