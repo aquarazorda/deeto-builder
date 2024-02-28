@@ -23,7 +23,7 @@ export default function Header() {
 
   return (
     <div className="flex w-full justify-between items-center py-4">
-      <span>Hint: Click on the text areas to edit them</span>
+      <span className="font-medium text-lg">Deeto Template Editor</span>
       <div className="flex gap-2 h-full">
         <Button variant="outline" disabled>
           <TabletSmartphone />

@@ -9,6 +9,7 @@ import {
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  UniqueIdentifier,
   closestCenter,
   useSensor,
   useSensors,
@@ -21,9 +22,12 @@ import {
 } from "@dnd-kit/sortable";
 import SortableItem from "@/components/dnd/sortable-item";
 import { Separator } from "@/components/ui/separator";
+import DroppableItem from "@/components/dnd/droppable-item";
 
 export default function Form({ form }: { form: Form }) {
-  const $ = useHtml(useShallow((state) => state.$));
+  const [$, html, setHtml] = useHtml(
+    useShallow((state) => [state.$, state.html, state.setHtml]),
+  );
 
   const [groupItems, setGroupItems] = useState<ReturnType<typeof getItem>[][]>(
     [],
@@ -57,13 +61,18 @@ export default function Form({ form }: { form: Form }) {
     const isGroupItem = parent.hasClass("form-group");
 
     return {
-      key: $(el).attr("name"),
+      key: $(el).attr("name") ?? "",
       type: $(el).attr("type"),
       groupId,
       isGroupItem,
       placeholder: $(el).attr("placeholder"),
       description: isCheckbox ? $(parent).find("p").text() : undefined,
     };
+  };
+
+  const getElement = (el: Cheerio<Element>) => {
+    const parent = el.parent();
+    return parent.hasClass("checkbox-wrapper") ? parent : el;
   };
 
   useEffect(() => {
@@ -97,28 +106,85 @@ export default function Form({ form }: { form: Form }) {
       .filter(({ isGroupItem }) => !isGroupItem);
 
     setDirectInputs(directInputs);
-    console.log(directInputs);
-  }, [$]);
+  }, [html]);
+
+  const findContainer = (id: UniqueIdentifier) => {
+    if (directInputs.some((item) => item.key === id)) {
+      return {
+        isGroup: false,
+        index: 0,
+      } as const;
+    }
+
+    const groupIdx = groupItems.reduce(
+      (acc, group, i) => {
+        const index = group.findIndex((item) => item.key === id);
+        if (index !== -1) {
+          return {
+            container: i,
+            item: index,
+          };
+        }
+        return acc;
+      },
+      {
+        container: -1,
+        item: -1,
+      },
+    );
+
+    return {
+      isGroup: groupIdx.container !== -1,
+      container: groupIdx.container,
+      index: groupIdx.item,
+    } as const;
+  };
 
   return (
-    <DndContext sensors={sensors} collisionDetection={closestCenter}>
+    <DndContext
+      sensors={sensors}
+      collisionDetection={closestCenter}
+      onDragEnd={({ active, over }) => {
+        if (!active || !over) return;
+        if (active.id === over.id) return;
+
+        const activeElement = getElement($(`[name="${active.id}"]`));
+        const overElement = getElement($(`[name="${over.id}"]`));
+
+        // @ts-expect-error over id is alwas string
+        if (over.id.includes("group")) {
+          activeElement.appendTo($(`#form-${over.id}`));
+          setHtml($);
+          return;
+        }
+
+        if (activeElement.next().attr("name") === overElement.attr("name")) {
+          activeElement.insertAfter(overElement);
+          setHtml($);
+          return;
+        }
+
+        activeElement.insertBefore(overElement);
+
+        setHtml($);
+      }}
+    >
       <div className="flex flex-col gap-2">
         {groupItems.length > 0 &&
           groupItems.map((group, i) => (
-            <Card key={`group-${i}`}>
-              <CardHeader>
-                <CardTitle>Group {i + 1}</CardTitle>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <SortableContext
-                  strategy={verticalListSortingStrategy}
-                  items={group.map(({ key }) => `group-${i}-${key}`)}
-                >
+            <DroppableItem
+              key={`group-${i + 1}`}
+              id={`group-${i + 1}`}
+              items={group.map(({ key }) => key)}
+              strategy={verticalListSortingStrategy}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle>Row {i + 1}</CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-col gap-2">
                   {group.map(({ key }) => (
-                    <SortableItem
-                      key={`group-${i}-${key}`}
-                      id={`group-${i}-${key}`}
-                    >
+                    <SortableItem key={key} id={key}>
                       <Card>
                         <CardContent className="px-4 py-2">
                           {
@@ -129,52 +195,66 @@ export default function Form({ form }: { form: Form }) {
                       </Card>
                     </SortableItem>
                   ))}{" "}
-                </SortableContext>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </DroppableItem>
           ))}
-        <Button variant="outline">Add Group</Button>
+        <Button variant="outline">Add Row</Button>
+        <DroppableItem
+          key={"direct"}
+          id={"direct"}
+          items={directInputs.map(({ key }) => key)}
+          strategy={verticalListSortingStrategy}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Form elements</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <SortableContext
+                strategy={verticalListSortingStrategy}
+                items={directInputs.map(({ key }) => key)}
+              >
+                {directInputs.map(({ key }) => (
+                  <SortableItem key={key} id={key}>
+                    <Card>
+                      <CardContent className="px-4 py-2">
+                        {form.elements.find((item) => item.key === key)?.title}
+                      </CardContent>
+                    </Card>
+                  </SortableItem>
+                ))}{" "}
+              </SortableContext>
+            </CardContent>
+          </Card>
+        </DroppableItem>
         <Separator />
-        <Card>
-          <CardHeader>
-            <CardTitle>Form elements</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-2">
-            <SortableContext
-              strategy={verticalListSortingStrategy}
-              items={directInputs.map(({ key }) => `direct-${key}`)}
-            >
-              {directInputs.map(({ key }) => (
-                <SortableItem key={`direct-${key}`} id={`direct-${key}`}>
-                  <Card>
-                    <CardContent className="px-4 py-2">
-                      {form.elements.find((item) => item.key === key)?.title}
-                    </CardContent>
-                  </Card>
-                </SortableItem>
-              ))}{" "}
-            </SortableContext>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Available form elements</CardTitle>
-          </CardHeader>
-          <CardContent className="flex flex-col gap-2">
-            <SortableContext
-              items={availableItems.map(({ key }) => key)}
-              strategy={verticalListSortingStrategy}
-            >
-              {availableItems.map(({ title, key }) => (
-                <SortableItem key={key} id={key}>
-                  <Card>
-                    <CardContent className="px-4 py-2">{title}</CardContent>
-                  </Card>
-                </SortableItem>
-              ))}
-            </SortableContext>
-          </CardContent>
-        </Card>
+        <DroppableItem
+          key={"available"}
+          id={"available"}
+          items={availableItems.map(({ key }) => key)}
+          strategy={verticalListSortingStrategy}
+        >
+          <Card>
+            <CardHeader>
+              <CardTitle>Available form elements</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <SortableContext
+                items={availableItems.map(({ key }) => key)}
+                strategy={verticalListSortingStrategy}
+              >
+                {availableItems.map(({ title, key }) => (
+                  <SortableItem key={key} id={key}>
+                    <Card>
+                      <CardContent className="px-4 py-2">{title}</CardContent>
+                    </Card>
+                  </SortableItem>
+                ))}
+              </SortableContext>
+            </CardContent>
+          </Card>
+        </DroppableItem>
       </div>
     </DndContext>
   );
