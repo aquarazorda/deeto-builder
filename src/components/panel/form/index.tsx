@@ -2,20 +2,18 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useHtml } from "@/state/html";
 import { Form } from "@/state/panel";
-import { Element } from "cheerio";
+import { Cheerio, Element } from "cheerio";
 import { useEffect, useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import {
   DndContext,
   KeyboardSensor,
   PointerSensor,
-  UniqueIdentifier,
   closestCenter,
   useSensor,
   useSensors,
 } from "@dnd-kit/core";
 import {
-  arrayMove,
   SortableContext,
   sortableKeyboardCoordinates,
   verticalListSortingStrategy,
@@ -108,37 +106,37 @@ export default function Form({ form }: { form: Form }) {
     setDirectInputs(directInputs);
   }, [html]);
 
-  const findContainer = (id: UniqueIdentifier) => {
-    if (directInputs.some((item) => item.key === id)) {
-      return {
-        isGroup: false,
-        index: 0,
-      } as const;
-    }
-
-    const groupIdx = groupItems.reduce(
-      (acc, group, i) => {
-        const index = group.findIndex((item) => item.key === id);
-        if (index !== -1) {
-          return {
-            container: i,
-            item: index,
-          };
-        }
-        return acc;
-      },
-      {
-        container: -1,
-        item: -1,
-      },
-    );
-
-    return {
-      isGroup: groupIdx.container !== -1,
-      container: groupIdx.container,
-      index: groupIdx.item,
-    } as const;
-  };
+  // const findContainer = (id: UniqueIdentifier) => {
+  //   if (directInputs.some((item) => item.key === id)) {
+  //     return {
+  //       isGroup: false,
+  //       index: 0,
+  //     } as const;
+  //   }
+  //
+  //   const groupIdx = groupItems.reduce(
+  //     (acc, group, i) => {
+  //       const index = group.findIndex((item) => item.key === id);
+  //       if (index !== -1) {
+  //         return {
+  //           container: i,
+  //           item: index,
+  //         };
+  //       }
+  //       return acc;
+  //     },
+  //     {
+  //       container: -1,
+  //       item: -1,
+  //     },
+  //   );
+  //
+  //   return {
+  //     isGroup: groupIdx.container !== -1,
+  //     container: groupIdx.container,
+  //     index: groupIdx.item,
+  //   } as const;
+  // };
 
   return (
     <DndContext

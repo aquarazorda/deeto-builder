@@ -1,7 +1,7 @@
 import { Slot } from "@radix-ui/react-slot";
 import { UniqueIdentifier, useDroppable } from "@dnd-kit/core";
 import { ReactNode } from "react";
-import { SortableContext } from "@dnd-kit/sortable";
+import { SortableContext, SortingStrategy } from "@dnd-kit/sortable";
 
 export default function DroppableItem({
   id,
@@ -11,7 +11,12 @@ export default function DroppableItem({
 }: {
   id: string;
   children: ReactNode;
-  items: UniqueIdentifier | UniqueIdentifier[];
+  items: (
+    | UniqueIdentifier
+    | {
+        id: UniqueIdentifier;
+      }
+  )[];
   strategy?: SortingStrategy;
 }) {
   const { setNodeRef } = useDroppable({

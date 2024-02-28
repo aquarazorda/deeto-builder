@@ -5,11 +5,14 @@ const StorageSchema = v.object({
   activeTab: v.optional(v.string()),
 });
 
+const getItem = (key: string) =>
+  localStorage.getItem(key)
+    ? JSON.parse(localStorage.getItem(key)!)
+    : undefined;
+
 const storage = {
-  layout: localStorage.getItem("layout")
-    ? JSON.parse(localStorage.getItem("layout")!)
-    : [],
-  activeTab: JSON.parse(localStorage.getItem("activeTab")) || "",
+  layout: getItem("layout") ?? [],
+  activeTab: getItem("activeTab"),
 };
 
 export const useLocalStorage = () => {

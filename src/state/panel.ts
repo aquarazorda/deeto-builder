@@ -47,14 +47,13 @@ export type Element = Group | Item | FormElement;
 type Metadata = Element[];
 
 type PanelState = {
-  active: string;
+  active?: string;
   metadata: Metadata;
   set: (active: string) => void;
   loadMetadata: () => Promise<void>;
 };
 
 export const usePanel = create<PanelState>((set) => ({
-  active: undefined,
   metadata: [],
   set: (active: string) => {
     set((state) => (state.active != active ? { ...state, active } : state));
