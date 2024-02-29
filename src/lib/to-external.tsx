@@ -10,7 +10,7 @@ export const createSharedComponent =
       <>
         <style
           dangerouslySetInnerHTML={{
-            __html: `@import "http://localhost:4173/assets/html-builder.css"`,
+            __html: `@import "/html_builder/assets/html-builder.css"`,
           }}
         />
         <Component {...props} />

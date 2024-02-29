@@ -64,8 +64,8 @@ export const useHtml = create<HtmlState>((set) => ({
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async () => {
-    const html = await fetch("http://localhost:4173/template.html").then(
-      (res) => res.text(),
+    const html = await fetch("/html_builder/template.html").then((res) =>
+      res.text(),
     );
     set((state) => ({
       ...state,

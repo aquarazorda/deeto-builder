@@ -59,7 +59,7 @@ export const usePanel = create<PanelState>((set) => ({
     set((state) => (state.active != active ? { ...state, active } : state));
   },
   loadMetadata: async () => {
-    const res = await fetch("http://localhost:4173/metadata.json").then((res) =>
+    const res = await fetch("/html_builder/metadata.json").then((res) =>
       res.json(),
     );
     set((state) => ({ ...state, metadata: res }));
