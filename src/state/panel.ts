@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { ROOT_URL } from "@/config";
 
 export type ItemType = "item" | "group" | "form";
 export type Behaviour =
@@ -59,7 +60,7 @@ export const usePanel = create<PanelState>((set) => ({
     set((state) => (state.active != active ? { ...state, active } : state));
   },
   loadMetadata: async () => {
-    const res = await fetch("/html_builder/metadata.json").then((res) =>
+    const res = await fetch(ROOT_URL + "/metadata.json").then((res) =>
       res.json(),
     );
     set((state) => ({ ...state, metadata: res }));

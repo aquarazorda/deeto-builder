@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { load, CheerioAPI } from "cheerio";
 import { parseStyleTag, styleTagToString, swapStyleTag } from "./styles";
 import { toast } from "sonner";
+import { ROOT_URL } from "@/config";
 
 type Styles = Record<string, Record<string, string>>;
 
@@ -64,7 +65,7 @@ export const useHtml = create<HtmlState>((set) => ({
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async () => {
-    const html = await fetch("/html_builder/template.html").then((res) =>
+    const html = await fetch(ROOT_URL + "/template.html").then((res) =>
       res.text(),
     );
     set((state) => ({

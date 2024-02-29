@@ -2,6 +2,7 @@ import { useHtml } from "@/state/html";
 import { Item } from "@/state/panel";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { ROOT_URL } from "@/config";
 
 export default function Fonts({
   item: { title, defaultValue, selectors },
@@ -35,7 +36,7 @@ export default function Fonts({
           fontFamily: defaultValue,
           backgroundImage:
             activeFont === defaultValue
-              ? "url('/html_builder/images/font-bg.jpg')"
+              ? `url('${ROOT_URL}/images/font-bg.jpg')`
               : undefined,
         }}
       >

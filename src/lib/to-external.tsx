@@ -1,5 +1,6 @@
 import { FunctionComponent } from "react";
 import ReactDOM from "react-dom/client";
+import { ROOT_URL } from "@/config";
 
 export const createSharedComponent =
   (Component: FunctionComponent<any>) =>
@@ -10,7 +11,7 @@ export const createSharedComponent =
       <>
         <style
           dangerouslySetInnerHTML={{
-            __html: `@import "/html_builder/assets/html-builder.css"`,
+            __html: `@import "${ROOT_URL}/assets/html-builder.css"`,
           }}
         />
         <Component {...props} />

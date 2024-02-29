@@ -12,10 +12,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup node
+      - name: Setup bun
         uses: oven-sh/setup-bun@v1
         with:
           bun-version: latest
+
+      - name: Set the right config file
+        run: |
+          cp src/config.dev.js src/config.js
 
       - name: Install dependencies
         run: bun install
