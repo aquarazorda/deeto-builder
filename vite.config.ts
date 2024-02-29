@@ -16,6 +16,7 @@ export default defineConfig({
     }),
   ],
   build: {
+    outDir: "build/html_builder",
     rollupOptions: {
       output: {
         format: "esm",

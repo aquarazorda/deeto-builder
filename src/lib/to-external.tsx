@@ -3,9 +3,7 @@ import ReactDOM from "react-dom/client";
 
 export const createSharedComponent =
   (Component: FunctionComponent<any>) =>
-  ({ renderIn, ...props }: any) => {
-    // renderIn?.attachShadow({ mode: "open" });
-
+  ({ renderIn, ...props }: { renderIn: HTMLElement; [key: string]: any }) => {
     const root = ReactDOM.createRoot(renderIn);
 
     root.render(
@@ -18,6 +16,8 @@ export const createSharedComponent =
         <Component {...props} />
       </>,
     );
+
+    // renderIn?.attachShadow({ mode: "open" });
 
     return () => root.unmount();
   };
