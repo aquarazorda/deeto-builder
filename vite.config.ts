@@ -5,7 +5,7 @@ import federation from "@originjs/vite-plugin-federation";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/html-builder/",
+  base: "/html_builder/",
   build: {
     outDir: "build/html_builder",
     rollupOptions: {
