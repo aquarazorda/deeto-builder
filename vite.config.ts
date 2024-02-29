@@ -8,13 +8,27 @@ export default defineConfig({
   plugins: [
     react(),
     federation({
-      name: "deeto-html-builder",
+      name: "html-builder",
       filename: "builderEntry.js",
       exposes: {
         "./HtmlBuilder": "./src/html-builder",
       },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        format: "esm",
+        assetFileNames: (assetInfo) => {
+          if (assetInfo?.name?.endsWith(".css")) {
+            return "assets/html-builder.css";
+          }
+
+          return assetInfo.name ?? "";
+        },
+      },
+    },
+  },
   server: {
     watch: {
       usePolling: true,
