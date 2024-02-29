@@ -8,7 +8,7 @@
         "type": "item",
         "behaviour": "image",
         "title": "Logo",
-        "defaultValue": "/html-builder/images/placeholder-logo.svg",
+        "defaultValue": "/html_builder/images/placeholder-logo.svg",
         "selectors": ["header img"]
       },
       {
