@@ -14,12 +14,12 @@ import { Metadata } from "./state/panel";
 
 type Props = Partial<{
   html: MutableRefObject<string>;
-  htmlUrl: string;
+  url: string;
   metadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
 }>;
 
-function App({ htmlUrl, html, saveImage, metadata }: Props) {
+function App({ url: htmlUrl, html, saveImage, metadata }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
 

@@ -1,17 +1,21 @@
-import {
-  Monitor,
-  Paintbrush2,
-  Redo,
-  TabletSmartphone,
-  Undo,
-} from "lucide-react";
+import { Monitor, Redo, TabletSmartphone, Undo } from "lucide-react";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { useShallow } from "zustand/react/shallow";
 import { useHtml } from "@/state/html";
+import { useLocalStorage } from "@/lib/local-storage";
+import { useState } from "react";
 
 export default function Header() {
-  const [undo, redo, history, idx, save] = useHtml(
+  const { set, mobileMode } = useLocalStorage();
+  const [state, setState] = useState(mobileMode);
+
+  const onChange = (mobileMode: boolean) => {
+    setState(mobileMode);
+    set("mobileMode", mobileMode);
+  };
+
+  const [undo, redo, history, idx] = useHtml(
     useShallow((state) => [
       state.undo,
       state.redo,
@@ -25,10 +29,18 @@ export default function Header() {
     <div className="flex w-full justify-between items-center py-4">
       <span className="font-medium text-lg">Deeto Template Editor</span>
       <div className="flex gap-2 h-full">
-        <Button variant="outline" disabled>
+        <Button
+          variant="outline"
+          disabled={state}
+          onClick={() => onChange(true)}
+        >
           <TabletSmartphone />
         </Button>
-        <Button variant="outline" disabled>
+        <Button
+          variant="outline"
+          disabled={!state}
+          onClick={() => onChange(false)}
+        >
           <Monitor />
         </Button>
         <Separator orientation="vertical" className="h-auto" />
@@ -46,13 +58,13 @@ export default function Header() {
         >
           <Redo />
         </Button>
-        <Button
-          disabled={history.length < 2 || idx === 0}
-          onClick={save}
-          className="space-x-2"
-        >
-          <Paintbrush2 /> <span>Save changes</span>
-        </Button>
+        {/* <Button */}
+        {/*   disabled={history.length < 2 || idx === 0} */}
+        {/*   onClick={save} */}
+        {/*   className="space-x-2" */}
+        {/* > */}
+        {/*   <Paintbrush2 /> <span>Save changes</span> */}
+        {/* </Button> */}
       </div>
     </div>
   );

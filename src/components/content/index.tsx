@@ -4,6 +4,8 @@ import { MutableRefObject, useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { match } from "ts-pattern";
 import { innerHTML } from "diffhtml";
+import { cn } from "@/lib/utils";
+import { useLocalStorage } from "@/lib/local-storage";
 
 const listener = (setPanel: (active: string) => void) => (e: Event) => {
   const clickedElement = e?.composedPath()?.[0] as unknown as Element;
@@ -26,6 +28,7 @@ export default function Content({
   htmlUrl?: string;
   html?: MutableRefObject<string>;
 }) {
+  const { mobileMode } = useLocalStorage();
   const [html, loadHtml, setMutable] = useHtml(
     useShallow((state) => [
       state.html,
@@ -33,6 +36,7 @@ export default function Content({
       state.setParentMutableHtml,
     ]),
   );
+
   const [setPanel] = usePanel(useShallow((state) => [state.set]));
 
   const shadowHost = useRef<HTMLDivElement>(null);
@@ -62,5 +66,16 @@ export default function Content({
     };
   }, [html]);
 
-  return <div className="relative w-full" ref={shadowHost} />;
+  return (
+    <div className="flex w-full items-center justify-center">
+      <div
+        className={cn(
+          "relative w-full",
+          mobileMode && "p-14 w-[530px] h-[832px]",
+        )}
+        ref={shadowHost}
+      />
+      ;
+    </div>
+  );
 }
