@@ -45,24 +45,31 @@ export type Form = {
 
 export type Element = Group | Item | FormElement;
 
-type Metadata = Element[];
+export type Metadata = Element[];
 
 type PanelState = {
   active?: string;
   metadata: Metadata;
   set: (active: string) => void;
-  loadMetadata: () => Promise<void>;
+  loadMetadata: (metadata?: Metadata) => Promise<void>;
+  saveImage?: (name: string, blob: Blob) => Promise<string>;
+  setSaveImgFn: (fn: (name: string, blob: Blob) => Promise<string>) => void;
 };
 
 export const usePanel = create<PanelState>((set) => ({
   metadata: [],
+  setSaveImgFn: (fn) => {
+    set((state) => ({ ...state, saveImage: fn }));
+  },
   set: (active: string) => {
     set((state) => (state.active != active ? { ...state, active } : state));
   },
-  loadMetadata: async () => {
-    const res = await fetch(ROOT_URL + "/metadata.json").then((res) =>
-      res.json(),
-    );
+  loadMetadata: async (metadata?: Metadata) => {
+    const res =
+      metadata ??
+      (await fetch(ROOT_URL + "/metadata.json").then(
+        (res) => res.json() as Promise<Metadata>,
+      ));
     set((state) => ({ ...state, metadata: res }));
   },
 }));

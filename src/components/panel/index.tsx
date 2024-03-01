@@ -1,4 +1,4 @@
-import { usePanel } from "@/state/panel";
+import { Metadata, usePanel } from "@/state/panel";
 import {
   Accordion,
   AccordionContent,
@@ -6,18 +6,25 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 import ItemGenerator from "./item-generator";
 import { useLocalStorage } from "@/lib/local-storage";
 
-export default function Panel() {
+type Props = {
+  metadata?: Metadata;
+  saveImage?: (name: string, blob: Blob) => Promise<string>;
+  html?: MutableRefObject<string>;
+};
+
+export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
-  const [active, set, load, metadata] = usePanel(
+  const [active, set, load, meta, saveImgFn] = usePanel(
     useShallow((state) => [
       state.active,
       state.set,
       state.loadMetadata,
       state.metadata,
+      state.setSaveImgFn,
     ]),
   );
 
@@ -27,7 +34,8 @@ export default function Panel() {
   };
 
   useEffect(() => {
-    load();
+    load(metadata);
+    saveImage && saveImgFn(saveImage);
   }, []);
 
   return (
@@ -39,8 +47,8 @@ export default function Panel() {
         value={active}
         onValueChange={changeTab}
       >
-        {metadata.length > 0 &&
-          metadata.map(({ title }, idx) => (
+        {meta.length > 0 &&
+          meta.map(({ title }, idx) => (
             <AccordionItem
               key={idx}
               value={title.toLowerCase()}

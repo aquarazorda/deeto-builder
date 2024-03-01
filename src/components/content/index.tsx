@@ -1,6 +1,6 @@
 import { useHtml } from "@/state/html";
 import { usePanel } from "@/state/panel";
-import { useEffect, useRef } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { match } from "ts-pattern";
 import { innerHTML } from "diffhtml";
@@ -19,17 +19,31 @@ const listener = (setPanel: (active: string) => void) => (e: Event) => {
   }
 };
 
-export default function Content() {
-  const [html, loadHtml] = useHtml(
-    useShallow((state) => [state.html, state.loadHtml]),
+export default function Content({
+  htmlUrl,
+  html: htmlRef,
+}: {
+  htmlUrl?: string;
+  html?: MutableRefObject<string>;
+}) {
+  const [html, loadHtml, setMutable] = useHtml(
+    useShallow((state) => [
+      state.html,
+      state.loadHtml,
+      state.setParentMutableHtml,
+    ]),
   );
   const [setPanel] = usePanel(useShallow((state) => [state.set]));
 
   const shadowHost = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    loadHtml();
-  }, []);
+    loadHtml(htmlUrl);
+  }, [htmlUrl]);
+
+  useEffect(() => {
+    htmlRef && setMutable(htmlRef);
+  }, [htmlRef]);
 
   useEffect(() => {
     if (html) {
