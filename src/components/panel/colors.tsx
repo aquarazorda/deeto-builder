@@ -44,7 +44,7 @@ export default function Colors({
           </span>
         </div>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent style={{ zIndex: 1000 }}>
         <SketchPicker color={color} onChangeComplete={changeColor} />
       </PopoverContent>
     </Popover>

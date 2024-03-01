@@ -85,7 +85,7 @@ export default function Background({
               }}
             />
           </PopoverTrigger>
-          <PopoverContent>
+          <PopoverContent style={{ zIndex: 1000 }}>
             <SketchPicker onChangeComplete={bgChange} color={bgColor} />
           </PopoverContent>
         </Popover>
