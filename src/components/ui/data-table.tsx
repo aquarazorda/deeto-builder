@@ -25,6 +25,7 @@ import { Input } from "./input";
 import { rankItem } from "@tanstack/match-sorter-utils";
 import { ScrollArea } from "./scroll-area";
 import { Button } from "./button";
+import { cn } from "@/lib/utils";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -79,7 +80,7 @@ export function DataTable<TData, TValue>({
   });
 
   return (
-    <div className={className}>
+    <div className={cn("w-full", className)}>
       <div className="flex items-center py-4">
         <Input
           placeholder="Filter..."

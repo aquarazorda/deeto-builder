@@ -50,7 +50,7 @@ const columns: ColumnDef<Notification>[] = [
             </DialogTrigger>
             <DialogContent>
               <NotificationContextDialogContent
-                contextId={row.original.meetingId}
+                contextId={row.original.contextId}
               />
             </DialogContent>
           </Dialog>
