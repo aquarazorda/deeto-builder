@@ -46,7 +46,7 @@ const columns: ColumnDef<Notification>[] = [
         <div className="flex gap-2 items-center justify-end">
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="secondary">Check context</Button>
+              <Button>Check context</Button>
             </DialogTrigger>
             <DialogContent>
               <NotificationContextDialogContent

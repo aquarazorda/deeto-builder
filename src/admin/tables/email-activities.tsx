@@ -14,6 +14,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { useApi } from "@/state/api";
+import { TooltipSimple } from "@/components/ui/tooltip";
 
 const columns: ColumnDef<EmailActivity>[] = [
   {
@@ -26,11 +27,19 @@ const columns: ColumnDef<EmailActivity>[] = [
   },
   {
     header: "To",
-    accessorKey: "timestamp",
+    accessorKey: "toAddress",
   },
   {
     header: "Template",
     accessorKey: "emailTemplate",
+    meta: {
+      className: "max-w-32 truncate",
+    },
+    cell: ({ getValue }) => (
+      <TooltipSimple content={getValue() as string}>
+        {getValue() as string}
+      </TooltipSimple>
+    ),
   },
   {
     header: "Time",

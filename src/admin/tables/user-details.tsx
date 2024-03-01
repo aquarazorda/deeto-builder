@@ -47,7 +47,6 @@ const columns: ColumnDef<GetMagicLinkResponse["data"][number]>[] = [
       return (
         <div className="space-x-2 justify-end w-full flex items-center">
           <Button
-            variant="secondary"
             onClick={() =>
               set((state) => ({
                 ...state,

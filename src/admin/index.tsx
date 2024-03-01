@@ -17,6 +17,7 @@ import { useAdminState } from "@/state/admin";
 import { useShallow } from "zustand/react/shallow";
 import AdminMainTabs from "./tabs";
 import UserDetailsTable from "./tables/user-details";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const emailSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -39,37 +40,55 @@ export default function AdminMain() {
 
   return (
     <div className="w-full px-4 flex flex-col space-y-8 items-center">
-      <Card className="w-fit">
-        <CardContent className="flex justify-center items-center gap-4 p-6">
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex gap-4 items-center"
+      <div className="flex gap-4">
+        <Card>
+          <Tabs orientation="vertical" defaultValue="users" className="h-full">
+            <TabsList
+              defaultValue="users"
+              className="flex flex-col items-start h-full"
             >
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex gap-2 items-center">
-                    <FormControl>
-                      <Input
-                        className="w-[300px]"
-                        placeholder="Email address"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" disabled={!form.formState.isValid}>
-                Get details
-              </Button>
-              <ModeToggle />
-            </form>
-          </Form>
-        </CardContent>
-      </Card>
+              <TabsTrigger value="users" className="flex-1 w-full">
+                Users
+              </TabsTrigger>
+              <TabsTrigger value="360" className="flex-1 w-full">
+                360
+              </TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </Card>
+        <Card className="w-fit">
+          <CardContent className="flex justify-center items-center gap-4 p-6">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex gap-4 items-center"
+              >
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem className="flex gap-2 items-center">
+                      <FormControl>
+                        <Input
+                          className="w-[300px]"
+                          placeholder="Email address"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button type="submit" disabled={!form.formState.isValid}>
+                  Get details
+                </Button>
+                <ModeToggle />
+              </form>
+            </Form>
+          </CardContent>
+        </Card>
+      </div>
+
       <UserDetailsTable />
       <AdminMainTabs />
     </div>
