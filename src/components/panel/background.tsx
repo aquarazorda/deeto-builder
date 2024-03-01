@@ -7,6 +7,7 @@ import { Popover, PopoverContent } from "../ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
 import { ColorResult, SketchPicker } from "react-color";
 import useDebouncedCallback from "@/lib/debounced-callback";
+import UploadImageDialog from "../dialogs/upload-image";
 
 export default function Background({
   item: { selectors, title, defaultValue },
@@ -27,6 +28,16 @@ export default function Background({
 
     swap(newStyles);
   }, 200);
+
+  const bgChangeImage = (url: string) => {
+    const newStyles = { ...styles };
+
+    selectors.forEach((selector) => {
+      styles[selector].background = `url(${url})`;
+    });
+
+    swap(newStyles);
+  };
 
   const {
     isImage,
@@ -87,7 +98,9 @@ export default function Background({
             backgroundColor: "#DDD7E5",
           }}
         >
-          <img src={bgUrl} width={157} height={53} />
+          <UploadImageDialog onSave={bgChangeImage}>
+            <img src={bgUrl} width={157} height={53} />
+          </UploadImageDialog>
         </div>
       )}
       <span className="text-[#877997] text-xs">
