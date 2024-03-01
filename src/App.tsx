@@ -12,12 +12,12 @@ import useDebouncedCallback from "./lib/debounced-callback";
 import { MutableRefObject } from "react";
 import { Metadata } from "./state/panel";
 
-type Props = {
+type Props = Partial<{
   html: MutableRefObject<string>;
   htmlUrl: string;
   metadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
-};
+}>;
 
 function App({ htmlUrl, html, saveImage, metadata }: Props) {
   const { layout, set } = useLocalStorage();
