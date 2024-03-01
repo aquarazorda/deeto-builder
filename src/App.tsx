@@ -9,17 +9,16 @@ import {
 } from "./components/ui/resizable";
 import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
-import { MutableRefObject } from "react";
 import { Metadata } from "./state/panel";
 
 type Props = Partial<{
-  html: MutableRefObject<string>;
+  setHtml: (html: string) => void;
   url: string;
   metadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
 }>;
 
-function App({ url: htmlUrl, html, saveImage, metadata }: Props) {
+function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
 
@@ -32,7 +31,7 @@ function App({ url: htmlUrl, html, saveImage, metadata }: Props) {
           onLayout={(val) => debouncedSet("layout", val)}
         >
           <ResizablePanel minSize={40} defaultSize={layout?.[0]}>
-            <Content htmlUrl={htmlUrl} html={html} />
+            <Content htmlUrl={htmlUrl} setHtml={setHtml} />
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel minSize={20} defaultSize={layout?.[1]}>

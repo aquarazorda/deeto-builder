@@ -1,5 +1,5 @@
 import { useHtml } from "@/state/html";
-import { MutableRefObject, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { innerHTML } from "diffhtml";
 import { cn } from "@/lib/utils";
@@ -36,10 +36,10 @@ const contentEditableListener =
 
 export default function Content({
   htmlUrl,
-  html: htmlRef,
+  setHtml: setHtmlParent,
 }: {
   htmlUrl?: string;
-  html?: MutableRefObject<string>;
+  setHtml?: (html: string) => void;
 }) {
   const { mobileMode } = useLocalStorage();
   const [html, $, loadHtml, setMutable, setHtml] = useHtml(
@@ -47,7 +47,7 @@ export default function Content({
       state.html,
       state.$,
       state.loadHtml,
-      state.setParentMutableHtml,
+      state.setParentHtmlSetter,
       state.setHtml,
     ]),
   );
@@ -62,8 +62,8 @@ export default function Content({
   }, [htmlUrl]);
 
   useEffect(() => {
-    htmlRef && setMutable(htmlRef);
-  }, [htmlRef]);
+    setHtmlParent && setMutable(setHtmlParent);
+  }, [setHtmlParent]);
 
   useEffect(() => {
     const listeners: { name: string; fn: () => void }[] = [];

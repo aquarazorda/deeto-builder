@@ -21,12 +21,12 @@ type Props = {
 export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
 
-  const [$, setHtml, html, parentMutable] = useHtml(
+  const [$, setHtml, html, setParentHtml] = useHtml(
     useShallow((state) => [
       state.$,
       state.setHtml,
       state.html,
-      state.parentMutableHtml,
+      state.setParentHtml,
     ]),
   );
 
@@ -57,7 +57,7 @@ export default function Panel({ metadata, saveImage }: Props) {
   }, [meta]);
 
   useEffect(() => {
-    if (!parentMutable?.current) return;
+    if (!setParentHtml) return;
 
     if (meta.contentEditables?.length) {
       const toChange = loadCheerio(html);
@@ -66,7 +66,7 @@ export default function Panel({ metadata, saveImage }: Props) {
         toChange(selector).attr("contenteditable", "false");
       });
 
-      parentMutable.current = toChange.html();
+      setParentHtml(toChange.html());
     }
   }, [meta, html]);
 

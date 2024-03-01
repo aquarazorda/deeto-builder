@@ -3,7 +3,6 @@ import { load, CheerioAPI } from "cheerio";
 import { parseStyleTag, styleTagToString, swapStyleTag } from "./styles";
 import { toast } from "sonner";
 import { ROOT_URL } from "@/config";
-import { MutableRefObject } from "react";
 
 type Styles = Record<string, Record<string, string>>;
 
@@ -13,11 +12,11 @@ type HtmlState = {
   history: string[];
   currentIdx: number;
   styles: Styles;
-  parentMutableHtml?: MutableRefObject<string>;
   swapStyles: (styles: Styles) => void;
   loadHtml: (htmlUrl?: string) => Promise<void>;
   setHtml: (html: CheerioAPI) => void;
-  setParentMutableHtml: (html: MutableRefObject<string>) => void;
+  setParentHtmlSetter: (html: (html: string) => void) => void;
+  setParentHtml?: (html: string) => void;
   undo: () => void;
   redo: () => void;
   save: () => void;
@@ -29,8 +28,8 @@ export const useHtml = create<HtmlState>((set) => ({
   history: [],
   currentIdx: 0,
   styles: {},
-  setParentMutableHtml: (html: MutableRefObject<string>) =>
-    set((state) => ({ ...state, parentMutableHtml: html })),
+  setParentHtmlSetter: (setParentHtml: (html: string) => void) =>
+    set((state) => ({ ...state, setParentHtml })),
   save: () =>
     set((state) => {
       toast.success("Changes successfully saved!");
