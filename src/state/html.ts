@@ -83,19 +83,13 @@ export const useHtml = create<HtmlState>((set) => ({
   },
   setHtml: ($) => {
     const html = $.html();
-    set((state) => {
-      if (state.parentMutableHtml) {
-        state.parentMutableHtml.current = html;
-      }
-
-      return {
-        ...state,
-        $,
-        html: $.html(),
-        currentIdx: state.currentIdx + 1,
-        history: [...state.history, html],
-        styles: parseStyleTag(html),
-      };
-    });
+    set((state) => ({
+      ...state,
+      $,
+      html: $.html(),
+      currentIdx: state.currentIdx + 1,
+      history: [...state.history, html],
+      styles: parseStyleTag(html),
+    }));
   },
 }));

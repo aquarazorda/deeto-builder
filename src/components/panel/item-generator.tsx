@@ -71,7 +71,7 @@ export default function ItemGenerator({
   idx: number;
   isMain: boolean;
 }) {
-  const [element] = usePanel(useShallow((state) => [state.metadata[idx]]));
+  const [element] = usePanel(useShallow((state) => [state.metadata.list[idx]]));
 
   return <DrawElement element={element} isMain={isMain} />;
 }

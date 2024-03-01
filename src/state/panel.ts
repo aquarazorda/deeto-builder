@@ -45,7 +45,10 @@ export type Form = {
 
 export type Element = Group | Item | FormElement;
 
-export type Metadata = Element[];
+export type Metadata = {
+  contentEditables: string[];
+  list: Element[];
+};
 
 type PanelState = {
   active?: string;
@@ -57,7 +60,10 @@ type PanelState = {
 };
 
 export const usePanel = create<PanelState>((set) => ({
-  metadata: [],
+  metadata: {
+    contentEditables: [],
+    list: [],
+  },
   setSaveImgFn: (fn) => {
     set((state) => ({ ...state, saveImage: fn }));
   },

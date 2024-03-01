@@ -9,6 +9,8 @@ import { useShallow } from "zustand/react/shallow";
 import { MutableRefObject, useEffect } from "react";
 import ItemGenerator from "./item-generator";
 import { useLocalStorage } from "@/lib/local-storage";
+import { useHtml } from "@/state/html";
+import { load as loadCheerio } from "cheerio";
 
 type Props = {
   metadata?: Metadata;
@@ -18,6 +20,16 @@ type Props = {
 
 export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
+
+  const [$, setHtml, html, parentMutable] = useHtml(
+    useShallow((state) => [
+      state.$,
+      state.setHtml,
+      state.html,
+      state.parentMutableHtml,
+    ]),
+  );
+
   const [active, set, load, meta, saveImgFn] = usePanel(
     useShallow((state) => [
       state.active,
@@ -34,7 +46,35 @@ export default function Panel({ metadata, saveImage }: Props) {
   };
 
   useEffect(() => {
+    // const listeners
+    if (meta.contentEditables.length) {
+      meta.contentEditables.forEach((selector) => {
+        $(selector).attr("contenteditable", "true");
+      });
+
+      setHtml($);
+    }
+  }, [meta]);
+
+  useEffect(() => {
+    if (!parentMutable?.current) return;
+
+    if (meta.contentEditables.length) {
+      const toChange = loadCheerio(html);
+
+      meta.contentEditables.forEach((selector) => {
+        toChange(selector).attr("contenteditable", "false");
+      });
+
+      parentMutable.current = toChange.html();
+    }
+  }, [meta, html]);
+
+  useEffect(() => {
     load(metadata);
+  }, [metadata]);
+
+  useEffect(() => {
     saveImage && saveImgFn(saveImage);
   }, []);
 
@@ -47,8 +87,8 @@ export default function Panel({ metadata, saveImage }: Props) {
         value={active}
         onValueChange={changeTab}
       >
-        {meta.length > 0 &&
-          meta.map(({ title }, idx) => (
+        {meta.list.length > 0 &&
+          meta.list.map(({ title }, idx) => (
             <AccordionItem
               key={idx}
               value={title.toLowerCase()}
