@@ -46,7 +46,7 @@ export type Form = {
 export type Element = Group | Item | FormElement;
 
 export type Metadata = {
-  contentEditables: string[];
+  contentEditables?: string[];
   list: Element[];
 };
 

@@ -47,7 +47,7 @@ export default function Panel({ metadata, saveImage }: Props) {
 
   useEffect(() => {
     // const listeners
-    if (meta.contentEditables.length) {
+    if (meta.contentEditables?.length) {
       meta.contentEditables.forEach((selector) => {
         $(selector).attr("contenteditable", "true");
       });
@@ -59,10 +59,10 @@ export default function Panel({ metadata, saveImage }: Props) {
   useEffect(() => {
     if (!parentMutable?.current) return;
 
-    if (meta.contentEditables.length) {
+    if (meta.contentEditables?.length) {
       const toChange = loadCheerio(html);
 
-      meta.contentEditables.forEach((selector) => {
+      meta.contentEditables?.forEach((selector) => {
         toChange(selector).attr("contenteditable", "false");
       });
 
