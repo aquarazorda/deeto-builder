@@ -1,7 +1,8 @@
+import { getQueryParam } from "@/lib/utils";
 import { match } from "ts-pattern";
 import { create } from "zustand";
 
-const env = window.location.search.replace("?env=", "");
+const env = getQueryParam("env");
 
 type ApiState = {
   apiUrl: string;
