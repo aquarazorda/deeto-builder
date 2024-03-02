@@ -10,6 +10,9 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getPaginationRowModel,
+  getSortedRowModel,
+  TableState,
+  SortingState,
 } from "@tanstack/react-table";
 
 import {
@@ -54,6 +57,7 @@ interface DataTableProps<TValue, TData = FieldValues> {
   className?: string;
   maxHeight?: number;
   renderSave?: ReactNode;
+  state?: Partial<TableState>;
   sort?: {
     onSort: (data: TData[]) => void;
     uniqueIdentifier: keyof TData;
@@ -88,6 +92,8 @@ export function DataTable<TValue, TData = FieldValues>({
 }: DataTableProps<TValue, TData>) {
   const [data, setData] = useState(parentData);
   const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [sorting, setSorting] = useState<SortingState>([]);
+
   const Wrapper = maxHeight ? ScrollArea : Div;
 
   const dataIds = useMemo<UniqueIdentifier[]>(() => {
@@ -106,6 +112,8 @@ export function DataTable<TValue, TData = FieldValues>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getRowId: (row) =>
       sort?.uniqueIdentifier ? row[sort.uniqueIdentifier] : row.id,
     filterFns: {
@@ -113,6 +121,7 @@ export function DataTable<TValue, TData = FieldValues>({
     },
     state: {
       globalFilter,
+      sorting,
     },
   });
 
@@ -160,7 +169,7 @@ export function DataTable<TValue, TData = FieldValues>({
         <div className="relative">
           <Wrapper style={{ height: maxHeight }} className="border rounded-md">
             <Table>
-              <TableHeader className="bg-secondary sticky top-0">
+              <TableHeader className="bg-secondary sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {
