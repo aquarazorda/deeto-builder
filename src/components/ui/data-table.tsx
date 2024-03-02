@@ -160,7 +160,7 @@ export function DataTable<TValue, TData = FieldValues>({
         <div className="relative">
           <Wrapper style={{ height: maxHeight }} className="border rounded-md">
             <Table>
-              <TableHeader className="bg-secondary z-10 sticky top-0">
+              <TableHeader className="bg-secondary sticky top-0">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {

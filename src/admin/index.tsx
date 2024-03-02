@@ -21,7 +21,6 @@ import { useEffect } from "react";
 import Users from "./users";
 import Admin360 from "./360";
 import { match } from "ts-pattern";
-import { Separator } from "@/components/ui/separator";
 
 const emailSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -63,19 +62,14 @@ export default function AdminMain() {
   }, [adminMode]);
 
   return (
-    <div className="w-full px-4 flex flex-col space-y-8 items-center">
-      <div className="flex gap-4">
-        <Card>
+    <div className="w-full px-4 flex flex-col space-y-4 items-center overflow-hidden">
+      <div className="flex gap-4 items-center">
+        <Card className="h-fit">
           <Tabs
-            orientation="vertical"
             defaultValue={adminMode}
-            className="h-full"
             onValueChange={(val) => set("adminMode", val)}
           >
-            <TabsList
-              defaultValue="users"
-              className="flex flex-col items-start h-full"
-            >
+            <TabsList defaultValue="users" className="flex items-start">
               <TabsTrigger value="users" className="flex-1 w-full">
                 Users
               </TabsTrigger>
@@ -85,43 +79,40 @@ export default function AdminMain() {
             </TabsList>
           </Tabs>
         </Card>
-        <Card className="w-fit">
-          <CardContent className="flex justify-center items-center gap-4 p-6">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="flex gap-4 items-center"
-              >
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem className="flex gap-2 items-center">
-                      <FormControl>
-                        <Input
-                          className="w-[300px]"
-                          placeholder={
-                            adminMode === "users"
-                              ? "Email address"
-                              : "Vendor name"
-                          }
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button type="submit" disabled={!form.formState.isValid}>
-                  Get details
-                </Button>
-                <ModeToggle />
-              </form>
-            </Form>
-          </CardContent>
-        </Card>
+        <div className="flex justify-center items-center gap-4 p-2">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="flex gap-4 items-center"
+            >
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem className="flex gap-2 items-center">
+                    <FormControl>
+                      <Input
+                        className="w-[300px]"
+                        placeholder={
+                          adminMode === "users"
+                            ? "Email address"
+                            : "Vendor name"
+                        }
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit" disabled={!form.formState.isValid}>
+                Get details
+              </Button>
+              <ModeToggle />
+            </form>
+          </Form>
+        </div>
       </div>
-      <Separator />
       {match(adminMode)
         .with("users", () => <Users />)
         .otherwise(() => (

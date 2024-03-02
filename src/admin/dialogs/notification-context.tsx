@@ -20,7 +20,11 @@ import SkeletonTable from "../tables/skeleton-table";
 import { copyToClipboard } from "@/lib/utils";
 
 const columns: ColumnDef<NotificationContext>[] = [
-  { header: "Notification Type", accessorKey: "notificationType" },
+  {
+    header: "Notification Type",
+    meta: { className: "truncate max-w-44" },
+    accessorKey: "notificationType",
+  },
   { header: "Heading", accessorKey: "heading" },
   { header: "Caption", accessorKey: "caption" },
   {
@@ -82,7 +86,7 @@ export const NotificationContextDialogContent = ({
       {data ? (
         <DataTable columns={columns} data={data.data} maxHeight={606} />
       ) : (
-        <SkeletonTable cols={columns.length} />
+        <SkeletonTable cols={4} rows={6} />
       )}
       <DialogFooter>
         <DialogClose>

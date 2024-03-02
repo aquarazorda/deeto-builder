@@ -48,7 +48,7 @@ const columns: ColumnDef<Notification>[] = [
             <DialogTrigger asChild>
               <Button>Check context</Button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-w-[70vw]">
               <NotificationContextDialogContent
                 contextId={row.original.contextId}
               />
@@ -93,7 +93,7 @@ export default function NotificationsTable() {
   const { isLoading, data } = useGetActivities(email, authenticatedUserId);
 
   if (isLoading) {
-    return <SkeletonTable cols={columns.length} />;
+    return <SkeletonTable cols={columns.length} rows={6} />;
   }
 
   if (!data) {

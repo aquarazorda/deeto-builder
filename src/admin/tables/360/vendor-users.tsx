@@ -16,6 +16,9 @@ const columns: ColumnDef<Vendor>[] = [
   },
   {
     header: "Account Level",
+    meta: {
+      className: "max-w-24",
+    },
     accessorFn: ({ accountLevel }) => capitalize(accountLevel),
   },
   {
@@ -26,11 +29,12 @@ const columns: ColumnDef<Vendor>[] = [
       return (
         <div className="flex gap-2 justify-end items-center">
           <Button
+            size="sm"
             onClick={() =>
               set((state) => ({ ...state, vendorId: row.original.vendorId }))
             }
           >
-            See Details
+            Select
           </Button>
           <TableActionDropdown>
             <DropdownMenuItem
@@ -50,12 +54,12 @@ export default function VendorUsers() {
   const { data, isLoading } = useGetVendorByName(vendorName);
 
   if (isLoading) {
-    return <SkeletonTable cols={columns.length} rows={6} />;
+    return <SkeletonTable cols={3} rows={6} />;
   }
 
   if (!data) {
     return null;
   }
 
-  return <DataTable data={data.data} columns={columns} />;
+  return <DataTable data={data.data} columns={columns} className="px-2" />;
 }

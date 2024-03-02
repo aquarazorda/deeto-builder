@@ -57,10 +57,13 @@ const columns: ColumnDef<EmailActivity>[] = [
               <EyeIcon />
             </Button>
           </HoverCardTrigger>
-          <HoverCardContent side={"left"} className="w-[800px] h-[600px]">
+          <HoverCardContent
+            side={"left"}
+            className="w-[800px] h-[600px] opacity-100"
+          >
             <iframe
               src={`${siteUrl}/emailBody/${row.original.body}.html`}
-              className="w-[800px] h-[600px]"
+              className="w-full h-full"
             />
           </HoverCardContent>
         </HoverCard>

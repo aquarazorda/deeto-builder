@@ -92,7 +92,7 @@ export default function UserDetailsTable() {
   const email = useAdminState(useShallow(({ email }) => email));
   const { data, isLoading } = useGetMagicLink(email);
   if (isLoading) {
-    return <SkeletonTable cols={columns.length} />;
+    return <SkeletonTable cols={columns.length} rows={6} />;
   }
 
   if (!data) {
