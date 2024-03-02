@@ -26,7 +26,7 @@ export default function VendorTabs() {
   useEffect(() => {
     if (!isLoading && data && tabsRef.current) {
       setTimeout(
-        () => tabsRef.current.scrollIntoView({ behavior: "smooth" }),
+        () => tabsRef.current?.scrollIntoView({ behavior: "smooth" }),
         10,
       );
     }

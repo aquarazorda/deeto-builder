@@ -1,7 +1,7 @@
 import { Toaster } from "./components/ui/sonner";
-import AdminMain from "./admin";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ThemeProvider } from "./components/ui/theme-provider";
+import AdminMain from "./admin/index";
 
 const queryClient = new QueryClient({
   defaultOptions: {
