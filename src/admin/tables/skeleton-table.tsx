@@ -25,7 +25,7 @@ export default function SkeletonTable({
   return (
     <DataTable
       columns={columns(data(false))}
-      data={data(true).slice(0, rows ?? cols - 3)}
+      data={data(true).slice(0, rows ?? cols)}
       className="max-w-full"
     />
   );

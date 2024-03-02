@@ -5,16 +5,19 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import useGetVendorDetails from "@/queries/useGetVendorDetails";
+import useGetVendorDetails, {
+  VendorDetailsResponse,
+} from "@/queries/useGetVendorDetails";
 import { useAdminState } from "@/state/admin";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ColumnDef } from "@tanstack/react-table";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
 import SkeletonTable from "../skeleton-table";
 import { DataTable } from "@/components/ui/data-table";
 import {
+  CustomizedFormField,
   fieldRepresentation,
   fieldType,
   viewModeIcons,
@@ -34,6 +37,9 @@ import { Input } from "@/components/ui/input";
 import { useApi } from "@/state/api";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import useDebouncedCallback from "@/lib/debounced-callback";
+import useUpdateQaQuestionMutation from "@/queries/useUpdateQaQuestionMutation";
+import { useQueryClient } from "@tanstack/react-query";
 
 const schema = z.object({
   customizedFormFieldId: z.string(),
@@ -89,7 +95,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           name={row.index + ".fieldType"}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select type" />
@@ -122,7 +128,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           name={row.index + ".fieldRepresentation"}
           render={({ field }) => (
             <FormItem>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select representation" />
@@ -182,10 +188,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
           render={({ field }) => (
             <FormItem>
               <div className="flex gap-4 items-center">
-                <Select
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                >
+                <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder="Select icon" />
@@ -218,10 +221,40 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 
 export default function QuestionsTable() {
   const vendorId = useAdminState(useShallow((state) => state.vendorId));
+  const queryClient = useQueryClient();
   const { data, isLoading } = useGetVendorDetails(vendorId);
+  const { mutateAsync, isPending } = useUpdateQaQuestionMutation(vendorId);
   const form = useForm({
     resolver: zodResolver(z.array(schema)),
   });
+
+  const [values, setVals] = useState(
+    {} as Record<number, z.infer<typeof schema>>,
+  );
+  const setValues = useDebouncedCallback(setVals, 200);
+
+  const difference = useMemo(() => {
+    if (!data?.questions || !values) {
+      return undefined;
+    }
+
+    return Object.keys(values).reduce(
+      (acc, k) => {
+        const key = k as unknown as number;
+        if (
+          JSON.stringify(values[key]) !== JSON.stringify(data.questions[key])
+        ) {
+          if (!acc) {
+            acc = [];
+          }
+
+          acc.push(values[key] as CustomizedFormField);
+        }
+        return acc;
+      },
+      undefined as undefined | CustomizedFormField[],
+    );
+  }, [data?.questions, values]);
 
   const onSort = (data: z.infer<typeof schema>[]) => {
     Object.keys(form.getValues()).forEach((key) => {
@@ -234,9 +267,59 @@ export default function QuestionsTable() {
     });
   };
 
-  const onSubmit = () => {
-    toast.info("Not implemented yet");
+  const onSubmit = async () => {
+    if (!difference) {
+      toast.error("No changes to save");
+      return;
+    }
+
+    const res = await Promise.allSettled(
+      difference.map((field) => mutateAsync(field)),
+    );
+
+    res.forEach((r, i) => {
+      if (r.status === "rejected") {
+        toast.error(
+          `Failed to save question ${difference[i].customizedFormFieldId}`,
+        );
+        return;
+      }
+
+      if (r.status === "fulfilled") {
+        toast.success(`Question ${difference[i].customizedFormFieldId} saved`);
+        queryClient.setQueryData<VendorDetailsResponse>(
+          ["vendor-details", vendorId],
+          (data) => {
+            if (!data) {
+              return undefined;
+            }
+
+            return {
+              ...data,
+              questions: data?.questions.map((q) => {
+                if (
+                  q.customizedFormFieldId ===
+                  difference[i].customizedFormFieldId
+                ) {
+                  return difference[i];
+                }
+                return q;
+              }),
+            };
+          },
+        );
+      }
+    });
   };
+
+  const reset = () => {
+    form.reset(data?.questions);
+  };
+
+  useEffect(() => {
+    const { unsubscribe } = form.watch((values) => setValues(values));
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     if (data?.questions) {
@@ -263,11 +346,21 @@ export default function QuestionsTable() {
             onSort,
           }}
           renderSave={
-            <>
-              {form.getValues() !== data.questions && (
-                <Button className="ml-auto">Save changes</Button>
+            <div className="ml-auto flex gap-4">
+              {difference && (
+                <>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    onClick={reset}
+                    disabled={isPending}
+                  >
+                    Reset
+                  </Button>
+                  <Button isPending={isPending}>Save changes</Button>
+                </>
               )}
-            </>
+            </div>
           }
         />
       </form>

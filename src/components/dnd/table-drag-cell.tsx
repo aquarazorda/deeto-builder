@@ -7,7 +7,7 @@ export const RowDragHandleCell = ({ rowId }: { rowId: string }) => {
     id: rowId,
   });
   return (
-    <Button variant="ghost" {...attributes} {...listeners}>
+    <Button type="button" variant="ghost" {...attributes} {...listeners}>
       <GripIcon />
     </Button>
   );
