@@ -11,7 +11,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { ModeToggle } from "@/components/ui/mode-toggle";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 
 import { useAdminState } from "@/state/admin";
 import { useShallow } from "zustand/react/shallow";
