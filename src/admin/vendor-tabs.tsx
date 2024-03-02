@@ -23,10 +23,10 @@ export default function VendorTabs() {
   const { isLoading, data } = useGetVendorDetails(vendorId);
 
   useEffect(() => {
-    if (!isLoading && data?.data && tabsRef.current) {
+    if (!isLoading && data && tabsRef.current) {
       tabsRef.current.scrollIntoView({ behavior: "smooth" });
     }
-  }, [isLoading, data?.data, tabsRef.current]);
+  }, [isLoading, data, tabsRef.current]);
 
   return (
     <>

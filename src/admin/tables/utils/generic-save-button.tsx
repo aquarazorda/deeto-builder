@@ -91,7 +91,7 @@ export default function GenericSaveButton<
                         <FormItem className="grid grid-cols-5 items-center gap-4">
                           <FormLabel htmlFor="name">{key as string}</FormLabel>
                           <DrawDynamicInput
-                            value={defaultValues[key]}
+                            value={defaultValues?.[key]}
                             field={field}
                             readOnly
                             disabled
@@ -114,7 +114,7 @@ export default function GenericSaveButton<
                       onClick={() =>
                         parentForm.setValue(
                           key as Path<PForm>,
-                          defaultValues[key],
+                          defaultValues![key],
                         )
                       }
                     >
