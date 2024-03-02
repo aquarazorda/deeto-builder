@@ -14,7 +14,7 @@ const getItem = (key: string) =>
     : undefined;
 
 const storage = {
-  layout: getItem("layout") ?? [],
+  layout: getItem("layout") ?? [80, 20],
   activeTab: getItem("activeTab"),
   mobileMode: getItem("mobileMode") ?? false,
   adminMode: getItem("adminMode") ?? "users",
