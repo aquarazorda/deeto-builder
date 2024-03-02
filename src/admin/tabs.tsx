@@ -1,6 +1,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useAdminState } from "@/state/admin";
-import { ReactNode } from "react";
+import { ReactNode, useRef } from "react";
 import {
   Tooltip,
   TooltipContent,
@@ -25,7 +25,7 @@ export const TooltipForDisabled = ({
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        {!disabled && (
+        {disabled && (
           <TooltipContent>
             <p>You need to select an account in order to see this data.</p>
           </TooltipContent>
@@ -51,6 +51,7 @@ const triggers = [
 ];
 
 export default function AdminMainTabs() {
+  const ref = useRef<HTMLDivElement>(null);
   const { email, authenticatedUserId } = useAdminState();
   const { isLoading } = useGetActivities(email, authenticatedUserId);
 
@@ -61,7 +62,16 @@ export default function AdminMainTabs() {
   return (
     <>
       <Separator />
-      <Tabs defaultValue="notifications" className="w-full">
+      <Tabs
+        defaultValue="notifications"
+        className="w-full"
+        onValueChange={() =>
+          setTimeout(
+            () => ref.current?.scrollIntoView({ behavior: "smooth" }),
+            10,
+          )
+        }
+      >
         <TabsList className="w-full">
           {triggers.map(({ value, label }) => (
             <TabsTrigger
@@ -78,15 +88,17 @@ export default function AdminMainTabs() {
             </TabsTrigger>
           ))}
         </TabsList>
-        <TabsContent value="notifications">
-          <NotificationsTable />
-        </TabsContent>
-        <TabsContent value="meetingDetails">
-          <MeetingDetailsTable />
-        </TabsContent>
-        <TabsContent value="emailActivities">
-          <EmailActivitiesTable />
-        </TabsContent>
+        <div ref={ref}>
+          <TabsContent value="notifications">
+            <NotificationsTable />
+          </TabsContent>
+          <TabsContent value="meetingDetails">
+            <MeetingDetailsTable />
+          </TabsContent>
+          <TabsContent value="emailActivities">
+            <EmailActivitiesTable />
+          </TabsContent>
+        </div>
       </Tabs>
     </>
   );

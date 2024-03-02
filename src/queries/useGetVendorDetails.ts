@@ -1,9 +1,11 @@
+import { CustomizedFormField } from "@/admin/types/customized-form-values";
 import { VendorSettings } from "@/admin/types/vendor";
 import { useApi } from "@/state/api";
 import { useQuery } from "@tanstack/react-query";
 
 export type VendorDetailsResponse = {
   vendorSettings: VendorSettings;
+  questions: CustomizedFormField[];
 };
 
 export default function useGetVendorDetails(vendorId?: string) {

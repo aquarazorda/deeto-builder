@@ -17,14 +17,15 @@ export default function SkeletonTable({
   cols: number;
   rows?: number;
 }) {
-  const data = Array.from(Array(cols).keys()).map((i) => ({
-    id: i + 1,
-  }));
+  const data = (isRows: boolean) =>
+    Array.from(Array(isRows ? rows : cols).keys()).map((i) => ({
+      id: i + 1,
+    }));
 
   return (
     <DataTable
-      columns={columns(data)}
-      data={data.slice(0, rows ?? cols - 2)}
+      columns={columns(data(false))}
+      data={data(true).slice(0, rows ?? cols - 2)}
       className="w-full"
     />
   );
