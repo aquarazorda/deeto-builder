@@ -15,19 +15,28 @@ import { Card, CardContent } from "@/components/ui/card";
 
 import { useAdminState } from "@/state/admin";
 import { useShallow } from "zustand/react/shallow";
-import AdminMainTabs from "./tabs";
-import UserDetailsTable from "./tables/user-details";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useLocalStorage } from "@/lib/local-storage";
+import { useEffect } from "react";
+import Users from "./users";
+import Admin360 from "./360";
+import { match } from "ts-pattern";
+import { Separator } from "@/components/ui/separator";
 
 const emailSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
 
+const vendorSchema = z.object({
+  email: z.string().min(3),
+});
+
 export default function AdminMain() {
   const setAdminState = useAdminState(useShallow(({ set }) => set));
+  const { adminMode, set } = useLocalStorage();
 
   const form = useForm<z.infer<typeof emailSchema>>({
-    resolver: zodResolver(emailSchema),
+    resolver: zodResolver(adminMode === "users" ? emailSchema : vendorSchema),
     defaultValues: {
       email: "",
     },
@@ -35,14 +44,34 @@ export default function AdminMain() {
   });
 
   const onSubmit = async ({ email }: z.infer<typeof emailSchema>) => {
-    setAdminState((state) => ({ ...state, email }));
+    setAdminState((state) =>
+      adminMode === "users"
+        ? { ...state, email }
+        : { ...state, vendorName: email },
+    );
   };
+
+  useEffect(() => {
+    form.reset({ email: "" });
+    setAdminState((state) => ({
+      ...state,
+      email: "",
+      authenticatedUserId: "",
+      vendorId: "",
+      vendorName: "",
+    }));
+  }, [adminMode]);
 
   return (
     <div className="w-full px-4 flex flex-col space-y-8 items-center">
       <div className="flex gap-4">
         <Card>
-          <Tabs orientation="vertical" defaultValue="users" className="h-full">
+          <Tabs
+            orientation="vertical"
+            defaultValue={adminMode}
+            className="h-full"
+            onValueChange={(val) => set("adminMode", val)}
+          >
             <TabsList
               defaultValue="users"
               className="flex flex-col items-start h-full"
@@ -71,7 +100,11 @@ export default function AdminMain() {
                       <FormControl>
                         <Input
                           className="w-[300px]"
-                          placeholder="Email address"
+                          placeholder={
+                            adminMode === "users"
+                              ? "Email address"
+                              : "Vendor name"
+                          }
                           {...field}
                         />
                       </FormControl>
@@ -88,9 +121,12 @@ export default function AdminMain() {
           </CardContent>
         </Card>
       </div>
-
-      <UserDetailsTable />
-      <AdminMainTabs />
+      <Separator />
+      {match(adminMode)
+        .with("users", () => <Users />)
+        .otherwise(() => (
+          <Admin360 />
+        ))}
     </div>
   );
 }

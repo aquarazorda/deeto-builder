@@ -14,18 +14,18 @@ import { Separator } from "@/components/ui/separator";
 import MeetingDetailsTable from "./tables/meeting-details";
 import EmailActivitiesTable from "./tables/email-activities";
 
-const TooltipForDisabled = ({
+export const TooltipForDisabled = ({
   children,
-  authenticatedUserId,
+  disabled,
 }: {
   children: ReactNode;
-  authenticatedUserId?: string;
+  disabled?: boolean;
 }) => {
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>{children}</TooltipTrigger>
-        {!authenticatedUserId && (
+        {!disabled && (
           <TooltipContent>
             <p>You need to select an account in order to see this data.</p>
           </TooltipContent>
@@ -69,10 +69,7 @@ export default function AdminMainTabs() {
               key={value}
               disabled={!authenticatedUserId || isLoading}
             >
-              <TooltipForDisabled
-                key={value}
-                authenticatedUserId={authenticatedUserId}
-              >
+              <TooltipForDisabled key={value} disabled={!authenticatedUserId}>
                 <span className="flex gap-1 items-center">
                   {label}{" "}
                   {isLoading && <LoadingSpinner className="mr-2 size-3" />}

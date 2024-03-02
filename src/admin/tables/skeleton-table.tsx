@@ -10,7 +10,13 @@ const columns = (data: { id: number }[]): ColumnDef<Record<string, number>>[] =>
     cell: () => <Skeleton className="w-full h-9" />,
   }));
 
-export default function SkeletonTable({ cols }: { cols: number }) {
+export default function SkeletonTable({
+  cols,
+  rows,
+}: {
+  cols: number;
+  rows?: number;
+}) {
   const data = Array.from(Array(cols).keys()).map((i) => ({
     id: i + 1,
   }));
@@ -18,7 +24,7 @@ export default function SkeletonTable({ cols }: { cols: number }) {
   return (
     <DataTable
       columns={columns(data)}
-      data={data.slice(0, cols - 2)}
+      data={data.slice(0, rows ?? cols - 2)}
       className="w-full"
     />
   );

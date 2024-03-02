@@ -21,7 +21,7 @@ export default function Admin() {
         <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full p-6">
           <AdminMain />
         </div>
-        <Toaster />
+        <Toaster position="top-right" />
       </QueryClientProvider>
     </ThemeProvider>
   );

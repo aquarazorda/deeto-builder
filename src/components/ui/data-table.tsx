@@ -32,6 +32,7 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
   className?: string;
   maxHeight?: number;
+  renderSave?: ReactNode;
 }
 
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
@@ -57,6 +58,7 @@ export function DataTable<TData, TValue>({
   data,
   maxHeight,
   className,
+  renderSave,
 }: DataTableProps<TData, TValue>) {
   const [globalFilter, setGlobalFilter] = useState<string>("");
   const Wrapper = maxHeight ? ScrollArea : Div;
@@ -88,6 +90,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) => setGlobalFilter(String(event.target.value))}
           className="max-w-sm"
         />
+        {renderSave}
       </div>
       <div className="relative">
         <Wrapper style={{ height: maxHeight }} className="border rounded-md">
@@ -158,6 +161,7 @@ export function DataTable<TData, TValue>({
               <Button
                 variant="outline"
                 size="sm"
+                type="button"
                 onClick={() => table.previousPage()}
                 disabled={!table.getCanPreviousPage()}
               >
@@ -166,6 +170,7 @@ export function DataTable<TData, TValue>({
               <Button
                 variant="outline"
                 size="sm"
+                type="button"
                 onClick={() => table.nextPage()}
                 disabled={!table.getCanNextPage()}
               >
