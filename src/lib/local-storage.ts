@@ -1,8 +1,11 @@
-import * as v from "valibot";
+import z from "zod";
+import { create } from "zustand";
 
-const StorageSchema = v.object({
-  layout: v.optional(v.tuple([v.number(), v.number()]), [80, 20]),
-  activeTab: v.optional(v.string()),
+const StorageSchema = z.object({
+  layout: z.tuple([z.number(), z.number()]).default([80, 20]),
+  activeTab: z.string().optional(),
+  mobileMode: z.boolean().default(false),
+  adminMode: z.enum(["users", "360"]).default("users"),
 });
 
 const getItem = (key: string) =>
@@ -11,18 +14,29 @@ const getItem = (key: string) =>
     : undefined;
 
 const storage = {
-  layout: getItem("layout") ?? [],
+  layout: getItem("layout") ?? [80, 20],
   activeTab: getItem("activeTab"),
+  mobileMode: getItem("mobileMode") ?? false,
+  adminMode: getItem("adminMode") ?? "users",
 };
 
-export const useLocalStorage = () => {
-  const res = v.safeParse(StorageSchema, storage);
+type State = z.infer<typeof StorageSchema> & {
+  set: (key: keyof typeof storage, value: unknown) => void;
+};
+
+export const useLocalStorage = create<State>((set) => {
+  const res = StorageSchema.safeParse(storage);
+
+  if (!res.success) {
+    throw new Error(res.error.message);
+  }
 
   return {
-    ...(res.success ? res.output : v.getDefaults(StorageSchema)),
+    ...res.data,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     set: (key: string, value: any) => {
       localStorage.setItem(key, JSON.stringify(value));
+      set((state) => ({ ...state, [key]: value }));
     },
   };
-};
+});

@@ -2,6 +2,7 @@ import { useHtml } from "@/state/html";
 import { Item } from "@/state/panel";
 import { useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
+import { ROOT_URL } from "@/config";
 
 export default function Fonts({
   item: { title, defaultValue, selectors },
@@ -34,7 +35,9 @@ export default function Fonts({
         style={{
           fontFamily: defaultValue,
           backgroundImage:
-            activeFont === defaultValue ? "url('/font-bg.jpg')" : undefined,
+            activeFont === defaultValue
+              ? `url('${ROOT_URL}/images/font-bg.jpg')`
+              : undefined,
         }}
       >
         <span className="text-5xl">Aa</span>

@@ -1,4 +1,4 @@
-import { usePanel } from "@/state/panel";
+import { Metadata, usePanel } from "@/state/panel";
 import {
   Accordion,
   AccordionContent,
@@ -6,18 +6,37 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { useShallow } from "zustand/react/shallow";
-import { useEffect } from "react";
+import { MutableRefObject, useEffect } from "react";
 import ItemGenerator from "./item-generator";
 import { useLocalStorage } from "@/lib/local-storage";
+import { useHtml } from "@/state/html";
+import { load as loadCheerio } from "cheerio";
 
-export default function Panel() {
+type Props = {
+  metadata?: Metadata;
+  saveImage?: (name: string, blob: Blob) => Promise<string>;
+  html?: MutableRefObject<string>;
+};
+
+export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
-  const [active, set, load, metadata] = usePanel(
+
+  const [$, setHtml, html, setParentHtml] = useHtml(
+    useShallow((state) => [
+      state.$,
+      state.setHtml,
+      state.html,
+      state.setParentHtml,
+    ]),
+  );
+
+  const [active, set, load, meta, saveImgFn] = usePanel(
     useShallow((state) => [
       state.active,
       state.set,
       state.loadMetadata,
       state.metadata,
+      state.setSaveImgFn,
     ]),
   );
 
@@ -27,7 +46,36 @@ export default function Panel() {
   };
 
   useEffect(() => {
-    load();
+    // const listeners
+    if (meta.contentEditables?.length) {
+      meta.contentEditables.forEach((selector) => {
+        $(selector).attr("contenteditable", "true");
+      });
+
+      setHtml($);
+    }
+  }, [meta]);
+
+  useEffect(() => {
+    if (!setParentHtml) return;
+
+    if (meta.contentEditables?.length) {
+      const toChange = loadCheerio(html);
+
+      meta.contentEditables?.forEach((selector) => {
+        toChange(selector).attr("contenteditable", "false");
+      });
+
+      setParentHtml(toChange.html());
+    }
+  }, [meta, html]);
+
+  useEffect(() => {
+    load(metadata);
+  }, [metadata]);
+
+  useEffect(() => {
+    saveImage && saveImgFn(saveImage);
   }, []);
 
   return (
@@ -39,8 +87,8 @@ export default function Panel() {
         value={active}
         onValueChange={changeTab}
       >
-        {metadata.length > 0 &&
-          metadata.map(({ title }, idx) => (
+        {meta.list.length > 0 &&
+          meta.list.map(({ title }, idx) => (
             <AccordionItem
               key={idx}
               value={title.toLowerCase()}

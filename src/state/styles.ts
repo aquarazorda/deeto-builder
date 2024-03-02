@@ -21,7 +21,7 @@ export function parseStyleTag(
   const doc = new DOMParser().parseFromString(html, "text/html");
   const styleTags = doc.querySelectorAll("style")[0];
 
-  if (!styleTags.sheet?.cssRules?.length) {
+  if (!styleTags || !styleTags.sheet?.cssRules?.length) {
     return {};
   }
 

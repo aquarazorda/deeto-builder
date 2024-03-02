@@ -5,17 +5,9 @@ import federation from "@originjs/vite-plugin-federation";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    federation({
-      name: "html-builder",
-      filename: "builderEntry.js",
-      exposes: {
-        "./HtmlBuilder": "./src/html-builder",
-      },
-    }),
-  ],
+  base: "/html_builder/",
   build: {
+    outDir: "build/html_builder",
     rollupOptions: {
       output: {
         format: "esm",
@@ -36,7 +28,18 @@ export default defineConfig({
   },
   resolve: {
     alias: {
+      "@/config": path.resolve(__dirname, "./src/config/config.js"),
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  plugins: [
+    react(),
+    federation({
+      name: "html-builder",
+      filename: "builderEntry.js",
+      exposes: {
+        "./HtmlBuilder": "./src/html-builder",
+      },
+    }),
+  ],
 });
