@@ -11,10 +11,10 @@ import QuestionsTable from "./tables/360/questions";
 const triggers = [
   { key: "settings", label: "Settings" },
   { key: "questions", label: "Questions" },
-  { key: "kpis", label: "KPIs" },
-  { key: "endorsements", label: "Endorsements" },
-  { key: "images", label: "Images" },
-  { key: "widgets", label: "Widgets" },
+  // { key: "kpis", label: "KPIs" },
+  // { key: "endorsements", label: "Endorsements" },
+  // { key: "images", label: "Images" },
+  // { key: "widgets", label: "Widgets" },
 ];
 
 export default function VendorTabs() {
