@@ -55,12 +55,16 @@ export const questionColumns: ColumnDef<QuestionsSchema>[] = [
 
       return (
         <FormField
+          key={row.index + ".fieldLabel"}
           control={form.control}
           name={row.index + ".fieldLabel"}
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Textarea {...field} />
+                <Textarea
+                  {...field}
+                  {...form.register(row.index + ".fieldLabel")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -77,6 +81,7 @@ export const questionColumns: ColumnDef<QuestionsSchema>[] = [
 
       return (
         <FormField
+          key={row.index + ".fieldType"}
           control={form.control}
           name={row.index + ".fieldType"}
           render={({ field }) => (
@@ -103,13 +108,14 @@ export const questionColumns: ColumnDef<QuestionsSchema>[] = [
     },
   },
   {
-    header: "Type",
+    header: "Representation",
     accessorKey: "fieldRepresentation",
     cell: ({ row }) => {
       const form = useFormContext();
 
       return (
         <FormField
+          key={row.index + ".fieldRepresentation"}
           control={form.control}
           name={row.index + ".fieldRepresentation"}
           render={({ field }) => (
@@ -147,11 +153,15 @@ export const questionColumns: ColumnDef<QuestionsSchema>[] = [
       return (
         <FormField
           control={form.control}
+          key={row.index + ".viewModeLabel"}
           name={row.index + ".viewModeLabel"}
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input {...field} />
+                <Input
+                  {...field}
+                  {...form.register(row.index + ".viewModeLabel")}
+                />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -170,6 +180,7 @@ export const questionColumns: ColumnDef<QuestionsSchema>[] = [
       return (
         <FormField
           control={form.control}
+          key={row.index + ".viewModeIcon"}
           name={row.index + ".viewModeIcon"}
           render={({ field }) => (
             <FormItem>

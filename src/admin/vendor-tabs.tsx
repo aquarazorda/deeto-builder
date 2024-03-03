@@ -41,7 +41,7 @@ export default function VendorTabs() {
             </TabsTrigger>
           ))}
         </TabsList>
-        <div ref={tabsRef}>
+        <div ref={tabsRef} key={vendorId}>
           <TabsContent value="settings">
             <VendorSettingsTable />
           </TabsContent>

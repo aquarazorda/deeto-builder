@@ -5,7 +5,7 @@ import useGetVendorDetails, {
 import { useAdminState } from "@/state/admin";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { useShallow } from "zustand/react/shallow";
 import SkeletonTable from "../skeleton-table";
@@ -62,20 +62,16 @@ export default function QuestionsTable() {
       },
       undefined as undefined | CustomizedFormField[],
     );
-  }, [data?.questions, values]);
+  }, [data, values]);
 
-  const onSort = (data: QuestionsSchema[]) => {
-    Object.keys(form.getValues()).forEach((key) => {
-      const currFieldId = form.getValues()[key].customizedFormFieldId;
-      const index = data.findIndex(
-        ({ customizedFormFieldId }) => customizedFormFieldId === currFieldId,
-      );
+  const onSort = useCallback(
+    (data: QuestionsSchema[]) => {
+      form.reset(data);
+    },
+    [form, values],
+  );
 
-      form.setValue(key + ".appearanceOrder", index);
-    });
-  };
-
-  const onSubmit = async () => {
+  const onSubmit = useCallback(async () => {
     if (!difference) {
       toast.error("No changes to save");
       return;
@@ -85,43 +81,44 @@ export default function QuestionsTable() {
       difference.map((field) => mutateAsync(field)),
     );
 
+    let fulfilled = true;
+
     res.forEach((r, i) => {
       if (r.status === "rejected") {
         toast.error(
           `Failed to save question ${difference[i].customizedFormFieldId}`,
         );
+        fulfilled = false;
         return;
       }
 
       if (r.status === "fulfilled") {
         toast.success(`Question ${difference[i].customizedFormFieldId} saved`);
-        queryClient.setQueryData<VendorDetailsResponse>(
-          ["vendor-details", vendorId],
-          (data) => {
-            if (!data) {
-              return undefined;
-            }
-
-            return {
-              ...data,
-              questions: data?.questions.map((q) => {
-                if (
-                  q.customizedFormFieldId ===
-                  difference[i].customizedFormFieldId
-                ) {
-                  return difference[i];
-                }
-                return q;
-              }),
-            };
-          },
-        );
       }
     });
-  };
+
+    if (fulfilled) {
+      queryClient.setQueryData<VendorDetailsResponse>(
+        ["vendor-details", vendorId],
+        (data) => {
+          if (!data) {
+            return undefined;
+          }
+
+          const questions = Object.values(values) as CustomizedFormField[];
+
+          return {
+            ...data,
+            questions,
+          };
+        },
+      );
+    }
+  }, [difference, mutateAsync, queryClient, values, vendorId]);
 
   const add = async () => {
     const res = await addNew();
+
     if (res) {
       toast.success("Question added");
       queryClient.invalidateQueries({
@@ -138,11 +135,11 @@ export default function QuestionsTable() {
   useEffect(() => {
     const { unsubscribe } = form.watch((values) => setValues(values));
     return unsubscribe;
-  }, []);
+  }, [form]);
 
   useEffect(() => {
     if (data?.questions) {
-      form.reset(data.questions);
+      reset();
     }
   }, [data]);
 
@@ -158,6 +155,7 @@ export default function QuestionsTable() {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <DataTable
+          key={JSON.stringify(data.questions)}
           columns={questionColumns}
           data={data.questions}
           state={{

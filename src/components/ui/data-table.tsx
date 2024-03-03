@@ -59,7 +59,7 @@ interface DataTableProps<TValue, TData = FieldValues> {
   renderSave?: ReactNode;
   state?: Partial<TableState>;
   sort?: {
-    onSort: (data: TData[]) => void;
+    onSort?: (data: TData[]) => void;
     uniqueIdentifier: keyof TData;
   };
 }
@@ -89,10 +89,11 @@ export function DataTable<TValue, TData = FieldValues>({
   className,
   renderSave,
   sort,
+  state,
 }: DataTableProps<TValue, TData>) {
   const [data, setData] = useState(parentData);
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sorting, setSorting] = useState<SortingState>(state?.sorting ?? []);
 
   const Wrapper = maxHeight ? ScrollArea : Div;
 
@@ -133,8 +134,8 @@ export function DataTable<TValue, TData = FieldValues>({
         const newIndex = dataIds.indexOf(over.id);
         const newData = arrayMove(data, oldIndex, newIndex);
 
-        sort?.onSort(newData);
-        return newData; //this is just a splice util
+        sort?.onSort?.(newData);
+        return newData;
       });
     }
   }
@@ -142,6 +143,10 @@ export function DataTable<TValue, TData = FieldValues>({
   useEffect(() => {
     setData(parentData);
   }, [parentData]);
+
+  useEffect(() => {
+    setSorting(state?.sorting ?? []);
+  }, [state?.sorting]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
