@@ -162,7 +162,7 @@ export function DataTable<TValue, TData = FieldValues>({
       sensors={sensors}
     >
       <div className={cn("w-full", className)}>
-        <div className="flex items-center py-4">
+        <div className="flex items-center py-4 sticky top-10 z-20">
           <Input
             placeholder="Filter..."
             value={globalFilter ?? ""}

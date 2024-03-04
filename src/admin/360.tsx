@@ -3,6 +3,7 @@ import VendorUsers from "./tables/360/vendor-users";
 import VendorTabs from "./vendor-tabs";
 import { useShallow } from "zustand/react/shallow";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { cn } from "@/lib/utils";
 
 export default function Admin360() {
   const [vendorId, vendorName] = useAdminState(
@@ -14,18 +15,20 @@ export default function Admin360() {
   }
 
   return (
-    <div className="flex flex-1 space-x-2 border rounded w-full">
-      <ScrollArea className="h-[88dvh] w-1/3 p-2">
+    <div className="divide-y-2 md:divide-y-0 grid grid-cols-1 gap-2 md:gap-0 md:grid-cols-4 space-x-2 border rounded w-full">
+      <ScrollArea
+        className={cn(
+          "h-[80dvh] md:h-[88dvh] md:col-span-1 md:p-2",
+          vendorId && "h-[30dvh]",
+        )}
+      >
         <VendorUsers />
       </ScrollArea>
-      <ScrollArea className="h-[88dvh] w-full py-2 px-4">
-        {vendorId && <VendorTabs />}
-        {!vendorId && vendorName && (
-          <span className="h-full text-center text-muted-foreground">
-            Please select vendor account
-          </span>
-        )}
-      </ScrollArea>
+      {vendorId && (
+        <ScrollArea className="h-[50dvh] md:h-[88dvh] md:col-span-3 py-2 px-2 md:px-4">
+          <VendorTabs />
+        </ScrollArea>
+      )}
     </div>
   );
 }

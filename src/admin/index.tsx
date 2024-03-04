@@ -63,7 +63,8 @@ export default function AdminMain() {
 
   return (
     <div className="w-full px-4 flex flex-col space-y-4 items-center overflow-hidden">
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center flex-wrap justify-center">
+        <ModeToggle />
         <Card className="h-fit">
           <Tabs
             defaultValue={adminMode}
@@ -92,7 +93,7 @@ export default function AdminMain() {
                   <FormItem className="flex gap-2 items-center">
                     <FormControl>
                       <Input
-                        className="w-[300px]"
+                        className="md:w-[300px]"
                         placeholder={
                           adminMode === "users"
                             ? "Email address"
@@ -108,7 +109,6 @@ export default function AdminMain() {
               <Button type="submit" disabled={!form.formState.isValid}>
                 Get details
               </Button>
-              <ModeToggle />
             </form>
           </Form>
         </div>

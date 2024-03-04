@@ -12,7 +12,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { MoreHorizontalIcon } from "lucide-react";
+import { ArrowDownToLine, MoreHorizontalIcon } from "lucide-react";
 import { capitalize, copyToClipboard } from "@/lib/utils";
 
 const columns: ColumnDef<GetMagicLinkResponse["data"][number]>[] = [
@@ -31,10 +31,16 @@ const columns: ColumnDef<GetMagicLinkResponse["data"][number]>[] = [
   {
     header: "Role",
     accessorFn: (row) => capitalize(row.routeDetails.role),
+    meta: {
+      className: "hidden md:table-cell",
+    },
   },
   {
     header: "Email",
     accessorFn: (row) => row.meDetails.email,
+    meta: {
+      className: "hidden md:table-cell",
+    },
   },
   {
     id: "actions",
@@ -55,7 +61,8 @@ const columns: ColumnDef<GetMagicLinkResponse["data"][number]>[] = [
               }))
             }
           >
-            Load activities
+            <span className="hidden md:block">Load activities</span>
+            <ArrowDownToLine className="block md:hidden size-4" />
           </Button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
