@@ -27,7 +27,7 @@ const DrawGroup = ({
       {element.elements.map((element, idx) => (
         <DrawElement
           element={element}
-          key={element.title + idx}
+          key={element.title + `${idx}`}
           isMain={false}
         />
       ))}
@@ -71,7 +71,11 @@ export default function ItemGenerator({
   idx: number;
   isMain: boolean;
 }) {
-  const [element] = usePanel(useShallow((state) => [state.metadata.list[idx]]));
+  const [element] = usePanel(
+    useShallow((state) => [state.metadata?.list[idx]]),
+  );
+
+  if (!element) return null;
 
   return <DrawElement element={element} isMain={isMain} />;
 }

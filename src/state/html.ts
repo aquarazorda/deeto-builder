@@ -7,7 +7,7 @@ import { ROOT_URL } from "@/config";
 type Styles = Record<string, Record<string, string>>;
 
 type HtmlState = {
-  $: CheerioAPI;
+  $?: CheerioAPI;
   html: string;
   history: string[];
   currentIdx: number;
@@ -23,7 +23,6 @@ type HtmlState = {
 };
 
 export const useHtml = create<HtmlState>((set) => ({
-  $: load(""),
   html: "",
   history: [],
   currentIdx: 0,
@@ -69,9 +68,12 @@ export const useHtml = create<HtmlState>((set) => ({
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async (htmlUrl?: string) => {
-    const html = await fetch(htmlUrl ?? ROOT_URL + "/template.html")
+    const html = await fetch(
+      "https://deeto-images-dev.s3.amazonaws.com/referral-program-content%2Fdaliavendor_r-dev_deeto_ai_4WZ_template.html" ??
+        ROOT_URL + "/template.html",
+    )
       .then((res) => res.text())
-      .then((html) => html.replace(/\/html_builder/g, ROOT_URL));
+      .then((html) => html.replace(/\/"html_builder/g, '"' + ROOT_URL));
     set((state) => ({
       ...state,
       html,

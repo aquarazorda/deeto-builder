@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { useShallow } from "zustand/react/shallow";
-import { MutableRefObject, useEffect } from "react";
+import { MutableRefObject, useEffect, useRef } from "react";
 import ItemGenerator from "./item-generator";
 import { useLocalStorage } from "@/lib/local-storage";
 import { useHtml } from "@/state/html";
@@ -20,6 +20,7 @@ type Props = {
 
 export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
+  const htmlLoaded = useRef(false);
 
   const [$, setHtml, html, setParentHtml] = useHtml(
     useShallow((state) => [
@@ -46,24 +47,26 @@ export default function Panel({ metadata, saveImage }: Props) {
   };
 
   useEffect(() => {
-    // const listeners
-    if (meta.contentEditables?.length) {
+    if (htmlLoaded.current || !meta || !$) return;
+
+    if (meta?.contentEditables?.length) {
       meta.contentEditables.forEach((selector) => {
-        $(selector).attr("contenteditable", "true");
+        $(selector).attr("contenteditable", "");
       });
 
       setHtml($);
+      htmlLoaded.current = true;
     }
-  }, [meta]);
+  }, [meta, $, htmlLoaded]);
 
   useEffect(() => {
     if (!setParentHtml) return;
 
-    if (meta.contentEditables?.length) {
+    if (meta?.contentEditables?.length) {
       const toChange = loadCheerio(html);
 
-      meta.contentEditables?.forEach((selector) => {
-        toChange(selector).attr("contenteditable", "false");
+      meta?.contentEditables?.forEach((selector) => {
+        toChange(selector).removeAttr("contenteditable");
       });
 
       setParentHtml(toChange.html());
@@ -87,8 +90,8 @@ export default function Panel({ metadata, saveImage }: Props) {
         value={active}
         onValueChange={changeTab}
       >
-        {meta.list.length > 0 &&
-          meta.list.map(({ title }, idx) => (
+        {(meta?.list?.length ?? 0) > 0 &&
+          meta!.list.map(({ title }, idx) => (
             <AccordionItem
               key={idx}
               value={title.toLowerCase()}

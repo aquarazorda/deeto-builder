@@ -52,7 +52,7 @@ export type Metadata = {
 
 type PanelState = {
   active?: string;
-  metadata: Metadata;
+  metadata?: Metadata;
   set: (active: string) => void;
   loadMetadata: (metadata?: Metadata) => Promise<void>;
   saveImage?: (name: string, blob: Blob) => Promise<string>;
@@ -60,10 +60,6 @@ type PanelState = {
 };
 
 export const usePanel = create<PanelState>((set) => ({
-  metadata: {
-    contentEditables: [],
-    list: [],
-  },
   setSaveImgFn: (fn) => {
     set((state) => ({ ...state, saveImage: fn }));
   },

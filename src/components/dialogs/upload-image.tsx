@@ -36,7 +36,7 @@ export default function UploadImageDialog({ children, onSave }: Props) {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger>{children}</DialogTrigger>
-      <DialogContent>
+      <DialogContent style={{ zIndex: 1000 }}>
         <DialogHeader>Upload Image</DialogHeader>
         <Input
           type="file"

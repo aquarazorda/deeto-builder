@@ -11,7 +11,7 @@
           "behaviour": "image",
           "title": "Logo",
           "defaultValue": "/html_builder/images/placeholder-logo.svg",
-          "selectors": ["header img"]
+          "selectors": ["header[alt='logo']"]
         },
         {
           "type": "item",

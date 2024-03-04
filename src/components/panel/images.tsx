@@ -14,11 +14,12 @@ export default function Images({
   );
 
   const imageUrl = useMemo(
-    () => $(selectors[0]).attr("src") ?? defaultValue,
+    () => $?.(selectors[0]).attr("src") ?? defaultValue,
     [$],
   );
 
   const changeUrl = (src: string) => {
+    if (!$) return;
     selectors.forEach((selector) => {
       $(selector).attr("src", src);
     });
