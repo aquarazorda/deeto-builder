@@ -7,10 +7,14 @@ import useGetVendorDetails from "@/queries/useGetVendorDetails";
 import VendorSettingsTable from "./tables/360/vendor-settings";
 import { useRef } from "react";
 import QuestionsTable from "./tables/360/questions";
+import VendorContactsTable from "./tables/360/vendor-contacts";
+import VendorReferencesTable from "./tables/360/vendor-references";
 
 const triggers = [
   { key: "settings", label: "Settings" },
   { key: "questions", label: "Questions" },
+  { key: "references", label: "References" },
+  { key: "vendorContacts", label: "Vendor Contacts" },
   // { key: "kpis", label: "KPIs" },
   // { key: "endorsements", label: "Endorsements" },
   // { key: "images", label: "Images" },
@@ -47,6 +51,12 @@ export default function VendorTabs() {
           </TabsContent>
           <TabsContent value="questions">
             <QuestionsTable />
+          </TabsContent>
+          <TabsContent value="vendorContacts">
+            <VendorContactsTable />
+          </TabsContent>
+          <TabsContent value="references">
+            <VendorReferencesTable />
           </TabsContent>
         </div>
       </Tabs>

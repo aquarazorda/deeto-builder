@@ -54,7 +54,7 @@ export default function VendorUsers() {
   const { data, isLoading } = useGetVendorByName(vendorName);
 
   if (isLoading) {
-    return <SkeletonTable cols={2} rows={6} />;
+    return <SkeletonTable cols={4} rows={6} />;
   }
 
   if (!data) {
