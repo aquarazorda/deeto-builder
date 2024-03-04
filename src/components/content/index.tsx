@@ -73,7 +73,7 @@ export default function Content({
         shadowHost.current?.shadowRoot ??
         shadowHost.current?.attachShadow({ mode: "open" });
 
-      if (shadowRoot) {
+      if (shadowRoot && $) {
         innerHTML(shadowRoot, html);
         const editables = shadowRoot.querySelectorAll("[contenteditable]");
         editables.forEach((editable, idx) => {
@@ -97,7 +97,7 @@ export default function Content({
         ({ name, fn }) => shadowHost.current?.removeEventListener(name, fn),
       );
     };
-  }, [html]);
+  }, [html, $]);
 
   return (
     <div className="flex w-full items-center justify-center">

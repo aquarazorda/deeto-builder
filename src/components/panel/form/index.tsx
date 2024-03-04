@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useHtml } from "@/state/html";
 import { Form } from "@/state/panel";
-import { Cheerio, Element } from "cheerio";
+import { Cheerio, Element, load } from "cheerio";
 import { useEffect, useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import {
@@ -27,22 +27,25 @@ export default function Form({ form }: { form: Form }) {
     useShallow((state) => [state.$, state.html, state.setHtml]),
   );
 
-  const [groupItems, setGroupItems] = useState<ReturnType<typeof getItem>[][]>(
-    [],
-  );
+  const [groupItems, setGroupItems] = useState<
+    NonNullable<ReturnType<typeof getItem>>[][]
+  >([]);
 
   const [directInputs, setDirectInputs] = useState<
-    ReturnType<typeof getItem>[]
+    NonNullable<ReturnType<typeof getItem>>[]
   >([]);
 
   const availableItems = useMemo(
     () =>
-      form.elements.filter((item) => {
-        return (
-          groupItems.every((group) => !group.some((i) => i.key === item.key)) &&
-          !directInputs.some((i) => i.key === item.key)
-        );
-      }),
+      !groupItems || !directInputs
+        ? form.elements.filter((item) => {
+            return (
+              groupItems.every(
+                (group) => !group.some((i) => i.key === item.key),
+              ) && !directInputs.some((i) => i.key === item.key)
+            );
+          })
+        : [],
     [groupItems, directInputs],
   );
 
@@ -54,6 +57,7 @@ export default function Form({ form }: { form: Form }) {
   );
 
   const getItem = (el: Element, groupId?: number) => {
+    if (!$) return;
     const parent = $(el).parent();
     const isCheckbox = parent.hasClass("checkbox-wrapper");
     const isGroupItem = parent.hasClass("form-group");
@@ -74,6 +78,7 @@ export default function Form({ form }: { form: Form }) {
   };
 
   useEffect(() => {
+    const $ = load(html);
     const formGroups = $(".form-inputs")
       .find(".form-group")
       .map((i, el) =>
@@ -143,7 +148,7 @@ export default function Form({ form }: { form: Form }) {
       sensors={sensors}
       collisionDetection={closestCenter}
       onDragEnd={({ active, over }) => {
-        if (!active || !over) return;
+        if (!active || !over || !$) return;
         if (active.id === over.id) return;
 
         const activeElement = getElement($(`[name="${active.id}"]`));
