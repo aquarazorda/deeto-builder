@@ -10,7 +10,7 @@ const columns = (data: { id: number }[]): ColumnDef<Record<string, number>>[] =>
     header: (<Skeleton className="w-32 h-7" />) as unknown as string,
     cell: () => <Skeleton className="w-full h-9" />,
     meta: {
-      className: cn(i > 2 && "hidden md:block"),
+      className: cn(i > 2 && "hidden md:table-cell"),
     },
   }));
 
