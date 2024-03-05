@@ -184,6 +184,17 @@
           "item-type": "checkbox"
         }
       ]
+    },
+    {
+      "type": "group",
+      "title": "CSS editor",
+      "elements": [
+        {
+          "type": "item",
+          "behaviour": "css-editor",
+          "defaultValue": "footer span {color: purple;}"
+        }
+      ]
     }
   ]
 }

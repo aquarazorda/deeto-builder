@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import Fonts from "./fonts";
 import Text from "./text";
 import Form from "./form";
+import CssEditor from "./css-editor";
 
 const DrawGroup = ({
   element,
@@ -45,6 +46,9 @@ const DrawItem = ({ element }: { element: Item }) => {
     ))
     .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
     .with({ behaviour: "text" }, (el) => <Text item={el} />)
+    .with({ behaviour: "css-editor" }, (el) => (
+      <CssEditor defaultValue={el.defaultValue} />
+    ))
     .otherwise(() => <div>Not implemented - {element.behaviour}</div>);
 };
 

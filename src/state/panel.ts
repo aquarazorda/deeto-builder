@@ -8,7 +8,8 @@ export type Behaviour =
   | "color"
   | "color-background"
   | "text"
-  | "font";
+  | "font"
+  | "css-editor";
 
 type GeneralItem = {
   type: ItemType;
