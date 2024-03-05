@@ -26,7 +26,7 @@ export default function Header() {
   );
 
   return (
-    <div className="flex w-full justify-between items-center py-4">
+    <div className="flex w-full justify-between items-center py-4 px-6">
       <span className="font-medium text-lg">Deeto Template Editor</span>
       <div className="flex gap-2 h-full">
         <Button

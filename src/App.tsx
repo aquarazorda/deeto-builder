@@ -10,6 +10,7 @@ import {
 import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
 import { Metadata } from "./state/panel";
+import { ScrollArea } from "./components/ui/scroll-area";
 
 type Props = Partial<{
   setHtml: (html: string) => void;
@@ -23,22 +24,27 @@ function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
   const debouncedSet = useDebouncedCallback(set, 400);
 
   return (
-    <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50 px-6">
+    <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50">
       <Header />
-      <div className="flex h-full flex-1 pb-4">
-        <ResizablePanelGroup
-          direction="horizontal"
-          onLayout={(val) => debouncedSet("layout", val)}
+      <ResizablePanelGroup
+        direction="horizontal"
+        onLayout={(val) => debouncedSet("layout", val)}
+        className="flex-grow relative"
+      >
+        <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
+          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+        </ResizablePanel>
+        <ResizableHandle withHandle />
+        <ResizablePanel
+          minSize={20}
+          defaultSize={layout?.[1]}
+          className="max-h-[calc(100dvh-72px)]"
         >
-          <ResizablePanel minSize={40} defaultSize={layout?.[0]}>
-            <Content htmlUrl={htmlUrl} setHtml={setHtml} />
-          </ResizablePanel>
-          <ResizableHandle withHandle />
-          <ResizablePanel minSize={20} defaultSize={layout?.[1]}>
+          <ScrollArea className="h-full">
             <Panel saveImage={saveImage} metadata={metadata} />
-          </ResizablePanel>
-        </ResizablePanelGroup>
-      </div>
+          </ScrollArea>
+        </ResizablePanel>
+      </ResizablePanelGroup>
       <Toaster />
     </div>
   );

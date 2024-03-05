@@ -55,7 +55,7 @@ export default function Content({
 
   // const [setPanel] = usePanel(useShallow((state) => [state.set]));
 
-  const shadowHost = useRef<HTMLDivElement>(null);
+  const iframeHost = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
     loadHtml(htmlUrl);
@@ -68,14 +68,12 @@ export default function Content({
   useEffect(() => {
     const listeners: { name: string; fn: () => void }[] = [];
 
-    if (html) {
-      const shadowRoot =
-        shadowHost.current?.shadowRoot ??
-        shadowHost.current?.attachShadow({ mode: "open" });
+    if (iframeHost && $) {
+      const doc = iframeHost.current?.contentDocument?.documentElement;
+      if (doc) {
+        innerHTML(doc, $.html());
 
-      if (shadowRoot && $) {
-        innerHTML(shadowRoot, html);
-        const editables = shadowRoot.querySelectorAll("[contenteditable]");
+        const editables = doc.querySelectorAll("[contenteditable]");
         editables.forEach((editable, idx) => {
           const fn = contentEditableListener(
             editable,
@@ -87,26 +85,27 @@ export default function Content({
           editable.addEventListener("input", fn);
           listeners.push({ name: "input", fn });
         });
-        // shadowRoot.addEventListener("click", listener(setPanel));
+        // doc.addEventListener("click", listener(setPanel));
         // listeners.push({ name: "click", fn: listener(setPanel) });
       }
     }
 
     return () => {
       listeners.forEach(
-        ({ name, fn }) => shadowHost.current?.removeEventListener(name, fn),
+        ({ name, fn }) => iframeHost.current?.removeEventListener(name, fn),
       );
     };
-  }, [html, $]);
+  }, [$, html]);
 
   return (
     <div className="flex w-full items-center justify-center">
-      <div
+      <iframe
         className={cn(
-          "relative w-full",
-          mobileMode && "p-14 w-[530px] h-[832px]",
+          "relative w-full h-[calc(100dvh-72px)]",
+          mobileMode && "p-14 w-[570px] h-[832px]",
         )}
-        ref={shadowHost}
+        ref={iframeHost}
+        // srcDoc={html}
       />
     </div>
   );
