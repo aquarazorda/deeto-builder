@@ -1,4 +1,4 @@
-import { Element, Group, Metadata, usePanel } from "@/state/panel";
+import { Group, Metadata, usePanel } from "@/state/panel";
 import {
   Accordion,
   AccordionContent,
