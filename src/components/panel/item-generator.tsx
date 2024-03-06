@@ -1,6 +1,5 @@
-import { Element, Group, Item, usePanel } from "@/state/panel";
+import { Element, Group, Item } from "@/state/panel";
 import { match } from "ts-pattern";
-import { useShallow } from "zustand/react/shallow";
 import Images from "./images";
 import Background from "./background";
 import Colors from "./colors";
@@ -69,17 +68,11 @@ const DrawElement = ({
 };
 
 export default function ItemGenerator({
-  idx,
   isMain,
+  element,
 }: {
-  idx: number;
+  element: Element;
   isMain: boolean;
 }) {
-  const [element] = usePanel(
-    useShallow((state) => [state.metadata?.list[idx]]),
-  );
-
-  if (!element) return null;
-
   return <DrawElement element={element} isMain={isMain} />;
 }

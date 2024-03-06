@@ -10,7 +10,7 @@ const StorageSchema = z.object({
 
 const getItem = (key: string) =>
   localStorage.getItem(key)
-    ? JSON.parse(localStorage.getItem(key)!)
+    ? JSON.parse(localStorage.getItem(key) || "")
     : undefined;
 
 const storage = {

@@ -29,7 +29,7 @@ function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(val) => debouncedSet("layout", val)}
-        className="flex-grow relative"
+        className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
           <Content htmlUrl={htmlUrl} setHtml={setHtml} />
@@ -38,9 +38,9 @@ function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
         <ResizablePanel
           minSize={20}
           defaultSize={layout?.[1]}
-          className="max-h-[calc(100dvh-72px)]"
+          className="bg-[#F0EDF4] rounded-r-2xl"
         >
-          <ScrollArea className="h-full">
+          <ScrollArea className="h-[calc(100dvh-72px)]">
             <Panel saveImage={saveImage} metadata={metadata} />
           </ScrollArea>
         </ResizablePanel>

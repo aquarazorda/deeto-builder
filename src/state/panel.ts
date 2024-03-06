@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { ROOT_URL } from "@/config";
 
-export type ItemType = "item" | "group" | "form";
+export type ItemType = "item" | "group" | "form" | "section";
 export type Behaviour =
   | "image"
   | "background"
@@ -18,7 +18,7 @@ type GeneralItem = {
 };
 
 export type Group = {
-  type: "group";
+  type: "group" | "section";
   elements: Element[];
 } & GeneralItem;
 
