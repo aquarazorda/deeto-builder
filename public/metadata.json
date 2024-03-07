@@ -58,13 +58,55 @@
                   "behaviour": "font",
                   "defaultValue": "Inter",
                   "title": "Inter",
+                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
                   "selectors": ["container"]
                 },
                 {
                   "type": "item",
                   "behaviour": "font",
-                  "defaultValue": "DM Sans",
-                  "title": "DM Sans",
+                  "defaultValue": "Libre Baskerville",
+                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
+                  "title": "Libre baskerville",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Oswald",
+                  "title": "Oswald",
+                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Work Sans",
+                  "title": "Work sans",
+                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Slabo 27px",
+                  "title": "Slabo",
+                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Raleway",
+                  "title": "Raleway",
+                  "link": "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Merriweather",
+                  "title": "Merriweather",
+                  "link": "https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap",
                   "selectors": ["container"]
                 }
               ]
@@ -213,7 +255,7 @@
             {
               "type": "item",
               "behaviour": "css-editor",
-              "defaultValue": "footer span {color: purple;}"
+              "defaultValue": "/*footer span {color: purple;}*/"
             }
           ]
         }

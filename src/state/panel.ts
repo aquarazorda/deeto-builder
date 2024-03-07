@@ -27,6 +27,7 @@ export type Item = {
   behaviour: Behaviour;
   selectors: string[];
   defaultValue: string;
+  link?: string;
 } & GeneralItem;
 
 export type FormItem = {
