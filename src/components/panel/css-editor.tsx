@@ -19,7 +19,6 @@ export default function CssEditor({ defaultValue }: Props) {
   const onChange = useDebouncedCallback((value: string) => {
     if (!$) return;
     if (!changed.current) changed.current = true;
-    console.log(value);
 
     $("style").each((i, el) => {
       if (i === 1) {
@@ -35,12 +34,13 @@ export default function CssEditor({ defaultValue }: Props) {
 
     $("style").each((i, el) => {
       if (i === 1) {
+        const text = $(el).text();
         if (!changed.current) {
-          setValue(defaultValue ?? "");
+          setValue(text ? text : defaultValue ?? "");
           return;
         }
 
-        setValue($(el).text());
+        setValue(text);
       }
     });
   }, [html, $]);
