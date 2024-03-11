@@ -1,6 +1,6 @@
 <html>
   <head>
-    <title>Template</title>
+    <title>Referral Program By Deeto</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -11,30 +11,32 @@
     <script>
       let isLive = false;
 
-      const totalSteps = 2;
-      let currentStep = 1;
-      function nextStep() {
-        if (currentStep === totalSteps) {
-          console.log("submit");
-          if (isLive) {
-            reportNewReferral();
-          }
-        }
-        document.querySelector(".form-step-1").style.display = "none";
-        document.querySelector(".form-step-2").style.display = "none";
-        document.querySelector(".form-step-3").style.display = "none";
-        currentStep++;
-        document.querySelector(".form-step-" + currentStep).style.display =
-          "flex";
-      }
+      const submitOnStep = 3;
+      function showStep2() {
+        // check mandatory fields and email validation
 
-      function goToSecondStep() {
         document
           .querySelector(".form-step-2")
           .querySelectorAll("input")
           .forEach((input) => (input.value = ""));
-        currentStep = 1;
-        nextStep();
+
+        if (isLive && submitOnStep === 2) {
+          reportNewReferral();
+        }
+        document.querySelector(".form-step-1").style.display = "none";
+        document.querySelector(".form-step-2").style.display = "flex";
+        document.querySelector(".form-step-3").style.display = "none";
+      }
+
+      function showStep3() {
+        // check mandatory fields and email validation
+
+        if (isLive && submitOnStep === 3) {
+          reportNewReferral();
+        }
+        document.querySelector(".form-step-1").style.display = "none";
+        document.querySelector(".form-step-2").style.display = "none";
+        document.querySelector(".form-step-3").style.display = "flex";
       }
     </script>
     <!--deeto script placeholder-->
@@ -273,7 +275,7 @@
       display: flex;
       align-items: flex-start;
       border-radius: 100px;
-      background-color: #0057ff;
+      background: #0057ff;
       color: #ffffff;
       font-size: 18px;
       font-style: normal;
@@ -320,14 +322,6 @@
       background: #fff;
     }
 
-    footer span {
-      color: #041527;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 24px;
-    }
-
     footer a {
       all: unset;
       color: #041527;
@@ -336,6 +330,16 @@
       font-style: normal;
       font-weight: 400;
       line-height: normal;
+      cursor: pointer;
+    }
+
+    footer span,
+    footer span a {
+      color: #041527;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
     }
 
     footer div {
@@ -347,11 +351,12 @@
   <body>
     <container>
       <header>
-        <img
-          src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
-          alt="logo"
-          style="height: 110px"
-        />
+        <a href="https://www.company.com" target="_blank"
+          ><img
+            src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
+            alt="logo"
+            style="height: 110px"
+        /></a>
         <div class="partnership">
           <span>In partnership with </span>
           <div>
@@ -385,7 +390,7 @@
                   height="20px"
                   style="opacity: 0.4"
                 />
-                <p>Between {{$ Range}} reward if approved</p>
+                <p>Between ${{Range}} reward if approved</p>
               </div>
               <p class="form-title">Tell us about yourself</p>
               <div class="form-inputs">
@@ -433,7 +438,7 @@
                 </div>
               </div>
               <div class="form-action">
-                <div class="button" onclick="nextStep()">Continue</div>
+                <div class="button" onclick="showStep2()">Continue</div>
               </div>
             </div>
             <!-- end of step 1 -->
@@ -445,7 +450,7 @@
                   height="20px"
                   style="opacity: 0.4"
                 />
-                <p>Between {{$ Range}} reward if approved</p>
+                <p>Between ${{Range}} reward if approved</p>
               </div>
               <p class="form-title">Who are your referring?</p>
               <div class="form-inputs">
@@ -517,7 +522,9 @@
                 </div>
               </div>
               <div class="form-action">
-                <div class="button" onclick="nextStep()">Send introduction</div>
+                <div class="button" onclick="showStep3()">
+                  Send introduction
+                </div>
               </div>
             </div>
             <!-- end of step 2 -->
@@ -529,11 +536,10 @@
               </div>
               <p class="form-title">Referral submitted successfully!</p>
               <div class="form-submitted-text">
-                {{Form explainer lorem ipsum dolor sit emet Form explainer lorem
-                ipsum dolor sit emet }}
+                Thank you for submitting the form
               </div>
               <div class="form-action">
-                <div class="button" onclick="goToSecondStep()">
+                <div class="button" onclick="showStep2()">
                   Refer another friend
                 </div>
               </div>
@@ -543,18 +549,26 @@
         </form>
       </inner>
       <footer>
-        <span> © 2024 Deeto. All rights reserved.</span>
+        <span
+          >© 2024 <a href="https://www.deeto.ai" target="_blank">Deeto</a>. All
+          rights reserved.</span
+        >
         <div class="copy">
-          <a href="/tos" id="tos">Deeto TOS</a>
+          <a
+            href="https://www.deeto.ai/legal/terms-conditions"
+            id="tos"
+            target="_blank"
+            >Deeto TOS</a
+          >
           <span style="border-left: 1px solid #e7e7e7">&nbsp;</span>
-          <a href="/policy" id="policy">Deeto privacy policy</a>
+          <a
+            href="https://www.deeto.ai/legal/platform-privacy-policy"
+            id="policy"
+            target="_blank"
+            >Deeto privacy policy</a
+          >
         </div>
       </footer>
     </container>
-    <script>
-      if (window.location.search.includes("u=")) {
-        nextStep();
-      }
-    </script>
   </body>
 </html>

@@ -27,6 +27,7 @@ export type Item = {
   behaviour: Behaviour;
   selectors: string[];
   defaultValue: string;
+  defaultLink?: string;
   link?: string;
 } & GeneralItem;
 

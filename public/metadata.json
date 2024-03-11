@@ -7,6 +7,28 @@
       "elements": [
         {
           "type": "group",
+          "title": "Page Settings",
+          "description": "Here you can choose logo or background image",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "image",
+              "title": "Logo",
+              "defaultValue": "/html_builder/images/placeholder-logo.svg",
+              "defaultLink": "https://company.com",
+              "selectors": ["img[alt='logo']"]
+            },
+            {
+              "type": "item",
+              "behaviour": "background",
+              "title": "Page background",
+              "defaultValue": "#041527",
+              "selectors": ["container"]
+            }
+          ]
+        },
+        {
+          "type": "group",
           "title": "Colors",
           "description": "Here you can choose colors",
           "elements": [
@@ -17,16 +39,16 @@
                 {
                   "type": "item",
                   "behaviour": "color",
-                  "title": "Text #1",
-                  "defaultValue": "black",
-                  "selectors": [".form-title"]
+                  "title": "Webpage text",
+                  "defaultValue": "white",
+                  "selectors": ["h1", "h2"]
                 },
                 {
                   "type": "item",
                   "behaviour": "color",
-                  "title": "Text #2",
-                  "defaultValue": "white",
-                  "selectors": ["h1", "h2"]
+                  "title": "Form text",
+                  "defaultValue": "black",
+                  "selectors": [".form-title"]
                 }
               ]
             },
@@ -37,9 +59,9 @@
                 {
                   "type": "item",
                   "behaviour": "color-background",
-                  "title": "Button",
+                  "title": "Button color",
                   "defaultValue": "#0057FF",
-                  "selectors": [".form-action button"]
+                  "selectors": [".form-action .button"]
                 }
               ]
             }
@@ -112,27 +134,6 @@
               ]
             }
           ]
-        },
-        {
-          "type": "group",
-          "title": "Images",
-          "description": "Here you can choose logo or background image",
-          "elements": [
-            {
-              "type": "item",
-              "behaviour": "image",
-              "title": "Logo",
-              "defaultValue": "/html_builder/images/placeholder-logo.svg",
-              "selectors": ["header[alt='logo']"]
-            },
-            {
-              "type": "item",
-              "behaviour": "background",
-              "title": "Page background",
-              "defaultValue": "#041527",
-              "selectors": ["container"]
-            }
-          ]
         }
       ]
     },
@@ -142,41 +143,17 @@
       "elements": [
         {
           "type": "group",
-          "title": "Legal links",
+          "title": "Page Title",
           "elements": [
             {
               "type": "group",
               "elements": [
                 {
                   "type": "item",
-                  "title": "Copyright",
+                  "title": "The Page Title",
                   "behaviour": "text",
-                  "defaultValue": "© 2024 Deeto. All rights reserved.",
-                  "selectors": ["footer span"]
-                }
-              ]
-            },
-            {
-              "type": "group",
-              "elements": [
-                {
-                  "type": "item",
-                  "title": "TOS",
-                  "behaviour": "text",
-                  "defaultValue": "Deeto TOS",
-                  "selectors": [".copy #tos"]
-                }
-              ]
-            },
-            {
-              "type": "group",
-              "elements": [
-                {
-                  "type": "item",
-                  "title": "Privacy Policy",
-                  "behaviour": "text",
-                  "defaultValue": "Deeto privacy policy",
-                  "selectors": [".copy #policy"]
+                  "defaultValue": "Referral Program By",
+                  "selectors": ["title"]
                 }
               ]
             }
@@ -184,59 +161,35 @@
         },
         {
           "type": "group",
-          "title": "Form",
+          "title": "Legal links",
           "elements": [
             {
-              "type": "form",
+              "type": "group",
               "elements": [
                 {
-                  "type": "form-item",
-                  "key": "firstName",
-                  "title": "First name",
-                  "defaultLabel": "Your first name",
-                  "item-type": "text"
-                },
+                  "type": "item",
+                  "title": "Your Privacy Policy",
+                  "behaviour": "text",
+                  "defaultValue": "Our privacy policy",
+                  "selectors": [".ToClink"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Thank you page",
+          "elements": [
+            {
+              "type": "group",
+              "elements": [
                 {
-                  "type": "form-item",
-                  "key": "lastName",
-                  "title": "Last name",
-                  "defaultLabel": "Your last name",
-                  "item-type": "text"
-                },
-                {
-                  "type": "form-item",
-                  "key": "email",
-                  "title": "Email",
-                  "defaultLabel": "Your Email",
-                  "item-type": "email"
-                },
-                {
-                  "type": "form-item",
-                  "key": "referral_firstName",
-                  "title": "Referral's first name",
-                  "defaultLabel": "Referral's first name",
-                  "item-type": "text"
-                },
-                {
-                  "type": "form-item",
-                  "key": "referral_lastName",
-                  "title": "Referral's last name",
-                  "defaultLabel": "Referral's last name",
-                  "item-type": "text"
-                },
-                {
-                  "type": "form-item",
-                  "key": "terms",
-                  "title": "Terms and conditions",
-                  "defaultLabel": "Terms and conditions",
-                  "item-type": "checkbox"
-                },
-                {
-                  "type": "form-item",
-                  "key": "mailbox",
-                  "title": "Subscribe to newsletter",
-                  "defaultLabel": "Subscribe to newsletter",
-                  "item-type": "checkbox"
+                  "type": "item",
+                  "title": "Thank you for submitting the form. We will get back to you soon.",
+                  "behaviour": "text",
+                  "defaultValue": "Our privacy policy",
+                  "selectors": [".form-submitted-text"]
                 }
               ]
             }
