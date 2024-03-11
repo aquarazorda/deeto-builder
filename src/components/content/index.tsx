@@ -6,20 +6,7 @@ import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/lib/local-storage";
 import { CheerioAPI } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
-
-// const onClickListener = (setPanel: (active: string) => void) => (e: Event) => {
-//   const clickedElement = e?.composedPath()?.[0] as unknown as Element;
-//   if (clickedElement) {
-//     if (clickedElement.attributes.getNamedItem("alt")?.value === "logo") {
-//       setPanel("logo");
-//       return;
-//     }
-//
-//     match(clickedElement.tagName.toLowerCase()).with("h1", "h2", "p", () =>
-//       setPanel("color"),
-//     );
-//   }
-// };
+import { onClickMutatorListener } from "./listeners";
 
 const contentEditableListener =
   (
@@ -53,8 +40,6 @@ export default function Content({
   );
   const debouncedSetHtml = useDebouncedCallback(setHtml, 800);
 
-  // const [setPanel] = usePanel(useShallow((state) => [state.set]));
-
   const iframeHost = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
@@ -66,7 +51,11 @@ export default function Content({
   }, [setHtmlParent]);
 
   useEffect(() => {
-    const listeners: { name: string; fn: () => void }[] = [];
+    const listeners: {
+      name: string;
+      fn: () => void;
+      el: HTMLElement | Element;
+    }[] = [];
 
     if (iframeHost && $) {
       const doc = iframeHost.current?.contentDocument?.documentElement;
@@ -83,17 +72,22 @@ export default function Content({
           );
 
           editable.addEventListener("input", fn);
-          listeners.push({ name: "input", fn });
+          listeners.push({ name: "input", fn, el: editable });
         });
-        // doc.addEventListener("click", listener(setPanel));
-        // listeners.push({ name: "click", fn: listener(setPanel) });
+
+        doc.querySelectorAll("[onclick]").forEach((el) => {
+          el.addEventListener("click", onClickMutatorListener(doc, setHtml));
+          listeners.push({
+            name: "click",
+            fn: onClickMutatorListener(doc, setHtml),
+            el,
+          });
+        });
       }
     }
 
     return () => {
-      listeners.forEach(
-        ({ name, fn }) => iframeHost.current?.removeEventListener(name, fn),
-      );
+      listeners.forEach(({ name, fn, el }) => el.removeEventListener(name, fn));
     };
   }, [$, html]);
 
