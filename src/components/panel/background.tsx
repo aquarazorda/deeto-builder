@@ -34,6 +34,8 @@ export default function Background({
 
     selectors.forEach((selector) => {
       styles[selector].background = `url(${url})`;
+      styles[selector].backgroundSize = `100% 100%`;
+      styles[selector].backgroundRepeat = `no-repeat`;
     });
 
     swap(newStyles);
