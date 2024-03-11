@@ -10,7 +10,7 @@ export default function Text({
   item: Item;
 }) {
   const [$, set] = useHtml(useShallow((state) => [state.$, state.setHtml]));
-  const text = $?.(selectors[0])?.text() ?? defaultValue;
+  const text = $?.($?.(selectors[0])?.get(0)).text() ?? defaultValue;
 
   // @ts-expect-error this has name, just a type mismatch
   const isAtag = $?.(selectors[0])?.get(0)?.name === "a";
