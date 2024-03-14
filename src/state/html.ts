@@ -62,6 +62,7 @@ export const useHtml = create<HtmlState>((set) => ({
       ...state,
       currentIdx: state.currentIdx - 1,
       html: state.history[state.currentIdx - 1],
+      $: load(state.history[state.currentIdx - 1]),
       styles: parseStyleTag(state.history[state.currentIdx - 1]),
     })),
   redo: () =>
@@ -69,6 +70,7 @@ export const useHtml = create<HtmlState>((set) => ({
       ...state,
       currentIdx: state.currentIdx + 1,
       html: state.history[state.currentIdx + 1],
+      $: load(state.history[state.currentIdx + 1]),
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async (htmlUrl?: string) => {
