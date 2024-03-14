@@ -13,7 +13,11 @@ type HtmlState = {
   currentIdx: number;
   styles: Styles;
   swapStyles: (styles: Styles) => void;
-  loadHtml: (htmlUrl?: string) => Promise<void>;
+  loadHtml: (htmlUrl?: string) => Promise<{
+    html: string;
+    set: ((state: HtmlState) => HtmlState) &
+      ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void);
+  }>;
   setHtml: (html: CheerioAPI) => void;
   setParentHtmlSetter: (html: (html: string) => void) => void;
   setParentHtml?: (html: string) => void;
@@ -71,13 +75,17 @@ export const useHtml = create<HtmlState>((set) => ({
     const html = await fetch(htmlUrl ?? ROOT_URL + "/template.html")
       .then((res) => res.text())
       .then((html) => html.replace(/\/"html_builder/g, '"' + ROOT_URL));
+
     set((state) => ({
       ...state,
-      html,
-      $: load(html),
-      history: [html],
       styles: parseStyleTag(html),
     }));
+
+    return {
+      html,
+      set: set as ((state: HtmlState) => HtmlState) &
+        ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void),
+    };
   },
   setHtml: ($) => {
     const html = $.html();

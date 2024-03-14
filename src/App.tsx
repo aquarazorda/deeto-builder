@@ -16,10 +16,17 @@ type Props = Partial<{
   setHtml: (html: string) => void;
   url: string;
   metadata: Metadata;
+  stylingMetadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
 }>;
 
-function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
+function App({
+  url: htmlUrl,
+  setHtml,
+  saveImage,
+  metadata,
+  stylingMetadata,
+}: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
 
@@ -32,7 +39,11 @@ function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+          <Content
+            htmlUrl={htmlUrl}
+            setHtml={setHtml}
+            metadata={metadata ?? stylingMetadata}
+          />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
@@ -41,7 +52,10 @@ function App({ url: htmlUrl, setHtml, saveImage, metadata }: Props) {
           className="bg-[#F0EDF4] rounded-r-2xl"
         >
           <ScrollArea className="h-[calc(100dvh-72px)]">
-            <Panel saveImage={saveImage} metadata={metadata} />
+            <Panel
+              saveImage={saveImage}
+              metadata={metadata ?? stylingMetadata}
+            />
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>

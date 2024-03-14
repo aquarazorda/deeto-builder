@@ -4,9 +4,10 @@ import { useShallow } from "zustand/react/shallow";
 import { innerHTML } from "diffhtml";
 import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/lib/local-storage";
-import { CheerioAPI } from "cheerio";
+import { CheerioAPI, load } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
+import { Metadata } from "@/state/panel";
 
 const contentEditableListener =
   (
@@ -24,8 +25,10 @@ const contentEditableListener =
 export default function Content({
   htmlUrl,
   setHtml: setHtmlParent,
+  metadata,
 }: {
   htmlUrl?: string;
+  metadata?: Metadata;
   setHtml?: (html: string) => void;
 }) {
   const { mobileMode } = useLocalStorage();
@@ -43,7 +46,23 @@ export default function Content({
   const iframeHost = useRef<HTMLIFrameElement>(null);
 
   useEffect(() => {
-    loadHtml(htmlUrl);
+    loadHtml(htmlUrl).then(({ html, set }) => {
+      const $ = load(html);
+
+      if (metadata?.contentEditables?.length) {
+        metadata.contentEditables.forEach((selector) => {
+          $(selector).attr("contenteditable", "");
+        });
+      }
+
+      const htmlTransformed = $.html();
+      set((state) => ({
+        ...state,
+        html: htmlTransformed,
+        history: [htmlTransformed],
+        $,
+      }));
+    });
   }, [htmlUrl]);
 
   useEffect(() => {

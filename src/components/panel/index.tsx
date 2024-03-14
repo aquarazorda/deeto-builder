@@ -6,7 +6,7 @@ import {
   AccordionTrigger,
 } from "../ui/accordion";
 import { useShallow } from "zustand/react/shallow";
-import { MutableRefObject, useCallback, useEffect, useRef } from "react";
+import { MutableRefObject, useCallback, useEffect } from "react";
 import ItemGenerator from "./item-generator";
 import { useLocalStorage } from "@/lib/local-storage";
 import { useHtml } from "@/state/html";
@@ -21,15 +21,9 @@ type Props = {
 
 export default function Panel({ metadata, saveImage }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
-  const htmlLoaded = useRef(false);
 
-  const [$, setHtml, html, setParentHtml] = useHtml(
-    useShallow((state) => [
-      state.$,
-      state.setHtml,
-      state.html,
-      state.setParentHtml,
-    ]),
+  const [html, setParentHtml] = useHtml(
+    useShallow((state) => [state.html, state.setParentHtml]),
   );
 
   const [active, set, load, meta, saveImgFn] = usePanel(
@@ -48,19 +42,6 @@ export default function Panel({ metadata, saveImage }: Props) {
   };
 
   useEffect(() => {
-    if (htmlLoaded.current || !meta || !$) return;
-
-    if (meta?.contentEditables?.length) {
-      meta.contentEditables.forEach((selector) => {
-        $(selector).attr("contenteditable", "");
-      });
-
-      setHtml($);
-      htmlLoaded.current = true;
-    }
-  }, [meta, $, htmlLoaded]);
-
-  useEffect(() => {
     if (!setParentHtml) return;
 
     if (meta?.contentEditables?.length) {
@@ -72,7 +53,7 @@ export default function Panel({ metadata, saveImage }: Props) {
 
       setParentHtml(toChange.html());
     }
-  }, [meta, html]);
+  }, [meta, html, setParentHtml]);
 
   useEffect(() => {
     load(metadata);

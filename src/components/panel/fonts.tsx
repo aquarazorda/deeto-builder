@@ -55,6 +55,10 @@ export default function Fonts({
       "+",
     )}:wght@700&display=swap&text=Aa`;
     document.head.appendChild(link);
+
+    return () => {
+      document.head.removeChild(link);
+    };
   }, []);
 
   return (
