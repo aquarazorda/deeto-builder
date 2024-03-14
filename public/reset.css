@@ -146,3 +146,7 @@ button {
     gap: 24px !important;
   }
 }
+
+textarea {
+  resize: none;
+}
