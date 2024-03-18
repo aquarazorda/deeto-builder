@@ -21,15 +21,12 @@ export default function useUploadFile() {
         )
         .then(({ data }) => data.signedUploadUrl);
 
-      const body = new FormData();
-      body.append("file", file);
-
       await fetch(signedUrl, {
         method: "PUT",
         headers: {
           "Content-Type": file.type,
         },
-        body,
+        body: file,
       });
 
       return signedUrl;
