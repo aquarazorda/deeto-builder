@@ -9,6 +9,7 @@ import { useRef } from "react";
 import QuestionsTable from "./tables/360/questions";
 import VendorContactsTable from "./tables/360/vendor-contacts";
 import VendorReferencesTable from "./tables/360/vendor-references";
+import VendorEndrosementsTable from "./tables/360/vendor-endrosements";
 
 const triggers = [
   { key: "settings", label: "Settings" },
@@ -16,7 +17,7 @@ const triggers = [
   { key: "references", label: "References" },
   { key: "vendorContacts", label: "Vendor Contacts" },
   // { key: "kpis", label: "KPIs" },
-  // { key: "endorsements", label: "Endorsements" },
+  { key: "endorsements", label: "Endorsements" },
   // { key: "images", label: "Images" },
   // { key: "widgets", label: "Widgets" },
 ];
@@ -51,6 +52,9 @@ export default function VendorTabs() {
           </TabsContent>
           <TabsContent value="questions">
             <QuestionsTable />
+          </TabsContent>
+          <TabsContent value="endorsements">
+            <VendorEndrosementsTable />
           </TabsContent>
           <TabsContent value="vendorContacts">
             <VendorContactsTable />

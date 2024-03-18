@@ -1,5 +1,6 @@
 import { AccountContactWithAuthenticatedUser } from "@/admin/types/account-contact";
 import { CustomizedFormField } from "@/admin/types/customized-form-values";
+import { Endorsement } from "@/admin/types/endorsements";
 import { VendorSettings } from "@/admin/types/vendor";
 import { useApi } from "@/state/api";
 import { useQuery } from "@tanstack/react-query";
@@ -9,6 +10,7 @@ export type VendorDetailsResponse = {
   questions: CustomizedFormField[];
   references: AccountContactWithAuthenticatedUser[];
   vendorContacts: AccountContactWithAuthenticatedUser[];
+  endorsements: Endorsement[];
 };
 
 export default function useGetVendorDetails(vendorId?: string) {
