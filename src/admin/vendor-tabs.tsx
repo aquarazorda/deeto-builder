@@ -10,6 +10,7 @@ import QuestionsTable from "./tables/360/questions";
 import VendorContactsTable from "./tables/360/vendor-contacts";
 import VendorReferencesTable from "./tables/360/vendor-references";
 import VendorEndrosementsTable from "./tables/360/vendor-endrosements";
+import VendorBannersTable from "./tables/360/vendor-banners";
 
 const triggers = [
   { key: "settings", label: "Settings" },
@@ -18,7 +19,7 @@ const triggers = [
   { key: "vendorContacts", label: "Vendor Contacts" },
   // { key: "kpis", label: "KPIs" },
   { key: "endorsements", label: "Endorsements" },
-  // { key: "images", label: "Images" },
+  { key: "images", label: "Images" },
   // { key: "widgets", label: "Widgets" },
 ];
 
@@ -61,6 +62,9 @@ export default function VendorTabs() {
           </TabsContent>
           <TabsContent value="references">
             <VendorReferencesTable />
+          </TabsContent>
+          <TabsContent value="images">
+            <VendorBannersTable />
           </TabsContent>
         </div>
       </Tabs>

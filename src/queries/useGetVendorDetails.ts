@@ -1,4 +1,5 @@
 import { AccountContactWithAuthenticatedUser } from "@/admin/types/account-contact";
+import { CaseStudyImage } from "@/admin/types/case-study";
 import { CustomizedFormField } from "@/admin/types/customized-form-values";
 import { Endorsement } from "@/admin/types/endorsements";
 import { VendorSettings } from "@/admin/types/vendor";
@@ -11,6 +12,7 @@ export type VendorDetailsResponse = {
   references: AccountContactWithAuthenticatedUser[];
   vendorContacts: AccountContactWithAuthenticatedUser[];
   endorsements: Endorsement[];
+  images: CaseStudyImage[];
 };
 
 export default function useGetVendorDetails(vendorId?: string) {
