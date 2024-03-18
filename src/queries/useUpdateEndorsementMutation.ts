@@ -27,3 +27,26 @@ export default function useUpdateEndorsmentMutation(vendorId?: string) {
     },
   });
 }
+
+export const useAddNewEndorsementMutation = (vendorId?: string) => {
+  const { apiUrl } = useApi();
+
+  return useMutation({
+    mutationKey: ["addNewEndorsement", vendorId],
+    mutationFn: async () => {
+      if (!vendorId) {
+        return false;
+      }
+
+      return await fetch(apiUrl + "/v1/admin/newEndorsement", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({ vendorId }),
+      })
+        .then((res) => res.json())
+        .then((res) => res.code === 0);
+    },
+  });
+};

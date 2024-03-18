@@ -169,7 +169,7 @@ export function DataTable<TValue, TData = FieldValues>({
             onChange={(event) => setGlobalFilter(String(event.target.value))}
             className="max-w-sm"
           />
-          {renderSave}
+          {renderSave && <div className="ml-auto gap-2">{renderSave}</div>}
         </div>
         <div className="relative">
           <Wrapper style={{ height: maxHeight }} className="border rounded-md">

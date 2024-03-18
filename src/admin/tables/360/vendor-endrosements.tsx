@@ -1,4 +1,6 @@
-import useGetVendorDetails from "@/queries/useGetVendorDetails";
+import useGetVendorDetails, {
+  VendorDetailsResponse,
+} from "@/queries/useGetVendorDetails";
 import { useAdminState } from "@/state/admin";
 import SkeletonTable from "../skeleton-table";
 import { DataTable } from "@/components/ui/data-table";
@@ -12,7 +14,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { VendorDetailsResponse } from "@/queries/useGetVendorDetails";
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -22,7 +23,9 @@ import TableActionDropdown from "../utils/action-dropdown";
 import { copyToClipboard } from "@/lib/utils";
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useQueryClient } from "@tanstack/react-query";
-import useUpdateEndorsmentMutation from "@/queries/useUpdateEndorsementMutation";
+import useUpdateEndorsmentMutation, {
+  useAddNewEndorsementMutation,
+} from "@/queries/useUpdateEndorsementMutation";
 import { toast } from "sonner";
 
 const columns: ColumnDef<Endorsement>[] = [
@@ -74,31 +77,32 @@ const columns: ColumnDef<Endorsement>[] = [
           value: currVal,
         });
 
-        if (res) {
-          toast.success("Endorsement updated");
-          queryClient.setQueryData<VendorDetailsResponse>(
-            ["vendor-details", vendorId],
-            (data) => {
-              if (!data) return undefined;
-
-              return {
-                ...data,
-                endorsements: data.endorsements.map((endorsement) => {
-                  if (endorsement.endorsmentId === row.original.endorsmentId) {
-                    return {
-                      ...endorsement,
-                      value: currVal,
-                    };
-                  }
-                  return endorsement;
-                }),
-              };
-            },
-          );
+        if (!res) {
+          toast.error("Failed to update endorsement");
           return;
         }
 
-        toast.error("Failed to update endorsement");
+        queryClient.setQueryData<VendorDetailsResponse>(
+          ["vendor-details", vendorId],
+          (data) => {
+            if (!data) return undefined;
+
+            return {
+              ...data,
+              endorsements: data.endorsements.map((endorsement) => {
+                if (endorsement.endorsmentId === row.original.endorsmentId) {
+                  return {
+                    ...endorsement,
+                    value: currVal,
+                  };
+                }
+                return endorsement;
+              }),
+            };
+          },
+        );
+
+        toast.success("Endorsement updated");
       };
 
       return (
@@ -130,11 +134,13 @@ const columns: ColumnDef<Endorsement>[] = [
 ];
 
 export default function VendorEndrosementsTable() {
+  const queryClient = useQueryClient();
   const { vendorId } = useAdminState();
   const { data, isLoading } = useGetVendorDetails(vendorId);
   const form = useForm({
     resolver: zodResolver(z.array(z.object({ value: z.string() }))),
   });
+  const { mutateAsync, isPending } = useAddNewEndorsementMutation(vendorId);
 
   useEffect(() => {
     if (data?.endorsements) {
@@ -150,9 +156,34 @@ export default function VendorEndrosementsTable() {
     return null;
   }
 
+  const onAddNew = async () => {
+    const res = await mutateAsync();
+
+    if (res) {
+      queryClient.invalidateQueries({
+        queryKey: ["vendor-details", vendorId],
+        exact: true,
+      });
+
+      toast.success("Endorsement added");
+      return;
+    }
+
+    toast.error("Failed to add endorsement");
+  };
+
   return (
     <Form {...form}>
-      <DataTable data={data.endorsements} columns={columns} className="px-2" />
+      <DataTable
+        data={data.endorsements}
+        columns={columns}
+        className="px-2"
+        renderSave={
+          <Button isPending={isPending} onClick={onAddNew}>
+            Add new
+          </Button>
+        }
+      />
     </Form>
   );
 }
