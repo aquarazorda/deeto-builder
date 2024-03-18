@@ -68,6 +68,10 @@ export default function VendorContactsTable() {
   }
 
   return (
-    <DataTable data={data.vendorContacts} columns={columns} className="px-2" />
+    <DataTable
+      data={data.vendorContacts ?? []}
+      columns={columns}
+      className="px-2"
+    />
   );
 }

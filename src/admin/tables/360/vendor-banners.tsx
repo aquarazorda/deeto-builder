@@ -7,7 +7,7 @@ import useGetVendorDetails, {
 import { CaseStudyImage } from "@/admin/types/case-study";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { ColumnDef } from "@tanstack/react-table";
-import { capitalize } from "@/lib/utils";
+import { capitalize, copyToClipboard } from "@/lib/utils";
 import { Trash2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -46,6 +46,8 @@ import { Input } from "@/components/ui/input";
 import useUploadFile from "@/queries/useUploadFile";
 import useAddImage from "@/queries/useAddImage";
 import { useState } from "react";
+import TableActionDropdown from "../utils/action-dropdown";
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 
 const columns: ColumnDef<CaseStudyImage>[] = [
   {
@@ -115,34 +117,43 @@ const columns: ColumnDef<CaseStudyImage>[] = [
       };
 
       return (
-        <AlertDialog>
-          <AlertDialogTrigger asChild>
-            <Button variant="destructive">
-              <Trash2Icon />
-            </Button>
-          </AlertDialogTrigger>
-          <AlertDialogContent>
-            <AlertDialogHeader>
-              <AlertDialogTitle>
-                You are about to delete an image.
-              </AlertDialogTitle>
-              <AlertDialogDescription>
-                This action is irreversible. Are you sure you want to delete
-                this image?
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
-              <AlertDialogAction
-                onClick={onRemove}
-                disabled={isPending}
-                className="bg-destructive hover:bg-destructive/80"
-              >
-                Delete
-              </AlertDialogAction>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialog>
+        <div className="flex items-center gap-2 justify-end">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button variant="destructive" size="icon">
+                <Trash2Icon />
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>
+                  You are about to delete an image.
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action is irreversible. Are you sure you want to delete
+                  this image?
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={onRemove}
+                  disabled={isPending}
+                  className="bg-destructive hover:bg-destructive/80"
+                >
+                  Delete
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <TableActionDropdown>
+            <DropdownMenuItem
+              onClick={() => copyToClipboard(row.original.imagePath)}
+            >
+              Copy image URL
+            </DropdownMenuItem>
+          </TableActionDropdown>
+        </div>
       );
     },
   },
