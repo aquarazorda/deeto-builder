@@ -51,6 +51,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       isPending,
       children,
       disabled,
+      type,
       ...props
     },
     ref,
@@ -58,6 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
+        type={type ?? "button"}
         className={cn(
           isPending && "gap-2",
           buttonVariants({ variant, size, className }),
