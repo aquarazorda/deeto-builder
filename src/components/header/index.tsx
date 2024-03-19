@@ -4,7 +4,7 @@ import { Separator } from "../ui/separator";
 import { useShallow } from "zustand/react/shallow";
 import { useHtml } from "@/state/html";
 import { useLocalStorage } from "@/lib/local-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const { set, mobileMode } = useLocalStorage();
@@ -24,6 +24,22 @@ export default function Header() {
       state.save,
     ]),
   );
+
+  useEffect(() => {
+    const handleBeforeUnload = (event: Event) => {
+      if (history.length) {
+        event.preventDefault();
+        // @ts-expect-error needed for older browsers
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [history]);
 
   return (
     <div className="flex w-full justify-between items-center py-4 px-6">

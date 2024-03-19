@@ -59,7 +59,6 @@ export default function Content({
       set((state) => ({
         ...state,
         html: htmlTransformed,
-        history: [htmlTransformed],
         $,
       }));
     });
