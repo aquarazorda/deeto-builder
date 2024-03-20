@@ -1,13 +1,13 @@
 import { useHtml } from "@/state/html";
 import { useEffect, useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
-import { innerHTML } from "diffhtml";
 import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/lib/local-storage";
 import { CheerioAPI, load } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
 import { Metadata } from "@/state/panel";
+import morphdom from "morphdom";
 
 const contentEditableListener =
   (
@@ -78,7 +78,8 @@ export default function Content({
     if (iframeHost && $) {
       const doc = iframeHost.current?.contentDocument?.documentElement;
       if (doc) {
-        innerHTML(doc, $.html());
+        // innerHTML(doc, $.html());
+        morphdom(doc, $.html());
 
         const editables = doc.querySelectorAll("[contenteditable]");
         editables.forEach((editable, idx) => {

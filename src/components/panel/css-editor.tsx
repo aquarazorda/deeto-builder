@@ -32,6 +32,13 @@ export default function CssEditor({ defaultValue }: Props) {
   useEffect(() => {
     if (!$) return;
 
+    const styles = $("style");
+    if (styles.length < 2) {
+      $("head").append("<style></style>");
+      setHtml($, true);
+      return;
+    }
+
     $("style").each((i, el) => {
       if (i === 1) {
         const text = $(el).text();

@@ -18,7 +18,7 @@ type HtmlState = {
     set: ((state: HtmlState) => HtmlState) &
       ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void);
   }>;
-  setHtml: (html: CheerioAPI) => void;
+  setHtml: (html: CheerioAPI, ignoreHistory?: boolean) => void;
   setParentHtmlSetter: (html: (html: string) => void) => void;
   setParentHtml?: (html: string) => void;
   undo: () => void;
@@ -89,14 +89,14 @@ export const useHtml = create<HtmlState>((set) => ({
         ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void),
     };
   },
-  setHtml: ($) => {
+  setHtml: ($, ignoreHistory) => {
     const html = $.html();
     set((state) => ({
       ...state,
       $,
       html: $.html(),
-      currentIdx: state.currentIdx + 1,
-      history: [...state.history, html],
+      currentIdx: ignoreHistory ? state.currentIdx : state.currentIdx + 1,
+      history: ignoreHistory ? state.history : [...state.history, html],
       styles: parseStyleTag(html),
     }));
   },

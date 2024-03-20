@@ -69,7 +69,7 @@ export default function Header() {
         </Button>
         <Button
           variant="outline"
-          disabled={history.length - idx === 1}
+          disabled={!history.length || history.length - idx === 1}
           onClick={redo}
         >
           <Redo />
