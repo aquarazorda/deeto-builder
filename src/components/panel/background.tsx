@@ -106,7 +106,7 @@ export default function Background({
         </div>
       )}
       <span className="text-[#877997] text-xs">
-        * Image upload size and weight instrucitons
+        * Image upload size and weight instructions
       </span>
     </div>
   );

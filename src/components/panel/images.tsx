@@ -48,7 +48,7 @@ export default function Images({
         </UploadImageDialog>
       </div>
       <span className="text-[#877997] text-xs">
-        * Image upload size and weight instrucitons
+        * Image upload size and weight instructions
       </span>
       <span className="space-y-2">
         <Label className="text-xs">{title} Url</Label>
