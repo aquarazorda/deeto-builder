@@ -8,7 +8,7 @@
         {
           "type": "group",
           "title": "Page Settings",
-          "description": "Here you can choose logo or background image",
+          "description": "Here you can upload your logo or background image",
           "elements": [
             {
               "type": "item",
@@ -62,6 +62,13 @@
                   "title": "Button color",
                   "defaultValue": "#0057FF",
                   "selectors": [".form-action .button"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "link color",
+                  "defaultValue": "#0057FF",
+                  "selectors": [".ToClink"]
                 }
               ]
             }
@@ -150,7 +157,6 @@
               "elements": [
                 {
                   "type": "item",
-                  "title": "The Page Title",
                   "behaviour": "text",
                   "defaultValue": "Referral Program By",
                   "selectors": ["title"]
@@ -208,7 +214,7 @@
             {
               "type": "item",
               "behaviour": "css-editor",
-              "defaultValue": "/*footer span {color: purple;}*/"
+              "defaultValue": "/*footer {background-color: purple;}*/"
             }
           ]
         }

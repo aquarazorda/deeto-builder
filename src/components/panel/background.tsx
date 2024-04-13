@@ -96,7 +96,6 @@ export default function Background({
           className="rounded-[100px] py-4 px-5 flex justify-center cursor-pointer"
           onClick={() => {}}
           style={{
-            height: "84.33px",
             backgroundColor: "#DDD7E5",
           }}
         >
