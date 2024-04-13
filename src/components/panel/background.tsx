@@ -47,6 +47,7 @@ export default function Background({
     color: bgColor,
   } = useMemo(() => {
     const bg = styles?.[selectors[0]]?.background;
+
     if (bg?.includes("url")) {
       return {
         isImage: true,
@@ -54,9 +55,13 @@ export default function Background({
       };
     }
 
+    const rgbRegex = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
+
     return {
       isImage: false,
-      color: bg,
+      color: bg?.startsWith("#")
+        ? bg
+        : bg?.match(rgbRegex)?.[0] ?? defaultValue,
     };
   }, [styles]);
 
