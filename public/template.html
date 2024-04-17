@@ -107,6 +107,7 @@
       display: flex;
       gap: 4px;
       align-items: center;
+      justify-content: end;
       flex-wrap: wrap;
     }
 
@@ -163,6 +164,7 @@
       font-style: normal;
       font-weight: 700;
       line-height: 120%;
+      text-wrap: balance;
       /* 76.8px */
       letter-spacing: -1.28px;
     }
@@ -378,6 +380,10 @@
       display: flex;
       gap: 16px;
     }
+
+    #logo {
+      height: 110px;
+    }
   </style>
   <style></style>
   <body>
@@ -385,9 +391,9 @@
       <header>
         <a href="https://www.company.com" target="_blank" id="companyWebsite"
           ><img
+            id="logo"
             src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
             alt="logo"
-            style="height: 110px"
         /></a>
         <div class="partnership">
           <span>In partnership with </span>

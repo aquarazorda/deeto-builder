@@ -149,6 +149,18 @@ button {
     flex-direction: column !important;
     gap: 24px !important;
   }
+
+  article div {
+    padding-right: 0 !important;
+  }
+
+  article h1 {
+    font-size: 48px !important;
+  }
+
+  #logo {
+    height: 60px !important;
+  }
 }
 
 textarea {
