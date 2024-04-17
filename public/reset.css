@@ -133,6 +133,10 @@ button {
     padding: 24px 32px !important;
   }
 
+  form {
+    max-width: 100% !important;
+  }
+
   .form-inputs {
     gap: 12px !important;
   }
