@@ -76,7 +76,7 @@ export const useHtml = create<HtmlState>((set) => ({
   loadHtml: async (htmlUrl?: string) => {
     const html = await fetch(htmlUrl ?? ROOT_URL + "/template.html")
       .then((res) => res.text())
-      .then((html) => html.replace(/\/"html_builder/g, '"' + ROOT_URL));
+      .then((html) => html.replace(/\/html_builder/g, ROOT_URL));
 
     set((state) => ({
       ...state,

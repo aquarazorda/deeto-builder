@@ -1,6 +1,10 @@
 <html>
   <head>
-    <title>Referral Program By Deeto</title>
+    <title>Affiliation Program By Deeto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Referral Program By Deeto" />
+    <meta name="keywords" content="Referral Program By Deeto" />
+    <meta charset="UTF-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -10,33 +14,58 @@
     <link rel="stylesheet" href="/html_builder/reset.css" />
     <script>
       let isLive = false;
-
-      const submitOnStep = 3;
+      function showStep1() {
+        document.querySelector(".form-step-1").style.display = "flex";
+        document.querySelector(".form-step-2").style.display = "none";
+      }
       function showStep2() {
         // check mandatory fields and email validation
 
-        document
-          .querySelector(".form-step-2")
-          .querySelectorAll("input")
-          .forEach((input) => (input.value = ""));
-
-        if (isLive && submitOnStep === 2) {
+        if (isLive) {
+          // check mandatory fields and email validation
+          if (!checkMandatoryField("referee_firstName")) return;
+          if (!checkMandatoryField("referee_lastName")) return;
+          if (!checkMandatoryField("referee_email")) return;
+          if (!checkEmailField("referee_email")) return;
           reportNewReferral();
         }
         document.querySelector(".form-step-1").style.display = "none";
         document.querySelector(".form-step-2").style.display = "flex";
-        document.querySelector(".form-step-3").style.display = "none";
       }
-
-      function showStep3() {
-        // check mandatory fields and email validation
-
-        if (isLive && submitOnStep === 3) {
-          reportNewReferral();
+      function checkMandatoryField(fieldName) {
+        const field = document.getElementById(fieldName);
+        if (!field.value) {
+          field.style.border = "1px solid red";
+          return false;
         }
-        document.querySelector(".form-step-1").style.display = "none";
-        document.querySelector(".form-step-2").style.display = "none";
-        document.querySelector(".form-step-3").style.display = "flex";
+        field.style.border = "unset";
+
+        return true;
+      }
+      function checkEmailField(fieldName) {
+        const field = document.getElementById(fieldName);
+        const validationMessage = document.getElementById(
+          fieldName + "_validationMessage",
+        );
+        if (!field.value.includes("@")) {
+          field.style.border = "1px solid red";
+          return false;
+        }
+        if (
+          field.value.includes("gmail") ||
+          field.value.includes("yahoo") ||
+          field.value.includes("hotmail")
+        ) {
+          field.style.border = "1px solid red";
+          validationMessage.innerHTML = "Please use your company email";
+
+          return false;
+        }
+
+        field.style.border = "unset";
+        validationMessage.innerHTML = "";
+
+        return true;
       }
     </script>
     <!--deeto script placeholder-->
@@ -49,12 +78,15 @@
 
     container {
       display: flex;
+      background-repeat: no-repeat;
       position: relative;
       flex-direction: column;
       min-height: 100vh;
       font-family: Inter;
       background: #041527;
       color: #ffffff;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
     }
 
     h1,
@@ -351,7 +383,7 @@
   <body>
     <container>
       <header>
-        <a href="https://www.company.com" target="_blank"
+        <a href="https://www.company.com" target="_blank" id="companyWebsite"
           ><img
             src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
             alt="logo"
@@ -369,90 +401,19 @@
       <inner>
         <article>
           <div>
-            <h1>Title will appear here</h1>
+            <h1>Do you think you have the match-making magic?</h1>
             <h2>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac
-              pretium urna. Mauris eu fringilla sapien, at blandit massa.
-              Vivamus eu risus at turpis euismod semper. Aliquam tempus nibh
-              eget ornare volutpat. Nunc ultricies sem ut pharetra congue. Sed
-              tincidunt erat quis mollis elementum. Ut velit odio, egestas in
-              bibendum vitae, luctus ac augue. Suspendisse potenti.
+              We like blind-dates, but we absolutely love when one of our
+              favorite customers sets us up! If you have someone in mind that
+              makes you think “Oh they would love this company” send them our
+              way!
             </h2>
           </div>
         </article>
         <form>
           <div class="form-content">
             <div class="form-step form-step-1">
-              <div class="reward-box">
-                <img
-                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/reward-icon.svg"
-                  width="20px"
-                  height="20px"
-                  style="opacity: 0.4"
-                />
-                <p>Between ${{Range}} reward if approved</p>
-              </div>
-              <p class="form-title">Tell us about yourself</p>
-              <div class="form-inputs">
-                <div
-                  style="display: flex; gap: 8px"
-                  id="form-group-1"
-                  class="form-group"
-                >
-                  <input
-                    class="input"
-                    type="text"
-                    name="referrer_firstName"
-                    id="referrer_firstName"
-                    placeholder="Your first name *"
-                  />
-                  <input
-                    class="input"
-                    type="text"
-                    name="referrer_lastName"
-                    id="referrer_lastName"
-                    placeholder="Your last name *"
-                  />
-                </div>
-                <div
-                  style="display: flex; gap: 8px"
-                  id="form-group-1"
-                  class="form-group"
-                >
-                  <input
-                    class="input"
-                    type="text"
-                    name="referrer_email"
-                    id="referrer_email"
-                    placeholder="Your Email *"
-                  />
-                </div>
-                <div
-                  style="display: flex; gap: 8px"
-                  id="form-group-3"
-                  class="form-group"
-                >
-                  <a class="ToClink" id="TocLink1" href="" target="_blank"
-                    >Our privacy policy</a
-                  >
-                </div>
-              </div>
-              <div class="form-action">
-                <div class="button" onclick="showStep2()">Continue</div>
-              </div>
-            </div>
-            <!-- end of step 1 -->
-            <div class="form-step form-step-2" style="display: none">
-              <div class="reward-box">
-                <img
-                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/reward-icon.svg"
-                  width="20px"
-                  height="20px"
-                  style="opacity: 0.4"
-                />
-                <p>Between ${{Range}} reward if approved</p>
-              </div>
-              <p class="form-title">Who are your referring?</p>
+              <p class="form-title">Tell Us About Yourself</p>
               <div class="form-inputs">
                 <div
                   style="display: flex; gap: 8px"
@@ -464,14 +425,14 @@
                     type="text"
                     name="referee_firstName"
                     id="referee_firstName"
-                    placeholder="First name *"
+                    placeholder="Your first name *"
                   />
                   <input
                     class="input"
                     type="text"
                     name="referee_lastName"
                     id="referee_lastName"
-                    placeholder="Last name *"
+                    placeholder="Your last name *"
                   />
                 </div>
                 <div
@@ -484,8 +445,12 @@
                     type="text"
                     name="referee_email"
                     id="referee_email"
-                    placeholder="Email *"
+                    placeholder="Your email *"
                   />
+                  <span
+                    id="referee_email_validationMessage"
+                    style="color: red; position: absolute"
+                  ></span>
                 </div>
                 <div
                   style="display: flex; gap: 8px"
@@ -522,13 +487,11 @@
                 </div>
               </div>
               <div class="form-action">
-                <div class="button" onclick="showStep3()">
-                  Send introduction
-                </div>
+                <div class="button" onclick="showStep2()">Continue</div>
               </div>
             </div>
             <!-- end of step 2 -->
-            <div class="form-step form-step-3" style="display: none">
+            <div class="form-step form-step-2" style="display: none">
               <div>
                 <img
                   src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/success.svg"
@@ -537,11 +500,6 @@
               <p class="form-title">Referral submitted successfully!</p>
               <div class="form-submitted-text">
                 Thank you for submitting the form
-              </div>
-              <div class="form-action">
-                <div class="button" onclick="showStep2()">
-                  Refer another friend
-                </div>
               </div>
             </div>
             <!-- end of step 3 -->
@@ -571,4 +529,8 @@
       </footer>
     </container>
   </body>
+  <script>
+    showStep1();
+  </script>
 </html>
+
