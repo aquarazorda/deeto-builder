@@ -10,6 +10,9 @@ import {
   getFacetedRowModel,
   getFacetedUniqueValues,
   getPaginationRowModel,
+  getSortedRowModel,
+  TableState,
+  SortingState,
 } from "@tanstack/react-table";
 
 import {
@@ -54,8 +57,9 @@ interface DataTableProps<TValue, TData = FieldValues> {
   className?: string;
   maxHeight?: number;
   renderSave?: ReactNode;
+  state?: Partial<TableState>;
   sort?: {
-    onSort: (data: TData[]) => void;
+    onSort?: (data: TData[]) => void;
     uniqueIdentifier: keyof TData;
   };
 }
@@ -85,9 +89,12 @@ export function DataTable<TValue, TData = FieldValues>({
   className,
   renderSave,
   sort,
+  state,
 }: DataTableProps<TValue, TData>) {
   const [data, setData] = useState(parentData);
   const [globalFilter, setGlobalFilter] = useState<string>("");
+  const [sorting, setSorting] = useState<SortingState>(state?.sorting ?? []);
+
   const Wrapper = maxHeight ? ScrollArea : Div;
 
   const dataIds = useMemo<UniqueIdentifier[]>(() => {
@@ -106,6 +113,8 @@ export function DataTable<TValue, TData = FieldValues>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
     getPaginationRowModel: getPaginationRowModel(),
+    onSortingChange: setSorting,
+    getSortedRowModel: getSortedRowModel(),
     getRowId: (row) =>
       sort?.uniqueIdentifier ? row[sort.uniqueIdentifier] : row.id,
     filterFns: {
@@ -113,6 +122,7 @@ export function DataTable<TValue, TData = FieldValues>({
     },
     state: {
       globalFilter,
+      sorting,
     },
   });
 
@@ -124,8 +134,8 @@ export function DataTable<TValue, TData = FieldValues>({
         const newIndex = dataIds.indexOf(over.id);
         const newData = arrayMove(data, oldIndex, newIndex);
 
-        sort?.onSort(newData);
-        return newData; //this is just a splice util
+        sort?.onSort?.(newData);
+        return newData;
       });
     }
   }
@@ -133,6 +143,10 @@ export function DataTable<TValue, TData = FieldValues>({
   useEffect(() => {
     setData(parentData);
   }, [parentData]);
+
+  useEffect(() => {
+    setSorting(state?.sorting ?? []);
+  }, [state?.sorting]);
 
   const sensors = useSensors(
     useSensor(MouseSensor, {}),
@@ -155,12 +169,12 @@ export function DataTable<TValue, TData = FieldValues>({
             onChange={(event) => setGlobalFilter(String(event.target.value))}
             className="max-w-sm"
           />
-          {renderSave}
+          {renderSave && <div className="ml-auto gap-2">{renderSave}</div>}
         </div>
         <div className="relative">
           <Wrapper style={{ height: maxHeight }} className="border rounded-md">
             <Table>
-              <TableHeader className="bg-secondary sticky top-0">
+              <TableHeader className="bg-secondary sticky top-0 z-10">
                 {table.getHeaderGroups().map((headerGroup) => (
                   <TableRow key={headerGroup.id}>
                     {headerGroup.headers.map((header) => {

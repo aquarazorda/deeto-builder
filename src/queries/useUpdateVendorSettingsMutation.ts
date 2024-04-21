@@ -3,7 +3,7 @@ import type { VendorDetailsResponse } from "./useGetVendorDetails";
 import { useApi } from "@/state/api";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const useGetUpdateVendorSettingsMutation = () => {
+export const useUpdateVendorSettingsMutation = () => {
   const { apiUrl } = useApi();
   const queryClient = useQueryClient();
 

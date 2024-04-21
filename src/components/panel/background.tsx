@@ -34,6 +34,8 @@ export default function Background({
 
     selectors.forEach((selector) => {
       styles[selector].background = `url(${url})`;
+      styles[selector].backgroundSize = `100% 100%`;
+      styles[selector].backgroundRepeat = `no-repeat`;
     });
 
     swap(newStyles);
@@ -45,6 +47,7 @@ export default function Background({
     color: bgColor,
   } = useMemo(() => {
     const bg = styles?.[selectors[0]]?.background;
+
     if (bg?.includes("url")) {
       return {
         isImage: true,
@@ -52,9 +55,13 @@ export default function Background({
       };
     }
 
+    const rgbRegex = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
+
     return {
       isImage: false,
-      color: bg,
+      color: bg?.startsWith("#")
+        ? bg
+        : bg?.match(rgbRegex)?.[0] ?? defaultValue,
     };
   }, [styles]);
 
@@ -94,7 +101,6 @@ export default function Background({
           className="rounded-[100px] py-4 px-5 flex justify-center cursor-pointer"
           onClick={() => {}}
           style={{
-            height: "84.33px",
             backgroundColor: "#DDD7E5",
           }}
         >
@@ -104,7 +110,7 @@ export default function Background({
         </div>
       )}
       <span className="text-[#877997] text-xs">
-        * Image upload size and weight instrucitons
+        * Image upload size and weight instructions
       </span>
     </div>
   );

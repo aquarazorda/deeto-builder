@@ -1,6 +1,5 @@
-import { Element, Group, Item, usePanel } from "@/state/panel";
+import { Element, Group, Item } from "@/state/panel";
 import { match } from "ts-pattern";
-import { useShallow } from "zustand/react/shallow";
 import Images from "./images";
 import Background from "./background";
 import Colors from "./colors";
@@ -8,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Fonts from "./fonts";
 import Text from "./text";
 import Form from "./form";
+import CssEditor from "./css-editor";
 
 const DrawGroup = ({
   element,
@@ -27,7 +27,7 @@ const DrawGroup = ({
       {element.elements.map((element, idx) => (
         <DrawElement
           element={element}
-          key={element.title + idx}
+          key={element.title + `${idx}`}
           isMain={false}
         />
       ))}
@@ -45,6 +45,9 @@ const DrawItem = ({ element }: { element: Item }) => {
     ))
     .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
     .with({ behaviour: "text" }, (el) => <Text item={el} />)
+    .with({ behaviour: "css-editor" }, (el) => (
+      <CssEditor defaultValue={el.defaultValue} />
+    ))
     .otherwise(() => <div>Not implemented - {element.behaviour}</div>);
 };
 
@@ -65,13 +68,11 @@ const DrawElement = ({
 };
 
 export default function ItemGenerator({
-  idx,
   isMain,
+  element,
 }: {
-  idx: number;
+  element: Element;
   isMain: boolean;
 }) {
-  const [element] = usePanel(useShallow((state) => [state.metadata.list[idx]]));
-
   return <DrawElement element={element} isMain={isMain} />;
 }

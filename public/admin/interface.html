@@ -1,0 +1,278 @@
+<html>
+  <head>
+    <title>Deeto Admin</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+      const env = window.location.search.replace('?env=', '');
+      let apiUrl = '';
+      let thisDomain = '';
+
+      if (env == 'prod') {
+        apiUrl = 'https://api.deeto.ai';
+        thisDomain = 'https://app.deeto.ai';
+      } else if (env == 'dev') {
+        apiUrl = 'https://dev-api.deeto.ai';
+        thisDomain = 'https://dev.deeto.ai';
+      } else if (env == 'stg') {
+        apiUrl = 'https://staging-api.deeto.ai';
+        thisDomain = 'https://staging.deeto.ai';
+      } else if (env == 'local') {
+        apiUrl = 'http://localhost:3000/dev';
+        thisDomain = 'http://localhost:3000/dev';
+      }
+
+      function getDetails() {
+        $(".dataContainer").html('');
+
+        var email = document.getElementById('email').value;
+        if (email == '') {
+          alert('Please enter an email address.');
+          return;
+        }
+        getDetailsByEmail(email);
+      }
+      function getDetailsByEmail(email) {
+
+        const heading = `      <h2>User Details:</h2>
+                            <div class="tableWithHeader">
+                              <table border="1">
+                                <thead>                                
+                                <tr class="tableHead">
+                                  <th>First Name</th>
+                                  <th>Last Name</th>
+                                  <th>Vendor</th>
+                                  <th>Role</th>
+                                  <th>Status</th>
+                                  <th>Magic Link</th>
+                                  <th>See Activities</th>
+                                  <th>Authenticated User Id</th>
+                                  <th>E-mail</th>
+                                </tr>
+                              </thead>
+                              <tbody>`;                                
+        const footer =      `</tbody></table>
+      </div>`;
+        
+        $.getJSON( apiUrl + "/v1/admin/getMagicLink?email=" + encodeURIComponent(email), function( data ) {
+          var items = [];
+          $.each( data.data, function( key, val ) {
+            items.push( `<tr class="tableRow">
+                                  <td>${val.meDetails.firstName}</td>
+                                  <td>${val.meDetails.lastName}</td>
+                                  <td>${val.routeDetails.vendor.name}</td>
+                                  <td>${val.routeDetails.role}</td>
+                                  <td>${val.meDetails.userStatus}</td>
+                                  <td><a href="${thisDomain}/m?l=${val.magicLink}" target="_blank">Magic Link</a></td>
+                                  <td><div class="buttonlink" onclick="getNotificationDetails('${val.meDetails.authenticatedUserId}', '${val.meDetails.email}')">See Activities</div></td>
+                                  <td>${val.meDetails.authenticatedUserId}</td>
+                                  <td>${val.meDetails.email}</td>
+                                </tr>` );
+          });
+          $("#userDetailsSection").html(heading + items.join("") + footer);
+        });
+      }
+      function getNotificationDetails(authenticatedUserId, email) {
+        $("#userNotificationSection").html('');
+        $("#userEmailSection").html('');
+
+        const headingNotifications = `    <h2>Notifications</h2>
+        <div class="tableWithHeader">
+
+        <table border="1" >
+                                            <thead>
+                                            <tr class="tableHead">
+                                              <th>Notification Type</th>                                              
+                                              <th>Heading</th>
+                                              <th>Caption</th>
+                                              <th>Time</th>
+                                              <th>Notification Id</th>
+                                              <th>Context Id</th>
+                                              <th>Context Type</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>`;                                            
+
+        const headingEmailActivity = `    <h2>Email Acitivites</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Subject</th>
+                                                <th>Time</th>
+                                                <th>From</th>
+                                                <th>To</th>
+                                                <th>Template</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+
+        const headingMeetings   = `    <h2>Meeting Details</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Meeting Id</th>
+                                                <th>Prospect</th>
+                                                <th>Reference</th>
+                                                <th>Status</th>
+                                                <th>Times</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        
+        $.getJSON( apiUrl + "/v1/admin/userHistory?email=" + encodeURIComponent(email) + "&authenticatedUserId=" + authenticatedUserId, function( data ) {
+          var notifications = [];
+          var emailActivity = [];
+          var meetings = [];
+          $.each( data.data.notifications, function( key, val ) {
+            notifications.push( `<tr class="tableRow">
+                                  <td>${val.notificationType}</td>
+                                  <td>${val.heading}</td>
+                                  <td>${val.caption}</td>
+                                  <td>${formatTime(val.timestamp)}</td>
+                                  <td>${val.notificationId}</td>
+                                  <td><div class="buttonlink" onclick="getNotificationDetailsByContext('${val.contextId}')">${val.contextId}</div></td>
+                                  <td>${val.contextClassName}</td>
+                                </tr>` );
+          });
+          $.each( data.data.emailActivities, function( key, val ) {
+            emailActivity.push( `<tr class="tableRow">
+                                  <td><a href="${thisDomain}/emailBody/${val.body}.html" target="_blank">${val.subject}</a></td>
+                                  <td>${formatTime(val.sentTimeStamp)}</td>
+                                  <td>${val.fromAddress}</td>
+                                  <td>${val.toAddress}</td>
+                                  <td>${val.emailTemplate}</td>
+                                </tr>` );
+          });
+          $.each( data.data.meetings, function( key, val ) {
+            meetings.push( `<tr class="tableRow">
+                                  <td><div class="buttonlink" onclick="getNotificationDetailsByContext('${val.meetingId}')">${val.meetingId}</div></td>
+                                  <td><div class="buttonlink" onclick="getDetailsByEmail('${val.prospectContact.authenticatedUser.email}');getNotificationDetails('${val.prospectContact.authenticatedUser.authenticatedUserId}', '${val.prospectContact.authenticatedUser.email}')">${val.prospectContact.authenticatedUser.firstName} ${val.prospectContact.authenticatedUser.lastName} <br /> ${val.prospectContact.title} ${val.prospectContact.account.companyName}</div></td>
+                                  <td><div class="buttonlink" onclick="getDetailsByEmail('${val.referenceContact.authenticatedUser.email}');getNotificationDetails('${val.referenceContact.authenticatedUser.authenticatedUserId}', '${val.referenceContact.authenticatedUser.email}')">${val.referenceContact.authenticatedUser.firstName} ${val.referenceContact.authenticatedUser.lastName} <br /> ${val.referenceContact.title} ${val.referenceContact.account.companyName}</div></td>
+                                  <td>${val.vendorAggregatedStage}</td>
+                                  <td>${formatAllTimeslots (val.scheduledTimeSlots)}</td>
+                                </tr>` );
+          });                     
+          $("#userNotificationSection").html(headingNotifications + notifications.join("") + footer);
+          $("#userEmailSection").html(headingEmailActivity + emailActivity.join("") + footer);
+          $("#userMeetingsDetails").html(headingMeetings + meetings.join("") + footer);
+          
+        });
+      }
+
+      function formatAllTimeslots (timeslots) {
+        let formattedTimeslots = '';
+        timeslots.forEach(timeslot => {
+          formattedTimeslots +=  `${timeslot.status == 'accepted' ? '<b>' : ''} ${formatTime(timeslot.startTime)} - ${timeslot.status} </b><br />`;
+        });
+        return formattedTimeslots;
+      }
+
+      function getNotificationDetailsByContext(contextId) {
+        $("#notificationsByContext").html('');
+
+
+        const headingNotifications = `    <h2>Notifications By Context</h2>
+        <div class="tableWithHeader">
+
+        <table border="1" >
+                                            <thead>
+                                            <tr class="tableHead">
+                                              <th>Notification Type</th>                                              
+                                              <th>Heading</th>
+                                              <th>Caption</th>
+                                              <th>Time</th>
+                                              <th>Notification Id</th>
+                                              <th>Context Id</th>
+                                              <th>Context Type</th>
+                                              <th>Received By</th>
+                                              <th>Received By Id</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>`;                                            
+
+        const footer =      `</tbody></table>
+                          </div>`;
+        
+        $.getJSON( apiUrl + "/v1/admin/notificationsByContextId?contextId=" + contextId, function( data ) {
+          var notifications = [];
+          $.each( data.data, function( key, val ) {
+            notifications.push( `<tr class="tableRow">
+                                  <td>${val.notificationType}</td>
+                                  <td>${val.heading}</td>
+                                  <td>${val.caption}</td>
+                                  <td>${formatTime(val.timestamp)}</td>
+                                  <td>${val.notificationId}</td>
+                                  <td>${val.contextId}</td>
+                                  <td>${val.contextClassName}</td>
+                                  <td>${val.authenticatedUser.firstName} ${val.authenticatedUser.lastName}</td>
+                                  <td>${val.authenticatedUser.authenticatedUserId}</td>
+                                </tr>` );
+          });
+          $("#notificationsByContext").html(headingNotifications + notifications.join("") + footer);
+        });
+      }
+      
+      function formatTime (timestamp) {
+        return new Date(timestamp).toLocaleString('en', {
+          timeZoneName: 'short',
+        });
+      }
+    </script>
+    <style>
+      h1 {
+        color: rgb(72, 20, 83);
+      }
+      .tableHead {
+        background-color: rgb(72, 20, 83);
+        color: #FFFFFF;
+      }
+      .tableHead th{
+        background-color: rgb(72, 20, 83);
+        color: #FFFFFF;
+        
+        padding: 5px;
+      }
+      .tableRow td {
+        padding: 5px;
+      }
+      .buttonlink {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .tableWithHeader {
+        overflow: auto; height: 250px;
+      }
+      .tableWithHeader thead th { position: sticky; top: 0; z-index: 1; }
+      table  { border-collapse: collapse;}
+
+
+    </style>
+  </head>
+  <body>
+    <h1>Deeto Admin</h1>
+    <div>
+      Enter Email Address Here: <input type="text" id="email"/> <input type="button" value="Get Details" onclick="getDetails()" />
+    </div>
+    
+    <div id="userDetailsSection" class="dataContainer">
+    </div>
+
+    <div id="userNotificationSection" class="dataContainer">
+    </div>
+    
+    <div id="notificationsByContext" class="dataContainer">
+    </div>
+
+    <div id="userMeetingsDetails" class="dataContainer">
+    </div>
+
+    <div id="userEmailSection" class="dataContainer">
+    </div>    
+  </body>
+</html>

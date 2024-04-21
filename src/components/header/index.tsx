@@ -4,7 +4,7 @@ import { Separator } from "../ui/separator";
 import { useShallow } from "zustand/react/shallow";
 import { useHtml } from "@/state/html";
 import { useLocalStorage } from "@/lib/local-storage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Header() {
   const { set, mobileMode } = useLocalStorage();
@@ -25,8 +25,24 @@ export default function Header() {
     ]),
   );
 
+  useEffect(() => {
+    const handleBeforeUnload = (event: Event) => {
+      if (history.length) {
+        event.preventDefault();
+        // @ts-expect-error needed for older browsers
+        event.returnValue = "";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [history]);
+
   return (
-    <div className="flex w-full justify-between items-center py-4">
+    <div className="flex w-full justify-between items-center py-4 px-6">
       <span className="font-medium text-lg">Deeto Template Editor</span>
       <div className="flex gap-2 h-full">
         <Button
@@ -53,7 +69,7 @@ export default function Header() {
         </Button>
         <Button
           variant="outline"
-          disabled={history.length - idx === 1}
+          disabled={!history.length || history.length - idx === 1}
           onClick={redo}
         >
           <Redo />

@@ -13,7 +13,7 @@ import { useDynamicFormData } from "@/lib/form";
 import DynamicFieldInput from "../utils/dynamic-field-input";
 import GenericSaveButton from "../utils/generic-save-button";
 import { Button } from "@/components/ui/button";
-import { useGetUpdateVendorSettingsMutation } from "@/queries/useGetUpdateVendorSettingsMutation";
+import { useUpdateVendorSettingsMutation } from "@/queries/useUpdateVendorSettingsMutation";
 import { toast } from "sonner";
 
 type VendorSettingsKey = keyof VendorSettings;
@@ -41,7 +41,7 @@ const columns: ColumnDef<{
 export default function VendorSettingsTable() {
   const vendorId = useAdminState(useShallow((state) => state.vendorId));
   const { data, isLoading } = useGetVendorDetails(vendorId);
-  const { mutateAsync, isPending } = useGetUpdateVendorSettingsMutation();
+  const { mutateAsync, isPending } = useUpdateVendorSettingsMutation();
   const {
     data: tableData,
     schema,

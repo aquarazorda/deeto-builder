@@ -17,7 +17,6 @@ import { useAdminState } from "@/state/admin";
 import { useShallow } from "zustand/react/shallow";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLocalStorage } from "@/lib/local-storage";
-import { useEffect } from "react";
 import Users from "./users";
 import Admin360 from "./360";
 import { match } from "ts-pattern";
@@ -50,24 +49,16 @@ export default function AdminMain() {
     );
   };
 
-  useEffect(() => {
-    form.reset({ email: "" });
-    setAdminState((state) => ({
-      ...state,
-      email: "",
-      authenticatedUserId: "",
-      vendorId: "",
-      vendorName: "",
-    }));
-  }, [adminMode]);
-
   return (
     <div className="w-full px-4 flex flex-col space-y-4 items-center overflow-hidden">
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center flex-wrap justify-center">
+        <ModeToggle />
         <Card className="h-fit">
           <Tabs
-            defaultValue={adminMode}
-            onValueChange={(val) => set("adminMode", val)}
+            value={adminMode}
+            onValueChange={(val) => {
+              set("adminMode", val);
+            }}
           >
             <TabsList defaultValue="users" className="flex items-start">
               <TabsTrigger value="users" className="flex-1 w-full">
@@ -92,7 +83,7 @@ export default function AdminMain() {
                   <FormItem className="flex gap-2 items-center">
                     <FormControl>
                       <Input
-                        className="w-[300px]"
+                        className="md:w-[300px]"
                         placeholder={
                           adminMode === "users"
                             ? "Email address"
@@ -108,7 +99,6 @@ export default function AdminMain() {
               <Button type="submit" disabled={!form.formState.isValid}>
                 Get details
               </Button>
-              <ModeToggle />
             </form>
           </Form>
         </div>

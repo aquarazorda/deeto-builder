@@ -1,0 +1,660 @@
+<html>
+  <head>
+    <title>Referral Program By Deeto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Referral Program By Deeto" />
+    <meta name="keywords" content="Referral Program By Deeto" />
+    <meta charset="UTF-8" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/html_builder/reset.css" />
+    <script>
+      let isLive = false;
+      function showStep1() {
+        document.querySelector(".form-step-1").style.display = "flex";
+        document.querySelector(".form-step-2").style.display = "none";
+        document.querySelector(".form-step-3").style.display = "none";
+      }
+
+      function showStep2() {
+        // check mandatory fields and email validation
+        if (isLive) {
+          if (!checkMandatoryField("referrer_firstName")) return;
+          if (!checkMandatoryField("referrer_lastName")) return;
+          if (!checkMandatoryField("referrer_email")) return;
+          if (!checkEmailField("referrer_email")) return;
+        }
+
+        document
+          .querySelector(".form-step-2")
+          .querySelectorAll("input")
+          .forEach((input) => (input.value = ""));
+
+        document.querySelector(".form-step-1").style.display = "none";
+        document.querySelector(".form-step-2").style.display = "flex";
+        document.querySelector(".form-step-3").style.display = "none";
+      }
+
+      function showStep3() {
+        if (isLive) {
+          // check mandatory fields and email validation
+          if (!checkMandatoryField("referee_firstName")) return;
+          if (!checkMandatoryField("referee_lastName")) return;
+          if (!checkMandatoryField("referee_email")) return;
+          if (!checkEmailField("referee_email")) return;
+
+          reportNewReferral();
+        }
+        document.querySelector(".form-step-1").style.display = "none";
+        document.querySelector(".form-step-2").style.display = "none";
+        document.querySelector(".form-step-3").style.display = "flex";
+      }
+
+      function checkMandatoryField(fieldName) {
+        const field = document.getElementById(fieldName);
+        if (!field.value) {
+          field.style.border = "1px solid red";
+          return false;
+        }
+        field.style.border = "unset";
+
+        return true;
+      }
+      function checkEmailField(fieldName) {
+        const field = document.getElementById(fieldName);
+        const validationMessage = document.getElementById(
+          fieldName + "_validationMessage",
+        );
+        if (!field.value.includes("@")) {
+          field.style.border = "1px solid red";
+          return false;
+        }
+        if (
+          field.value.includes("gmail") ||
+          field.value.includes("yahoo") ||
+          field.value.includes("hotmail")
+        ) {
+          field.style.border = "1px solid red";
+          validationMessage.innerHTML = "Please use your company email";
+
+          return false;
+        }
+
+        field.style.border = "unset";
+        validationMessage.innerHTML = "";
+
+        return true;
+      }
+    </script>
+    <!--deeto script placeholder-->
+  </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: scroll;
+    }
+
+    container {
+      display: flex;
+      position: relative;
+      flex-direction: column;
+      min-height: 100vh;
+      font-family: Inter;
+      background: #041527;
+      color: #ffffff;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 32px;
+    }
+
+    .partnership {
+      opacity: 0.7;
+      display: flex;
+      gap: 4px;
+      align-items: center;
+      justify-content: end;
+      flex-wrap: wrap;
+    }
+
+    .partnership span {
+      font-weight: 500;
+      line-height: 140%;
+    }
+
+    .partnership img {
+      width: 80.371px;
+      height: 22.688px;
+      flex-shrink: 0;
+    }
+
+    .partnership div {
+      display: flex;
+      width: 97px;
+      height: 33px;
+      padding: 4.813px 8.314px 5.5px 8.314px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    inner {
+      display: flex;
+      padding: 56px 80px;
+      align-items: center;
+      gap: 56px;
+      flex: 1 0 0;
+      align-self: stretch;
+    }
+
+    article {
+      display: flex;
+      padding-right: 32px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 50px;
+      flex: 1 0 0;
+    }
+
+    article div {
+      display: flex;
+      padding-right: 32px;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 50px;
+      flex: 1 0 0;
+    }
+
+    article h1 {
+      font-size: 64px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%;
+      text-wrap: balance;
+      /* 76.8px */
+      letter-spacing: -1.28px;
+    }
+
+    article h2 {
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 140%;
+      /* 28px */
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      flex: 1 0 0;
+      border-radius: 0px 32px 32px 32px;
+      background: #ffffff;
+      max-width: 600px;
+    }
+
+    .form-step {
+      display: flex;
+      padding: 24px 32px;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      align-self: stretch;
+    }
+
+    .form-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      align-self: stretch;
+    }
+
+    .form-title {
+      color: #041527;
+      font-size: 32px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 120%;
+      text-align: center;
+      letter-spacing: -0.64px;
+    }
+
+    .form-inputs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 32px;
+      width: 100%;
+      flex-direction: column;
+    }
+
+    .input,
+    textarea {
+      display: flex;
+      flex: 1;
+      padding: 16px;
+      align-items: center;
+      align-self: stretch;
+      border-radius: 16px;
+      border: 1px solid #e7e7e7;
+      background: #fff;
+      box-shadow: 0px 0px 10px 0px rgba(175, 175, 175, 0.4) inset;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      /* 22.4px */
+      letter-spacing: -0.4px;
+      font-family: "Inter", Times, serif;
+    }
+
+    .input::placeholder {
+      color: #afafaf;
+    }
+
+    textarea::placeholder {
+      color: #afafaf;
+    }
+
+    .reward-box {
+      flex-direction: row;
+      display: flex;
+      padding: 8px 16px;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      gap: 16px;
+      background-color: #f4e9dd;
+      border-radius: 16px 100px 100px 0px;
+    }
+
+    .reward-box p {
+      color: #041527;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 150%;
+      /* 27px */
+    }
+
+    .checkbox-wrapper {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      align-self: stretch;
+    }
+
+    .checkbox-wrapper input {
+      width: 24px;
+      height: 24px;
+      accent-color: #0057ff;
+    }
+
+    .checkbox-wrapper p {
+      color: #041527;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+    }
+
+    .form-action {
+      display: flex;
+      padding: 16px;
+      justify-content: space-between;
+      align-items: center;
+      align-self: stretch;
+      flex-direction: column;
+      border-top: 1px solid silver;
+    }
+
+    .form-action .button {
+      display: flex;
+      padding: 16px 32px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      display: flex;
+      align-items: flex-start;
+      border-radius: 100px;
+      background: #0057ff;
+      color: #ffffff;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      /* 25.2px */
+      letter-spacing: -0.18px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      justify-content: center;
+    }
+
+    .form-submitted-text {
+      color: var(--GREY-Grey-500-706B80, #706b80);
+      text-align: center;
+      /* Body 3 - Regular */
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%;
+    }
+
+    .ToCLink {
+      color: var(--LP-Palette-Color-4, #0057ff);
+      text-align: center;
+      /* Body - Semi bold 14 */
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 140%;
+      /* 19.6px */
+    }
+
+    footer {
+      margin-top: auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 24px 32px;
+      align-items: center;
+      gap: 24px;
+      align-self: stretch;
+      background: #fff;
+    }
+
+    footer a {
+      all: unset;
+      color: #041527;
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: normal;
+      cursor: pointer;
+    }
+
+    footer span,
+    footer span a {
+      color: #041527;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
+    }
+
+    footer div {
+      display: flex;
+      gap: 16px;
+    }
+
+    #logo {
+      height: 110px;
+    }
+  </style>
+  <style></style>
+
+  <body>
+    <container>
+      <header>
+        <a href="https://www.company.com" target="_blank" id="companyWebsite"
+          ><img
+            src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
+            alt="logo"
+            id="logo"
+        /></a>
+        <div class="partnership">
+          <span>In partnership with </span>
+          <div>
+            <img
+              src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/deeto-wordmark.svg"
+            />
+          </div>
+        </div>
+      </header>
+      <inner>
+        <article>
+          <div>
+            <h1>Do you think you have the match-making magic?</h1>
+            <h2>
+              We like blind-dates, but we absolutely love when one of our
+              favorite customers sets us up! If you have someone in mind that
+              makes you think “Oh they would love this company” send them our
+              way!
+            </h2>
+          </div>
+        </article>
+        <form>
+          <div class="form-content">
+            <div class="form-step form-step-1">
+              <div class="reward-box">
+                <img
+                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/reward-icon.svg"
+                  width="20px"
+                  height="20px"
+                  style="opacity: 0.4"
+                />
+                <p>Between ${{Range}} reward if the lead is qualified</p>
+              </div>
+              <p class="form-title">Tell us about yourself</p>
+              <div class="form-inputs">
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referrer_firstName"
+                    id="referrer_firstName"
+                    placeholder="Your first name *"
+                  />
+                  <input
+                    class="input"
+                    type="text"
+                    name="referrer_lastName"
+                    id="referrer_lastName"
+                    placeholder="Your last name *"
+                  />
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referrer_email"
+                    id="referrer_email"
+                    placeholder="Your Email *"
+                  />
+                  <span
+                    id="referrer_email_validationMessage"
+                    style="color: red; position: absolute"
+                  ></span>
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-3"
+                  class="form-group"
+                >
+                  <a class="ToClink" id="TocLink1" href="" target="_blank"
+                    >Our privacy policy</a
+                  >
+                </div>
+              </div>
+              <div class="form-action">
+                <div class="button" onclick="showStep2()">Continue</div>
+              </div>
+            </div>
+            <!-- end of step 1 -->
+            <div class="form-step form-step-2" style="display: none">
+              <div class="reward-box">
+                <img
+                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/reward-icon.svg"
+                  width="20px"
+                  height="20px"
+                  style="opacity: 0.4"
+                />
+                <p>Between ${{Range}} reward if the lead is qualified</p>
+              </div>
+              <p class="form-title">Who are your referring?</p>
+              <div class="form-inputs">
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_firstName"
+                    id="referee_firstName"
+                    placeholder="First name *"
+                  />
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_lastName"
+                    id="referee_lastName"
+                    placeholder="Last name *"
+                  />
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_email"
+                    id="referee_email"
+                    placeholder="Email *"
+                  />
+                  <span
+                    id="referee_email_validationMessage"
+                    style="color: red; position: absolute"
+                  ></span>
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_companyName"
+                    id="referee_companyName"
+                    placeholder="Company (optional)"
+                  />
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <textarea
+                    name="messageToVendor"
+                    id="messageToVendor"
+                    placeholder="Why is this a good match for us? (optional)"
+                  ></textarea>
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-3"
+                  class="form-group"
+                >
+                  <a class="ToClink" id="TocLink1" href="" target="_blank"
+                    >Our privacy policy</a
+                  >
+                </div>
+              </div>
+              <div class="form-action">
+                <div class="button" onclick="showStep3()">
+                  Send introduction
+                </div>
+              </div>
+            </div>
+            <!-- end of step 2 -->
+            <div class="form-step form-step-3" style="display: none">
+              <div>
+                <img
+                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/success.svg"
+                />
+              </div>
+              <p class="form-title">Referral submitted successfully!</p>
+              <div class="form-submitted-text">
+                Thank you for submitting the form
+              </div>
+              <div class="form-action">
+                <div class="button" onclick="showStep2()">
+                  Refer another friend
+                </div>
+              </div>
+            </div>
+            <!-- end of step 3 -->
+          </div>
+        </form>
+      </inner>
+      <footer>
+        <span
+          >© 2024 <a href="https://www.deeto.ai" target="_blank">Deeto</a>. All
+          rights reserved.</span
+        >
+        <div class="copy">
+          <a
+            href="https://www.deeto.ai/legal/terms-conditions"
+            id="tos"
+            target="_blank"
+            >Deeto TOS</a
+          >
+          <span style="border-left: 1px solid #e7e7e7">&nbsp;</span>
+          <a
+            href="https://www.deeto.ai/legal/platform-privacy-policy"
+            id="policy"
+            target="_blank"
+            >Deeto privacy policy</a
+          >
+        </div>
+      </footer>
+    </container>
+  </body>
+  <script>
+    showStep1();
+  </script>
+  <script>
+    (function (w, doc) {
+      if (!w) return;
+      if (!doc) return;
+
+      const searchParams = new URLSearchParams(w.location.search);
+      const isEmbedded = searchParams.get("embedded") === "true";
+
+      if (isEmbedded) {
+        doc.querySelector("header").style.display = "none";
+        doc.querySelector("article").style.display = "none";
+        doc.querySelector("footer").style.display = "none";
+        doc.querySelector("inner").style.padding = "12px";
+      }
+    })(window, document);
+  </script>
+</html>

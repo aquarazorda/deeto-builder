@@ -2,186 +2,221 @@
   "contentEditables": ["h1", "h2"],
   "list": [
     {
-      "type": "group",
-      "title": "Images",
-      "description": "Here you can choose logo or background image",
-      "elements": [
-        {
-          "type": "item",
-          "behaviour": "image",
-          "title": "Logo",
-          "defaultValue": "/html_builder/images/placeholder-logo.svg",
-          "selectors": ["header img"]
-        },
-        {
-          "type": "item",
-          "behaviour": "background",
-          "title": "Page background",
-          "defaultValue": "#041527",
-          "selectors": ["container"]
-        }
-      ]
-    },
-    {
-      "type": "group",
-      "title": "Fonts",
-      "description": "Here you can choose fonts",
+      "type": "section",
+      "title": "Visual Settings",
       "elements": [
         {
           "type": "group",
+          "title": "Page Settings",
+          "description": "Here you can upload your logo or background image",
           "elements": [
             {
               "type": "item",
-              "behaviour": "font",
-              "defaultValue": "Inter",
-              "title": "Inter",
-              "selectors": ["container"]
+              "behaviour": "image",
+              "title": "Logo",
+              "defaultValue": "/html_builder/images/placeholder-logo.svg",
+              "defaultLink": "https://company.com",
+              "selectors": ["img[alt='logo']"]
             },
             {
               "type": "item",
-              "behaviour": "font",
-              "defaultValue": "DM Sans",
-              "title": "DM Sans",
+              "behaviour": "background",
+              "title": "Page background",
+              "defaultValue": "#041527",
               "selectors": ["container"]
             }
           ]
-        }
-      ]
-    },
-    {
-      "type": "group",
-      "title": "Colors",
-      "description": "Here you can choose colors",
-      "elements": [
+        },
         {
           "type": "group",
-          "title": "Texts",
+          "title": "Colors",
+          "description": "Here you can choose colors",
           "elements": [
             {
-              "type": "item",
-              "behaviour": "color",
-              "title": "Text #1",
-              "defaultValue": "black",
-              "selectors": [".form-title"]
+              "type": "group",
+              "title": "Texts",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "Webpage text",
+                  "defaultValue": "white",
+                  "selectors": ["h1", "h2"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "Form text",
+                  "defaultValue": "black",
+                  "selectors": [".form-title"]
+                }
+              ]
             },
             {
-              "type": "item",
-              "behaviour": "color",
-              "title": "Text #2",
-              "defaultValue": "white",
-              "selectors": ["h1", "h2"]
+              "type": "group",
+              "title": "Interactive components",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "color-background",
+                  "title": "Button color",
+                  "defaultValue": "#0057FF",
+                  "selectors": [".form-action .button"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "link color",
+                  "defaultValue": "#0057FF",
+                  "selectors": [".ToClink"]
+                }
+              ]
             }
           ]
         },
         {
           "type": "group",
-          "title": "Interactive components",
+          "title": "Fonts",
+          "description": "Here you can choose fonts",
           "elements": [
             {
-              "type": "item",
-              "behaviour": "color-background",
-              "title": "Button",
-              "defaultValue": "#0057FF",
-              "selectors": [".form-action button"]
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Inter",
+                  "title": "Inter",
+                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Libre Baskerville",
+                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
+                  "title": "Libre baskerville",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Oswald",
+                  "title": "Oswald",
+                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Work Sans",
+                  "title": "Work sans",
+                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Slabo 27px",
+                  "title": "Slabo",
+                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Raleway",
+                  "title": "Raleway",
+                  "link": "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": ["container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Merriweather",
+                  "title": "Merriweather",
+                  "link": "https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap",
+                  "selectors": ["container"]
+                }
+              ]
             }
           ]
         }
       ]
     },
     {
-      "type": "group",
-      "title": "Texts",
+      "type": "section",
+      "title": "Content",
       "elements": [
         {
           "type": "group",
+          "title": "Page Title",
           "elements": [
             {
-              "type": "item",
-              "title": "Copyright",
-              "behaviour": "text",
-              "defaultValue": "© 2024 Deeto. All rights reserved.",
-              "selectors": ["footer span"]
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "text",
+                  "defaultValue": "Referral Program By",
+                  "selectors": ["title"]
+                }
+              ]
             }
           ]
         },
         {
           "type": "group",
+          "title": "Legal links",
           "elements": [
             {
-              "type": "item",
-              "title": "TOS",
-              "behaviour": "text",
-              "defaultValue": "Deeto TOS",
-              "selectors": [".copy #tos"]
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "title": "Your Privacy Policy",
+                  "behaviour": "text",
+                  "defaultValue": "Our privacy policy",
+                  "selectors": [".ToClink"]
+                }
+              ]
             }
           ]
         },
         {
           "type": "group",
+          "title": "Thank you page",
           "elements": [
             {
-              "type": "item",
-              "title": "Privacy Policy",
-              "behaviour": "text",
-              "defaultValue": "Deeto privacy policy",
-              "selectors": [".copy #policy"]
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "title": "Thank you for submitting the form. We will get back to you soon.",
+                  "behaviour": "text",
+                  "defaultValue": "Our privacy policy",
+                  "selectors": [".form-submitted-text"]
+                }
+              ]
             }
           ]
         }
       ]
     },
     {
-      "type": "form",
-      "title": "Form",
+      "type": "section",
+      "title": "Advanced",
       "elements": [
         {
-          "type": "form-item",
-          "key": "firstName",
-          "title": "First name",
-          "defaultLabel": "Your first name",
-          "item-type": "text"
-        },
-        {
-          "type": "form-item",
-          "key": "lastName",
-          "title": "Last name",
-          "defaultLabel": "Your last name",
-          "item-type": "text"
-        },
-        {
-          "type": "form-item",
-          "key": "email",
-          "title": "Email",
-          "defaultLabel": "Your Email",
-          "item-type": "email"
-        },
-        {
-          "type": "form-item",
-          "key": "referral_firstName",
-          "title": "Referral's first name",
-          "defaultLabel": "Referral's first name",
-          "item-type": "text"
-        },
-        {
-          "type": "form-item",
-          "key": "referral_lastName",
-          "title": "Referral's last name",
-          "defaultLabel": "Referral's last name",
-          "item-type": "text"
-        },
-        {
-          "type": "form-item",
-          "key": "terms",
-          "title": "Terms and conditions",
-          "defaultLabel": "Terms and conditions",
-          "item-type": "checkbox"
-        },
-        {
-          "type": "form-item",
-          "key": "mailbox",
-          "title": "Subscribe to newsletter",
-          "defaultLabel": "Subscribe to newsletter",
-          "item-type": "checkbox"
+          "type": "group",
+          "title": "CSS editor",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "css-editor",
+              "defaultValue": "/*footer {background-color: purple;}*/"
+            }
+          ]
         }
       ]
     }

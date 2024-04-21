@@ -7,14 +7,18 @@ import { ROOT_URL } from "@/config";
 type Styles = Record<string, Record<string, string>>;
 
 type HtmlState = {
-  $: CheerioAPI;
+  $?: CheerioAPI;
   html: string;
   history: string[];
   currentIdx: number;
   styles: Styles;
   swapStyles: (styles: Styles) => void;
-  loadHtml: (htmlUrl?: string) => Promise<void>;
-  setHtml: (html: CheerioAPI) => void;
+  loadHtml: (htmlUrl?: string) => Promise<{
+    html: string;
+    set: ((state: HtmlState) => HtmlState) &
+      ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void);
+  }>;
+  setHtml: (html: CheerioAPI, ignoreHistory?: boolean) => void;
   setParentHtmlSetter: (html: (html: string) => void) => void;
   setParentHtml?: (html: string) => void;
   undo: () => void;
@@ -23,7 +27,6 @@ type HtmlState = {
 };
 
 export const useHtml = create<HtmlState>((set) => ({
-  $: load(""),
   html: "",
   history: [],
   currentIdx: 0,
@@ -59,6 +62,7 @@ export const useHtml = create<HtmlState>((set) => ({
       ...state,
       currentIdx: state.currentIdx - 1,
       html: state.history[state.currentIdx - 1],
+      $: load(state.history[state.currentIdx - 1]),
       styles: parseStyleTag(state.history[state.currentIdx - 1]),
     })),
   redo: () =>
@@ -66,28 +70,33 @@ export const useHtml = create<HtmlState>((set) => ({
       ...state,
       currentIdx: state.currentIdx + 1,
       html: state.history[state.currentIdx + 1],
+      $: load(state.history[state.currentIdx + 1]),
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async (htmlUrl?: string) => {
     const html = await fetch(htmlUrl ?? ROOT_URL + "/template.html")
       .then((res) => res.text())
       .then((html) => html.replace(/\/html_builder/g, ROOT_URL));
+
     set((state) => ({
       ...state,
-      html,
-      $: load(html),
-      history: [html],
       styles: parseStyleTag(html),
     }));
+
+    return {
+      html,
+      set: set as ((state: HtmlState) => HtmlState) &
+        ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void),
+    };
   },
-  setHtml: ($) => {
+  setHtml: ($, ignoreHistory) => {
     const html = $.html();
     set((state) => ({
       ...state,
       $,
       html: $.html(),
-      currentIdx: state.currentIdx + 1,
-      history: [...state.history, html],
+      currentIdx: ignoreHistory ? state.currentIdx : state.currentIdx + 1,
+      history: ignoreHistory ? state.history : [...state.history, html],
       styles: parseStyleTag(html),
     }));
   },

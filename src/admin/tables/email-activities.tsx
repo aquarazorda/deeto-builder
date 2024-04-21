@@ -8,13 +8,11 @@ import { useAdminState } from "@/state/admin";
 import { EmailActivity } from "../types/email";
 import { EyeIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+
 import { useApi } from "@/state/api";
 import { TooltipSimple } from "@/components/ui/tooltip";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { DialogTrigger } from "@radix-ui/react-dialog";
 
 const columns: ColumnDef<EmailActivity>[] = [
   {
@@ -51,22 +49,19 @@ const columns: ColumnDef<EmailActivity>[] = [
       const { siteUrl } = useApi();
 
       return (
-        <HoverCard>
-          <HoverCardTrigger asChild>
+        <Dialog>
+          <DialogTrigger asChild>
             <Button variant="ghost">
               <EyeIcon />
             </Button>
-          </HoverCardTrigger>
-          <HoverCardContent
-            side={"left"}
-            className="w-[800px] h-[600px] opacity-100"
-          >
+          </DialogTrigger>
+          <DialogContent className="py-8 px-12">
             <iframe
               src={`${siteUrl}/emailBody/${row.original.body}.html`}
-              className="w-full h-full"
+              className="w-[80vw] h-[70dvh]"
             />
-          </HoverCardContent>
-        </HoverCard>
+          </DialogContent>
+        </Dialog>
       );
     },
   },

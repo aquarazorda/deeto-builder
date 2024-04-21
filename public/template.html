@@ -1,13 +1,74 @@
 <html>
   <head>
-    <title>Template</title>
+    <title>Affiliation Program By Deeto</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Referral Program By Deeto" />
+    <meta name="keywords" content="Referral Program By Deeto" />
+    <meta charset="UTF-8" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="//fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,100..1000&family=Inter:wght@100..900&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/html_builder/reset.css" />
+    <script>
+      let isLive = false;
+      function showStep1() {
+        document.querySelector(".form-step-1").style.display = "flex";
+        document.querySelector(".form-step-2").style.display = "none";
+      }
+      function showStep2() {
+        // check mandatory fields and email validation
+
+        if (isLive) {
+          // check mandatory fields and email validation
+          if (!checkMandatoryField("referee_firstName")) return;
+          if (!checkMandatoryField("referee_lastName")) return;
+          if (!checkMandatoryField("referee_email")) return;
+          if (!checkEmailField("referee_email")) return;
+          reportNewReferral();
+        }
+        document.querySelector(".form-step-1").style.display = "none";
+        document.querySelector(".form-step-2").style.display = "flex";
+      }
+      function checkMandatoryField(fieldName) {
+        const field = document.getElementById(fieldName);
+        if (!field.value) {
+          field.style.border = "1px solid red";
+          return false;
+        }
+        field.style.border = "unset";
+
+        return true;
+      }
+      function checkEmailField(fieldName) {
+        const field = document.getElementById(fieldName);
+        const validationMessage = document.getElementById(
+          fieldName + "_validationMessage",
+        );
+        if (!field.value.includes("@")) {
+          field.style.border = "1px solid red";
+          return false;
+        }
+        if (
+          field.value.includes("gmail") ||
+          field.value.includes("yahoo") ||
+          field.value.includes("hotmail")
+        ) {
+          field.style.border = "1px solid red";
+          validationMessage.innerHTML = "Please use your company email";
+
+          return false;
+        }
+
+        field.style.border = "unset";
+        validationMessage.innerHTML = "";
+
+        return true;
+      }
+    </script>
+    <!--deeto script placeholder-->
   </head>
   <style>
     body {
@@ -17,12 +78,21 @@
 
     container {
       display: flex;
+      background-repeat: no-repeat;
       position: relative;
       flex-direction: column;
       min-height: 100vh;
-      font-family: DM Sans;
+      font-family: Inter;
       background: #041527;
       color: #ffffff;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+    }
+
+    h1,
+    h2,
+    p {
+      margin: 0;
     }
 
     header {
@@ -37,6 +107,8 @@
       display: flex;
       gap: 4px;
       align-items: center;
+      justify-content: end;
+      flex-wrap: wrap;
     }
 
     .partnership span {
@@ -60,7 +132,8 @@
     }
 
     inner {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
       padding: 56px 80px;
       align-items: center;
       gap: 56px;
@@ -90,7 +163,9 @@
       font-size: 64px;
       font-style: normal;
       font-weight: 700;
-      line-height: 120%; /* 76.8px */
+      line-height: 120%;
+      text-wrap: balance;
+      /* 76.8px */
       letter-spacing: -1.28px;
     }
 
@@ -98,7 +173,8 @@
       font-size: 20px;
       font-style: normal;
       font-weight: 600;
-      line-height: 140%; /* 28px */
+      line-height: 140%;
+      /* 28px */
     }
 
     form {
@@ -108,9 +184,10 @@
       flex: 1 0 0;
       border-radius: 0px 32px 32px 32px;
       background: #ffffff;
+      max-width: 600px;
     }
 
-    form > div {
+    .form-step {
       display: flex;
       padding: 24px 32px;
       flex-direction: column;
@@ -121,10 +198,8 @@
 
     .form-content {
       display: flex;
-      padding: 24px 32px;
       flex-direction: column;
       align-items: center;
-      gap: 24px;
       align-self: stretch;
     }
 
@@ -133,7 +208,8 @@
       font-size: 32px;
       font-style: normal;
       font-weight: 700;
-      line-height: 120%; /* 38.4px */
+      line-height: 120%;
+      text-align: center;
       letter-spacing: -0.64px;
     }
 
@@ -141,10 +217,12 @@
       display: flex;
       flex-wrap: wrap;
       gap: 32px;
+      width: 100%;
       flex-direction: column;
     }
 
-    .input {
+    .input,
+    textarea {
       display: flex;
       flex: 1;
       padding: 16px;
@@ -157,19 +235,26 @@
       font-size: 16px;
       font-style: normal;
       font-weight: 500;
-      line-height: 140%; /* 22.4px */
+      line-height: 140%;
+      /* 22.4px */
       letter-spacing: -0.4px;
+      font-family: "Inter", Times, serif;
     }
 
     .input::placeholder {
       color: #afafaf;
     }
 
+    textarea::placeholder {
+      color: #afafaf;
+    }
     .reward-box {
+      flex-direction: row;
       display: flex;
       padding: 8px 16px;
       justify-content: center;
       align-items: center;
+      width: 100%;
       gap: 16px;
       background-color: #f4e9dd;
       border-radius: 16px 100px 100px 0px;
@@ -180,7 +265,8 @@
       font-size: 18px;
       font-style: normal;
       font-weight: 500;
-      line-height: 150%; /* 27px */
+      line-height: 150%;
+      /* 27px */
     }
 
     .checkbox-wrapper {
@@ -210,9 +296,11 @@
       justify-content: space-between;
       align-items: center;
       align-self: stretch;
+      flex-direction: column;
+      border-top: 1px solid silver;
     }
 
-    .form-action button {
+    .form-action .button {
       display: flex;
       padding: 16px 32px;
       justify-content: center;
@@ -221,16 +309,44 @@
       display: flex;
       align-items: flex-start;
       border-radius: 100px;
-      background-color: #0057ff;
+      background: #0057ff;
       color: #ffffff;
       font-size: 18px;
       font-style: normal;
       font-weight: 500;
-      line-height: 140%; /* 25.2px */
+      line-height: 140%;
+      /* 25.2px */
       letter-spacing: -0.18px;
+      cursor: pointer;
+    }
+
+    .form-group {
+      justify-content: center;
+    }
+    .form-submitted-text {
+      color: var(--GREY-Grey-500-706B80, #706b80);
+      text-align: center;
+      /* Body 3 - Regular */
+      font-family: Inter;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 150%; /* 27px */
+    }
+    .ToCLink {
+      color: var(--LP-Palette-Color-4, #0057ff);
+      text-align: center;
+      /* Body - Semi bold 14 */
+      font-family: Inter;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 140%;
+      /* 19.6px */
     }
 
     footer {
+      margin-top: auto;
       display: flex;
       justify-content: space-between;
       padding: 24px 32px;
@@ -238,14 +354,6 @@
       gap: 24px;
       align-self: stretch;
       background: #fff;
-    }
-
-    footer span {
-      color: #041527;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 24px;
     }
 
     footer a {
@@ -256,114 +364,179 @@
       font-style: normal;
       font-weight: 400;
       line-height: normal;
+      cursor: pointer;
+    }
+
+    footer span,
+    footer span a {
+      color: #041527;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 24px;
     }
 
     footer div {
       display: flex;
       gap: 16px;
     }
+
+    #logo {
+      height: 110px;
+    }
   </style>
+  <style></style>
   <body>
     <container>
       <header>
-        <img src="/html_builder/images/placeholder-logo.svg" alt="logo" />
+        <a href="https://www.company.com" target="_blank" id="companyWebsite"
+          ><img
+            id="logo"
+            src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/placeholder-logo.svg"
+            alt="logo"
+        /></a>
         <div class="partnership">
           <span>In partnership with </span>
           <div>
-            <img src="/html_builder/images/deeto-wordmark.svg" />
+            <img
+              src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/deeto-wordmark.svg"
+            />
           </div>
         </div>
       </header>
       <inner>
         <article>
           <div>
-            <h1>Title will appear here</h1>
+            <h1>Do you think you have the match-making magic?</h1>
             <h2>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam ac
-              pretium urna. Mauris eu fringilla sapien, at blandit massa.
-              Vivamus eu risus at turpis euismod semper. Aliquam tempus nibh
-              eget ornare volutpat. Nunc ultricies sem ut pharetra congue. Sed
-              tincidunt erat quis mollis elementum. Ut velit odio, egestas in
-              bibendum vitae, luctus ac augue. Suspendisse potenti.
+              We like blind-dates, but we absolutely love when one of our
+              favorite customers sets us up! If you have someone in mind that
+              makes you think “Oh they would love this company” send them our
+              way!
             </h2>
           </div>
         </article>
         <form>
           <div class="form-content">
-            <div class="reward-box">
-              <img
-                src="/html_builder/images/reward-icon.svg"
-                width="20px"
-                height="20px"
-                style="opacity: 0.4"
-              />
-              <p>Between {{$ Range}} reward if approved</p>
+            <div class="form-step form-step-1">
+              <p class="form-title">Tell Us About Yourself</p>
+              <div class="form-inputs">
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_firstName"
+                    id="referee_firstName"
+                    placeholder="Your first name *"
+                  />
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_lastName"
+                    id="referee_lastName"
+                    placeholder="Your last name *"
+                  />
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_email"
+                    id="referee_email"
+                    placeholder="Your email *"
+                  />
+                  <span
+                    id="referee_email_validationMessage"
+                    style="color: red; position: absolute"
+                  ></span>
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <input
+                    class="input"
+                    type="text"
+                    name="referee_companyName"
+                    id="referee_companyName"
+                    placeholder="Company (optional)"
+                  />
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-1"
+                  class="form-group"
+                >
+                  <textarea
+                    name="messageToVendor"
+                    id="messageToVendor"
+                    placeholder="Why is this a good match for us (optional)"
+                  ></textarea>
+                </div>
+                <div
+                  style="display: flex; gap: 8px"
+                  id="form-group-3"
+                  class="form-group"
+                >
+                  <a class="ToClink" id="TocLink1" href="" target="_blank"
+                    >Our privacy policy</a
+                  >
+                </div>
+              </div>
+              <div class="form-action">
+                <div class="button" onclick="showStep2()">Continue</div>
+              </div>
             </div>
-            <p class="form-title">Tell us about yourself</p>
-            <div class="form-inputs">
-              <div
-                style="display: flex; gap: 8px"
-                id="form-group-1"
-                class="form-group"
-              >
-                <input
-                  class="input"
-                  type="text"
-                  name="firstName"
-                  placeholder="Your first name *"
-                />
-                <input
-                  class="input"
-                  type="text"
-                  name="lastName"
-                  placeholder="Your last name *"
+            <!-- end of step 2 -->
+            <div class="form-step form-step-2" style="display: none">
+              <div>
+                <img
+                  src="https://deeto-images.s3.us-east-1.amazonaws.com/referral-program-content/assets/success.svg"
                 />
               </div>
-              <div
-                style="display: flex; gap: 8px"
-                id="form-group-2"
-                class="form-group"
-              >
-                <input
-                  class="input"
-                  type="text"
-                  name="referral_firstName"
-                  placeholder="Referral's first name *"
-                />
-                <input
-                  class="input"
-                  type="text"
-                  name="referral_lastName"
-                  placeholder="Referral's last name *"
-                />
-              </div>
-
-              <input
-                type="email"
-                class="input"
-                name="email"
-                placeholder="Your Email *"
-              />
-              <div class="checkbox-wrapper">
-                <input type="checkbox" name="terms" />
-                <p>{{TOS agreement sentence checkbox will appear here}}</p>
+              <p class="form-title">Referral submitted successfully!</p>
+              <div class="form-submitted-text">
+                Thank you for submitting the form
               </div>
             </div>
-          </div>
-
-          <div class="form-action">
-            <button>Continue</button>
+            <!-- end of step 3 -->
           </div>
         </form>
       </inner>
       <footer>
-        <span>© 2024 Deeto. All rights reserved.</span>
+        <span
+          >© 2024 <a href="https://www.deeto.ai" target="_blank">Deeto</a>. All
+          rights reserved.</span
+        >
         <div class="copy">
-          <a href="/tos" id="tos">Deeto TOS</a>
-          <img src="/html_builder/images/divider.svg" />
-          <a href="/policy" id="policy">Deeto privacy policy</a>
+          <a
+            href="https://www.deeto.ai/legal/terms-conditions"
+            id="tos"
+            target="_blank"
+            >Deeto TOS</a
+          >
+          <span style="border-left: 1px solid #e7e7e7">&nbsp;</span>
+          <a
+            href="https://www.deeto.ai/legal/platform-privacy-policy"
+            id="policy"
+            target="_blank"
+            >Deeto privacy policy</a
+          >
         </div>
       </footer>
     </container>
   </body>
+  <script>
+    showStep1();
+  </script>
 </html>
+

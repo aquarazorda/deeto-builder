@@ -1,0 +1,832 @@
+<html>
+  <head>
+    <title>Deeto Admin</title>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+      const KpiImagesPath = 'https://app.deeto.ai/public-static/KPI/';
+      const CustomizedFormFieldTypesEnum = [
+  'single',
+  'multiple',
+  'text',
+  'number',
+  'date',
+  'time',
+  'file',
+  'boolean',
+  'hidden'];
+  const fieldRepresentationEnumNew = ['text', 'select', 'checkbox', 'radio', 'textarea', 'date', 'time', 'file', 'boolean', 'hidden', 'percentage', 'currencyDollar', 'kpiGroup'];
+
+  const kpiIcons = ['','KPI_announcement',
+            'KPI_BRAIN',
+            'KPI_BRIEFCASE',
+            'KPI_CERTIFICATE',
+            'KPI_CHECKLIST',
+            'KPI_CHESE',
+            'KPI_CITY_WIFI',
+            'KPI_CLASSBOARD',
+            'KPI_CONNECTION',
+            'KPI_ECOMM',
+            'KPI_FIND',
+            'KPI_GLOBAL',
+            'KPI_GOAL',
+            'KPI_GRAPH_CHART',
+            'KPI_LAUNCH',
+            'KPI_LIGHTBULB',
+            'KPI_MAN_ON_COMPUTER',
+            'KPI_MONEY',
+            'KPI_NAVIGATION',
+            'KPI_NETWORK',
+            'KPI_ON_TARGET',
+            'KPI_PATH_TO_MONEY',
+            'KPI_PEOPLE',
+            'KPI_PIECHART',
+            'KPI_SEARCH_PERSON',
+            'KPI_STARS',
+            'KPI_SUCCESS',
+            'KPI_TARGET',
+            'KPI_TREE_MONEY',
+            'KPI_WIFI']
+
+      let env = window.location.search.replace('?env=', '');
+      let vendorDetails = {};
+      if (env == '') {
+        env = 'local';
+      }
+      let apiUrl = '';
+      let thisDomain = '';
+
+      if (env == 'prod') {
+        apiUrl = 'https://api.deeto.ai';
+        thisDomain = 'https://app.deeto.ai';
+      } else if (env == 'dev') {
+        apiUrl = 'https://dev-api.deeto.ai';
+        thisDomain = 'https://dev.deeto.ai';
+      } else if (env == 'stg') {
+        apiUrl = 'https://staging-api.deeto.ai';
+        thisDomain = 'https://staging.deeto.ai';
+      } else if (env == 'local') {
+        apiUrl = 'http://localhost:3000/dev';
+        thisDomain = 'http://localhost:3000/dev';
+      }
+
+      function getSignedUrl () {
+        $(".loadingPanel").show();
+        $.getJSON( apiUrl + "/v1/admin/newSignedUrl", async function( data ) {
+
+          const fileType = document.getElementById('newImageFile').files[0].type;
+          //const fileType = 'multipart/form-data';
+          console.log('file type', fileType);
+          console.log('signed url', data);
+        // post image to signed url
+          const fileInput = document.getElementById('newImageFile');
+          const file = fileInput.files[0];
+          const formData = new FormData();
+          formData.append('file', file);
+          try {
+            const response = await fetch(data.data.signedUploadUrl.signedUrl, {
+                headers: { 
+                  'Content-Type': fileType
+                },
+                method: 'PUT',
+                body: file
+            });
+            console.log('Success:', response);
+          } catch (error) {
+            console.error('Error:', error);
+          }
+
+          // update image path in vendor
+          $("#newImageName").val($("#newImageFile").val());
+          $("#newImageUrl").val(data.data.signedUploadUrl.signedUrl);
+          addNewImage (data.data.signedUploadUrl.signedUrl, $("#newImageName").val(), $("#uploadImageType").val());
+
+        });
+      }
+
+      
+      function postSettings (endPoint, body) {
+        $(".loadingPanel").show();
+        console.log('posting to ' + apiUrl + "/v1/admin/" + endPoint);
+        console.log('body', body);
+        $.ajax({
+          type: "POST",
+          url: apiUrl + "/v1/admin/" + endPoint,
+          data: JSON.stringify(body),
+          contentType: "application/json; charset=utf-8",
+          dataType: "json",
+          success: function(data){
+            //alert('Settings updated');
+            getVendorDetails(vendorDetails.vendor.vendorId);
+          },
+          failure: function(errMsg) {
+            alert('Settings update failed');
+          }
+        });
+      }
+
+      function getDetails() {
+        $(".dataContainer").html('');
+
+        var vendorName = document.getElementById('vendorName').value;
+        if (vendorName == '') {
+          alert('Please enter a vendor name.');
+          return;
+        }
+        getDetailsByVendorName(vendorName);
+      }
+      function getDetailsByVendorName(vendorName) {
+
+        const heading = `      <h2>User Details:</h2>
+                            <div class="tableWithHeader">
+                              <table border="1">
+                                <thead>                                
+                                <tr class="tableHead">
+                                  <th>Name</th>
+                                  <th>Account Level</th>
+                                  <th>Vendor Id</th>
+                                  <th>See Details</th>
+                                </tr>
+                              </thead>
+                              <tbody>`;                                
+        const footer =      `</tbody></table>
+      </div>`;
+        
+        $.getJSON( apiUrl + "/v1/admin/getVendorByName?name=" + encodeURIComponent(vendorName), function( data ) {
+          var items = [];
+          $.each( data.data, function( key, val ) {
+            items.push( `<tr class="tableRow">
+                                  <td>${val.name}</td>
+                                  <td>${val.accountLevel}</td>
+                                  <td>${val.vendorId}</td>
+                                  <td><div class="buttonlink" onclick="getVendorDetails('${val.vendorId}')">See Details</div></td>
+                                </tr>` );
+          });
+          $("#vendorDetailsSection").html(heading + items.join("") + footer);
+        });
+      }
+      function getVendorDetails(vendorId) {
+        $(".loadingPanel").show();
+
+        $("#vendorAllSettings").html('');
+        $("#vendorEndorsements").html('');
+        $("#vendorQuestionsAndAnswers").html('');
+        $("#questionOptionsPopup").hide();
+        
+
+        const headingAllSettings = `    <h2>Settings</h2>
+        <div class="tableWithHeader">
+
+        <table border="1" >
+                                            <thead>
+                                            <tr class="tableHead">
+                                              <th>Key</th>                                              
+                                              <th>Value</th>
+                                              <th>Update</th>
+                                            </tr>
+                                          </thead>
+                                          <tbody>`;                                            
+
+        const headingEndorsements = `    <h2>endorsements</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Endorsement</th>
+                                                <th>Update</th>                                                
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+
+        const headingMeetings   = `    <h2>Meeting Details</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Meeting Id</th>
+                                                <th>Prospect</th>
+                                                <th>Reference</th>
+                                                <th>Status</th>
+                                                <th>Times</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        const footerWithAdd_newEndorsement =      `<tr>
+                              <td colspan="3"><button onClick="newEndorsement()">Add New</button></td>
+                            </tr>
+                          </tbody></table>
+                          </div>`;                          
+        
+        $.getJSON( apiUrl + "/v1/admin/getVendorDetails?vendorId=" + encodeURIComponent(vendorId), function( data ) {
+          vendorDetails = data.data;
+          var settings = [];
+          var endorsements = [];
+          var questions = [];
+            for (const inner in vendorDetails.vendorSettings) {
+              const controlType = data.data.vendorSettings[inner] == true || data.data.vendorSettings[inner] == false ? 'checkbox' : (data.data.vendorSettings[inner]?.length > 100 ? 'textarea' : 'input');
+              switch (controlType) {
+                case 'checkbox':
+                  settings.push( `<tr class="tableRow">
+                                    <td>${inner}</td>
+                                    <td><input type="checkbox" value="1" name="settings${inner}" ${data.data.vendorSettings[inner] ? 'checked' : ''} /></td>
+                                    <td><button onclick="updateSettings('${inner}')">Save</button></td>
+                                  </tr>` );
+                  break;
+                case 'textarea':
+                  settings.push( `<tr class="tableRow">
+                                    <td>${inner}</td>
+                                    <td><textarea name="settings${inner}"  rows="6" cols="100">${data.data.vendorSettings[inner]}</textarea></td>
+                                    <td><button onclick="updateSettings('${inner}')">Save</button></td>
+                                  </tr>` );
+                  break;
+                default:
+                  settings.push( `<tr class="tableRow">
+                                    <td>${inner}</td>
+                                    <td><input name="settings${inner}" value="${data.data.vendorSettings[inner] ?? ''}" /></td>
+                                    <td><button onclick="updateSettings('${inner}')">Save</button></td>
+                                    </tr>` );
+                  break;
+              }
+            };
+          $.each( vendorDetails.endorsements, function( key, val ) {
+            endorsements.push( `<tr class="tableRow">
+                                  <td><input name="endorsment${val.endorsmentId}" value="${val.value}" /></td>
+                                  <td><button onclick="updateEndorsement('${val.endorsmentId}')">Save</button></td>
+                                </tr>` );
+          });
+          
+          $("#vendorAllSettings").html(headingAllSettings + settings.join("") + footer);
+          $("#vendorEndorsements").html(headingEndorsements + endorsements.join("") + footerWithAdd_newEndorsement);
+          
+          paintQuestions (vendorDetails.questions, "#vendorQuestionsAndAnswers", '360 Questions', 'Q&A');
+          paintQuestions (vendorDetails.KPIs, "#vendorKPIs", 'KPIs', 'referenceUserstoryKPIs');
+          paintImageList (vendorDetails.images);
+          paintWidgetList (vendorDetails.widgets);
+          $(".loadingPanel").hide();
+        });
+      }
+
+
+      function findQuestionById (customizedFormFieldId) {
+        let foundQuestion = vendorDetails.questions.find(question => question.customizedFormFieldId == customizedFormFieldId);
+        if (!foundQuestion) {
+          foundQuestion = vendorDetails.KPIs.find(question => question.customizedFormFieldId == customizedFormFieldId);
+        }
+        if (!foundQuestion) {
+          foundQuestion = vendorDetails.accountContactQuestions.find(question => question.customizedFormFieldId == customizedFormFieldId);
+        }
+        return foundQuestion;
+      }
+
+      function paintQuestions (questions, placeHolder, heading, formType) {
+        const headingQuestions = `    <h2>${heading}</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Field ID</th>
+                                                <th>Text</th>
+                                                <th>Type</th>
+                                                <th>Represenation</th>
+                                                <th>Appearence Order</th>
+                                                <th>View Mode Label</th>
+                                                <th>View Mode Icon</th>
+                                                <th>Options</th>
+                                                <th>Conditional Appearence</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        const footerWithAdd =      `<tr>
+                              <td colspan="3"><button onclick="newQaQuestion('${formType}')">Add New</button></td>
+                            </tr>
+                          </tbody></table>
+                          </div>`;                          
+        
+        var questionsHtml = [];
+        $.each( questions, function( key, val ) {
+          questionsHtml.push( `<tr class="tableRow">
+                                <td>${val.customizedFormFieldId}</td>
+                                <td><input name="questions${val.customizedFormFieldId}fieldLabel" value="${val.fieldLabel}" /></td>
+                                <td>${paintDropDown (`questions${val.customizedFormFieldId}fieldType`, val.fieldType, CustomizedFormFieldTypesEnum)}</td>
+                                <td>${paintDropDown (`questions${val.customizedFormFieldId}fieldRepresentation`, val.fieldRepresentation, fieldRepresentationEnumNew)}</td>
+                                <td><input name="questions${val.customizedFormFieldId}appearanceOrder" type="number" value="${val.appearanceOrder ?? ''}" /></td>
+                                <td><input name="questions${val.customizedFormFieldId}viewModeLabel" value="${val.viewModeLabel ?? ''}" /></td>
+                                <td>${paintDropDown (`questions${val.customizedFormFieldId}viewModeIcon`, val.viewModeIcon, kpiIcons)} <img src="${KpiImagesPath}${val.viewModeIcon}.svg" style="background-color:rgb(72, 20, 83); padding: 2px" id="questions${val.customizedFormFieldId}viewModeIconPreview"></td>
+                                <td><div onclick="paintOptionsPopup ('${val.customizedFormFieldId}')" class="buttonlink">${val.fieldRepresentation == 'radio' || val.fieldRepresentation == 'select' ? val.fieldOptions.length + ' Options' : ''}</div></td>
+                                <td><div onclick="paintDependentPopup ('${val.customizedFormFieldId}')" class="buttonlink">${val.selectedOptions.length} Conditions</div></td>
+                                <td><button onclick="updateQaQuestion('${val.customizedFormFieldId}')">Save</button></td>
+
+                              </tr>` );
+        });
+        $(placeHolder).html(headingQuestions + questionsHtml.join("") + footerWithAdd);
+      }
+
+      function paintOptionsPopup (customizedFormFieldId) {
+        $("#questionOptionsPopup").show();
+        $("#popUpContent").html(' this is where you will see the options for ' + customizedFormFieldId);
+        const  foundQuestion = findQuestionById (customizedFormFieldId);
+        if (foundQuestion) {
+          let optionsHtml = 'Options For ' + foundQuestion.fieldLabel + '<br />';
+
+          const headingOptions = ` 
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Option ID</th>
+                                                <th>Caption</th>
+                                                <th>Value</th>
+                                                <th>Option Order</th>
+                                                <th>Is Default</th>
+                                                <th>update</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        const footerWithAdd =      `<tr>
+                              <td colspan="3"><button onClick="newCustomizedFieldOption('${customizedFormFieldId}')">Add New</button></td>
+                            </tr>
+                          </tbody></table>
+                          </div>`;  
+
+
+          const optionRepresenation = [];
+          const fieldOptionsSorted = foundQuestion.fieldOptions.sort((a, b) => a.optionOrder - b.optionOrder);
+          fieldOptionsSorted.forEach(val => {
+            optionRepresenation.push( `<tr class="tableRow">
+                                <td>${val.customizedFormFieldId}</td>
+                                <td><input name="option${val.customizedFormFieldOptionId}caption"  value="${val.caption ?? ''}" /></td>
+                                <td><input name="option${val.customizedFormFieldOptionId}value" value="${val.value ?? ''}" /></td>
+                                <td><input name="option${val.customizedFormFieldOptionId}optionOrder" type="number" value="${val.optionOrder}" /></td>
+                                <td><input name="option${val.customizedFormFieldOptionId}isDefault" type="checkbox" ${val.isDefault ? 'checked' : ''} /></td>
+                                <td><button onclick="updateCustomizedFieldOption('${val.customizedFormFieldOptionId}')">Save</button></td>
+                              </tr>` );
+          });
+          $("#popUpContent").html(optionsHtml + headingOptions + optionRepresenation.join("") + footerWithAdd);
+        } else {
+          $("#popUpContent").html('No options found');
+        }
+      }
+
+      function dropdownChanged(name) {
+        if (name.includes('viewModeIcon')) {
+          let icon = $(`#${name}`).val();
+          $(`#${name}Preview`).attr('src', KpiImagesPath + icon + '.svg');
+        }
+        console.log('dropdown changed');
+      }
+
+      function dependentQuestionChanged (name, checkedOptions ) {
+        let selectedQuestion = $(`#${name}`).val();
+        let optionsHtml = paintDependentQuestionOptions (selectedQuestion, checkedOptions);
+        $("#dependentQuestionOptions").html(optionsHtml);
+      }
+
+      function paintDropDown (name, selectedValue, options) {
+        let dropDown = `<select id="${name}" name="${name}" onChange ="dropdownChanged('${name}')">`;
+        const optionsSorted = options.sort((a, b) => a.localeCompare(b));
+        optionsSorted.forEach(option => {
+          dropDown += `<option value="${option}" ${option == selectedValue ? 'selected' : ''}>${option}</option>`;
+        });
+        dropDown += `</select>`;
+        return dropDown;
+      }
+
+      function paintDropDownForQuestions (name, selectedValue, options) {
+        const optionsSorted = options.sort((a, b) => a.fieldLabel.localeCompare(b.fieldLabel));
+
+        let dropDown = `<select id="${name}" name="${name}" onChange ="dependentQuestionChanged('${name}')"><option value="">Select Question</option>`;
+        optionsSorted.forEach(option => {
+          if (option.fieldRepresentation == 'radio' || option.fieldRepresentation == 'select') {
+            dropDown += `<option value="${option.customizedFormFieldId}" ${option.customizedFormFieldId == selectedValue ? 'selected' : ''}>${option.fieldLabel}</option>`;
+          }
+        });
+        dropDown += `</select>`;
+        return dropDown;
+      }
+
+      function paintDependentPopup (customizedFormFieldId) {
+        $("#questionOptionsPopup").show();
+        const  foundQuestion = findQuestionById (customizedFormFieldId);
+        if (foundQuestion) {
+          let optionsHtml = '<b>Options For ' + foundQuestion.fieldLabel + '</b><br />';
+          // if there are dependent questions, find to which question it belongs
+          let selectedQuestion = '';
+          if (foundQuestion.selectedOptions && foundQuestion.selectedOptions.length > 0) {
+            selectedQuestion = findQuestionByOption (vendorDetails.accountContactQuestions, foundQuestion.selectedOptions[0].formFieldOptionId)?.customizedFormFieldId;
+          }
+          
+          optionsHtml += 'a dependent question : ' + paintDropDownForQuestions (`dependentQuestion`, selectedQuestion, vendorDetails.accountContactQuestions);
+          optionsHtml += '<p><div id="dependentQuestionOptions"></div></p>';
+          optionsHtml += `<p><button onClick="updateDependencies('${customizedFormFieldId}')">Save</button></p>`;
+          
+          $("#popUpContent").html(optionsHtml);
+          if (foundQuestion.selectedOptions && foundQuestion.selectedOptions.length > 0) {
+            dependentQuestionChanged('dependentQuestion', foundQuestion.selectedOptions.map(option => option.formFieldOptionId) )
+          }
+
+        }
+      }
+
+      function paintDependentQuestionOptions (selectedQuestionId, checkedOptions) {
+        if (selectedQuestionId) {
+          const  foundQuestion = findQuestionById (selectedQuestionId);
+          if (foundQuestion) {
+            let optionsHtml = '<b>Options For ' + foundQuestion.fieldLabel + '</b><br />';
+            const headingOptions = ``;
+            const dependentOptions = [];
+            const fieldOptionsSorted = foundQuestion.fieldOptions.sort((a, b) => a.caption - b.caption);
+            $.each( fieldOptionsSorted, function( key, val ) {
+              dependentOptions.push( `<div> <input type="checkbox" name="dependentQuestionOptions" value="${val.customizedFormFieldOptionId}" ${checkedOptions?.includes(val.customizedFormFieldOptionId) ? 'checked' : ''}> ${val.caption} </div>` );
+            });
+            return optionsHtml + headingOptions + dependentOptions.join("");
+          }
+
+        }
+      }
+
+      function findQuestionByOption (questionList, optionId) {
+        let foundQuestion = questionList.find(question => question.fieldOptions.find(option => option.customizedFormFieldOptionId == optionId));
+        return foundQuestion;
+      }
+
+      function paintImageList (imageList) {
+        const headingImages = `    <h2>Images</h2>
+        <p>
+                            <select name="uploadImageType" id="uploadImageType">
+                              <option value="banner">Banner</option>
+                              <option value="square">Square</option>
+                            </select>
+                            <input type="file" id="newImageFile" name="newImageFile" onChange="uploadToTemp()"/>
+                            <input type="hidden" id="newImageName" name="newImageName" />
+                            <input type="hidden" id="newImageUrl" name="newImageUrl" />
+                            </p>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>Image</th>
+                                                <th>Name</th>
+                                                <th>Type</th>
+                                                <th>Remove</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        const footerWithAdd =      `
+                          </tbody></table>
+                          
+                            
+                          </div>`;                          
+        
+        var imagesHtml = [];
+        $.each( imageList, function( key, val ) {
+          imagesHtml.push( `<tr class="tableRow">
+                                <td><img src="${val.imagePath}" width="100" /></td>
+                                <td>${val.imagePath.split ('/').pop()}</td>
+                                <td>${val.imageType}</td>
+                                <td><button onclick="removeImage('${val.caseStudyImageId}')">Remove</button></td>
+                              </tr>` );
+        });
+        $("#vendorImages").html(headingImages + imagesHtml.join("") + footerWithAdd);
+
+      }
+
+
+      function paintWidgetList (widgetList)  {
+        const headingImages = `    <h2>Widgets</h2>
+        <div class="tableWithHeader">
+
+        <table border="1">
+                                            <thead>
+                                              <tr class="tableHead">
+                                                <th>ID</th>
+                                                <th>description</th>
+                                                <th>status</th>
+                                                <th>Edit Contacts</th>
+                                                <th>See Sample Sites</th>
+                                                <th>Update</th>
+                                              </tr>
+                                            </thead>
+                                            <tbody>`;
+        const footer =      `</tbody></table>
+                          </div>`;
+        const footerWithAdd =      `<tr>
+                              <td colspan="3"><button onclick="addNewWidget()">Add New Widget</button> <a href="${apiUrl}/v1/widget/dataExportAll" target="_blank">Refresh Widget Cache</a></td>
+                            </tr>
+                          </tbody></table>
+                          </div>`;                          
+        
+        var imagesHtml = [];
+        $.each( widgetList, function( key, val ) {
+          imagesHtml.push( `<tr class="tableRow">
+                                <td>${val.widgetConfigurationId}</td>
+                                <td><input name="widget${val.widgetConfigurationId}description"  value="${val.description}" /></td>
+                                <td>${paintDropDown(`widget${val.widgetConfigurationId}status`, val.status, ['live', 'paused', 'draft'])}</td>
+                                <td><div class="buttonlink" onclick="paintAccountContactPopup('${val.widgetConfigurationId}')">${val.selectedAccountContacts?.length} Contacts</div></td>
+                                <td><a href="sample_floating.html?bgcolor=white&textcolor=black&widgetid=${val.widgetConfigurationId}" target="_blank">Floating</a>
+                                  &nbsp;
+                                  <a href="sample_embedded.html?bgcolor=white&textcolor=black&widgetid=${val.widgetConfigurationId}" target="_blank">Embedded</a>
+                                  </td>
+                                <td><button onclick="updateWidget('${val.widgetConfigurationId}')">Update</button></td>
+                              </tr>` );
+        });
+        $("#vendorWidgets").html(headingImages + imagesHtml.join("") + footerWithAdd);
+      }
+
+      function paintAccountContactPopup (widgetConfigurationId) {
+        $("#questionOptionsPopup").show();
+        let headerHtml = '<b>References in This Widget</b><br /><div class="referenceList">';
+        const referencesHTML = [];
+        const sortedReferences = vendorDetails.references.sort((a, b) => a.authenticatedUser.firstName.localeCompare(b.authenticatedUser.firstName));
+        const findWidget = vendorDetails.widgets.find(widget => widget.widgetConfigurationId == widgetConfigurationId);
+        const selectedReferences = findWidget.selectedAccountContacts.map(contact => contact.accountContactId);
+        $.each(sortedReferences , function( key, val ) {
+          referencesHTML.push( `<div> <input type="checkbox" name="widgetReferencesOptions" value="${val.accountContactId}" ${selectedReferences?.includes(val.accountContactId) ? 'checked' : ''} > <b>${val.authenticatedUser.firstName} ${val.authenticatedUser.lastName}</b> ${val.title} ${val.account.companyName}</div>` );
+        });
+        
+        const footerWithAdd =      `</div>
+                              <button onclick="updateWidgetSelectedContact('${widgetConfigurationId}')">Save</button>
+                          </div>`; 
+        $("#popUpContent").html(headerHtml + referencesHTML.join("") + footerWithAdd);
+      }
+
+      function formatAllTimeslots (timeslots) {
+        let formattedTimeslots = '';
+        timeslots.forEach(timeslot => {
+          formattedTimeslots +=  `${timeslot.status == 'accepted' ? '<b>' : ''} ${formatTime(timeslot.startTime)} - ${timeslot.status} </b><br />`;
+        });
+        return formattedTimeslots;
+      }
+      
+      function formatTime (timestamp) {
+        return new Date(timestamp).toLocaleString('en', {
+          timeZoneName: 'short',
+        });
+      }
+
+      function returnValue (controlName) {
+        const control = $(`[name=${controlName}]`);
+        if (control[0].type == 'checkbox') {
+          return control[0].checked;
+        } else {
+          return control.val();
+        }
+      }
+      
+      /*
+      $(document).ready(function() {
+        getDetails();
+        getVendorDetails('c64e3ef2-672a-43ee-b166-51ffee0eca8b');
+      });
+      */
+
+
+      // UPDATES
+      function updateSettings (name) {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        body[name] = returnValue(`settings${name}`);
+        postSettings('updateVendorSettings', body);
+      } 
+
+      function updateEndorsement (endorsementId) {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        body.endorsementId = endorsementId;
+        body.value = returnValue(`endorsment${endorsementId}`);
+        postSettings('updateEndorsement', body);
+      }
+
+      function newEndorsement () {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        postSettings('newEndorsement', body);
+      }
+      
+      function newQaQuestion (formType) {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        body.formType = formType;
+        postSettings('newQaQuestion', body);
+      }
+
+      function updateQaQuestion (customizedFormFieldId) {
+        let body = {};
+        body.customizedFormFieldId = customizedFormFieldId;
+        body.fieldLabel = returnValue(`questions${customizedFormFieldId}fieldLabel`);
+        body.fieldType = returnValue(`questions${customizedFormFieldId}fieldType`);
+        body.fieldRepresentation = returnValue(`questions${customizedFormFieldId}fieldRepresentation`);
+        body.appearanceOrder = returnValue(`questions${customizedFormFieldId}appearanceOrder`);
+        body.viewModeLabel = returnValue(`questions${customizedFormFieldId}viewModeLabel`);
+        body.viewModeIcon = returnValue(`questions${customizedFormFieldId}viewModeIcon`);
+        postSettings('updateQaQuestion', body);
+      }
+
+      function updateDependencies (customizedFormFieldId) {
+        const selectedArra = document.getElementsByName ('dependentQuestionOptions');
+        const selectedOptions = [];
+        selectedArra.forEach(option => {
+          if (option.checked) {
+            selectedOptions.push(option.value);
+          }
+        });
+        
+        const body = {};
+        body.customizedFormFieldId = customizedFormFieldId;
+        body.dependency = selectedOptions;
+        postSettings('updateDependency', body);
+      }
+
+      function updateCustomizedFieldOption(customizedFormFieldOptionId) {
+        let body = {};
+        body.customizedFormFieldOptionId = customizedFormFieldOptionId;
+        body.caption = returnValue(`option${customizedFormFieldOptionId}caption`);
+        body.value = returnValue(`option${customizedFormFieldOptionId}value`);
+        body.optionOrder = returnValue(`option${customizedFormFieldOptionId}optionOrder`);
+        body.isDefault = returnValue(`option${customizedFormFieldOptionId}isDefault`);
+        postSettings('updateCustomizedFieldOptions', body);
+      }
+
+      function newCustomizedFieldOption (customizedFormFieldId) {
+        let body = {};
+        body.customizedFormFieldId = customizedFormFieldId;
+        postSettings('newCustomizedFieldOptions', body);
+      }
+
+      function uploadImage () {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        body.imageType = returnValue('uploadImageType');
+        body.image = returnValue('file');
+        postSettings('uploadImage', body);
+      }
+
+      function uploadToTemp() {
+        console.log ('uploading to temp');
+        // get s3 signed url
+        getSignedUrl();
+      }
+
+      function addNewImage (imageURL, fileName, type) {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        body.imageType = type;
+        body.imagePath = imageURL;
+        body.fileName = fileName;
+        postSettings('newImage', body);
+      }
+
+      function removeImage (caseStudyImageId) {
+        let body = {};
+        body.caseStudyImageId = caseStudyImageId;
+        postSettings('removeImage', body);
+      }
+
+      function addNewWidget () {
+        let body = {};
+        body.vendorId = vendorDetails.vendor.vendorId;
+        postSettings('newWidget', body);
+      }
+
+      function updateWidget (widgetConfigurationId) {
+        let body = {};
+        body.widgetConfigurationId = widgetConfigurationId;
+        body.description = returnValue(`widget${widgetConfigurationId}description`);
+        body.status = returnValue(`widget${widgetConfigurationId}status`);
+        postSettings('updateWidget', body);
+      }
+
+      function updateWidgetSelectedContact (widgetConfigurationId) {
+        const selectedArra = document.getElementsByName ('widgetReferencesOptions');
+        const selectedOptions = [];
+        selectedArra.forEach(option => {
+          if (option.checked) {
+            selectedOptions.push(option.value);
+          }
+        });
+        
+        const body = {};
+        body.widgetConfigurationId = widgetConfigurationId;
+        body.dependency = selectedOptions;
+        postSettings('updateWidgetAccounts', body);
+      }
+    </script>
+    <style>
+      h1 {
+        color: rgb(72, 20, 83);
+      }
+      .tableHead {
+        background-color: rgb(72, 20, 83);
+        color: #FFFFFF;
+      }
+      .tableHead th{
+        background-color: rgb(72, 20, 83);
+        color: #FFFFFF;
+        
+        padding: 5px;
+      }
+      .tableRow td {
+        padding: 5px;
+      }
+      .buttonlink {
+        color: blue;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+      .tableWithHeader {
+        overflow: auto; height: 250px;
+      }
+      .tableWithHeader thead th { position: sticky; top: 0; z-index: 1; }
+      table  { border-collapse: collapse;}
+
+      .popup {
+        position: fixed;
+        top: 20%;
+        bottom: 20%;
+        right: 20%;
+        left: 20%;
+        background-color: white;
+        padding: 20px;
+        border: 1px solid black;
+        z-index: 1000;
+      }
+      .closePopupButton {
+        position: absolute;
+        top: 0;
+        right: 0;
+        cursor: pointer;
+        padding: 20px;
+      }
+      .loadingPanel {
+        position: fixed;
+        top: 35%;
+        right: 20%;
+        left: 20%;
+        background-color: white;
+        padding: 20px;
+        z-index: 1000;
+        background: radial-gradient(circle, rgba(142,112,148,1) 40%, rgba(73,20,84,1) 100%);
+        color: white;
+        text-align: center;
+        vertical-align: middle;
+        font-size: 2em;
+        line-height: 6em;
+        display: none; 
+      }
+      .referenceList {
+        overflow: auto; height: 95%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Deeto Admin 360</h1>
+    <div>
+      Enter Vendor Name: <input type="text" id="vendorName" value="Deeto"/> <input type="button" value="Get Details" onclick="getDetails()" />
+    </div>
+    
+    <div id="vendorDetailsSection" class="dataContainer">
+    </div>
+
+    <div id="vendorAllSettings" class="dataContainer">
+    </div>
+    
+
+    <div id="vendorQuestionsAndAnswers" class="dataContainer">
+    </div>
+
+    <div id="vendorKPIs" class="dataContainer">
+    </div>
+
+    
+    <div id="vendorEndorsements" class="dataContainer">
+    </div>
+
+    <!-- questions here -->
+
+    <div id="vendorImages" class="dataContainer">
+    </div> 
+
+    <div id="vendorWidgets" class="dataContainer">
+    </div> 
+
+    <div id="questionOptionsPopup" class="popup" style="display:none;">
+      <div class="closePopupButton" onclick="$('#questionOptionsPopup').hide()">X</div>
+      <div id="popUpContent"></div>
+    </div>
+
+    <div class="loadingPanel">
+        Updating Details, Please wait...
+    </div>
+  </body>
+</html>

@@ -11,6 +11,14 @@ export type Account = {
   updatedAt: string;
 };
 
+export type VendorContactPrivilege = {
+  vendorContactPrivilegesId: string;
+  vendorContactId: string;
+  vendorContactPrivilege: string;
+  createdAt: string;
+  updatedAt: string;
+};
+
 export type AccountContact = {
   accountContactId: string;
   salesforceId: string | null;
@@ -36,6 +44,7 @@ export type AccountContact = {
   updatedAt: string;
   account: Account;
   customizedFormValues: CustomizedFormValues;
+  vendorContactPrivileges?: VendorContactPrivilege[];
 };
 
 export type AccountContactWithAuthenticatedUser = AccountContact & {

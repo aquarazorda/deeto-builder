@@ -1,14 +1,15 @@
 import { create } from "zustand";
 import { ROOT_URL } from "@/config";
 
-export type ItemType = "item" | "group" | "form";
+export type ItemType = "item" | "group" | "form" | "section";
 export type Behaviour =
   | "image"
   | "background"
   | "color"
   | "color-background"
   | "text"
-  | "font";
+  | "font"
+  | "css-editor";
 
 type GeneralItem = {
   type: ItemType;
@@ -17,7 +18,7 @@ type GeneralItem = {
 };
 
 export type Group = {
-  type: "group";
+  type: "group" | "section";
   elements: Element[];
 } & GeneralItem;
 
@@ -26,6 +27,8 @@ export type Item = {
   behaviour: Behaviour;
   selectors: string[];
   defaultValue: string;
+  defaultLink?: string;
+  link?: string;
 } & GeneralItem;
 
 export type FormItem = {
@@ -52,7 +55,7 @@ export type Metadata = {
 
 type PanelState = {
   active?: string;
-  metadata: Metadata;
+  metadata?: Metadata;
   set: (active: string) => void;
   loadMetadata: (metadata?: Metadata) => Promise<void>;
   saveImage?: (name: string, blob: Blob) => Promise<string>;
@@ -60,10 +63,6 @@ type PanelState = {
 };
 
 export const usePanel = create<PanelState>((set) => ({
-  metadata: {
-    contentEditables: [],
-    list: [],
-  },
   setSaveImgFn: (fn) => {
     set((state) => ({ ...state, saveImage: fn }));
   },

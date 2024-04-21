@@ -84,12 +84,17 @@ export default function GenericSaveButton<
             >
               {difference &&
                 (Object.keys(difference) as (keyof T)[]).map((key) => (
-                  <div className="flex gap-2" key={key as string}>
+                  <div
+                    className="flex gap-2 justify-between w-full items-center"
+                    key={key as string}
+                  >
                     <FormField
                       name={key as string}
                       render={({ field }) => (
-                        <FormItem className="grid grid-cols-5 items-center gap-4">
-                          <FormLabel htmlFor="name">{key as string}</FormLabel>
+                        <FormItem className="grid grid-cols-5 items-center gap-4 space-y-0 w-full">
+                          <FormLabel htmlFor="name" className="truncate">
+                            {key as string}
+                          </FormLabel>
                           <DrawDynamicInput
                             value={defaultValues?.[key]}
                             field={field}
