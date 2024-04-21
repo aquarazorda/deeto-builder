@@ -1,0 +1,183 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/html_builder/reset.css" />
+    <style>
+      .wrapper {
+        color: white;
+        width: 100dvw;
+        height: 100%;
+        background-color: rgb(0, 194, 233);
+        display: flex;
+        flex-direction: column;
+        font-family: Inter;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+      }
+
+      #logo {
+        max-height: 88px;
+      }
+
+      .deeto-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        color: rgb(46, 19, 52);
+      }
+
+      main {
+        display: flex;
+        padding: 0px 48px 80px 80px;
+        max-width: 1440px;
+        margin: 0px auto;
+        align-items: center;
+      }
+
+      main .text {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+      }
+
+      h1 {
+        font-size: 3rem;
+        display: flex;
+        gap: 4px;
+        flex-direction: column;
+      }
+
+      h1 bold {
+        font-weight: 700;
+      }
+
+      h2 {
+        font-size: 20px;
+        max-width: 480px;
+        line-height: 150%;
+      }
+
+      main .action-button {
+        font-size: 16px;
+        display: flex;
+        font-weight: 500;
+        padding: 0.625rem 1.375rem;
+        transition: all 0.2s ease 0s;
+        background-color: rgb(72, 20, 83);
+        border: 2px solid rgb(72, 20, 83);
+        width: fit-content;
+        border-radius: 6.25rem;
+        cursor: pointer;
+      }
+
+      main .action-button:hover {
+        opacity: 0.8;
+      }
+
+      main .action-login {
+        font-size: 20px;
+      }
+
+      main .action-login button {
+        text-decoration: underline;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .image-container {
+        display: flex;
+        max-width: 60%;
+        align-items: center;
+        min-width: 326px;
+      }
+
+      .image-container img {
+        max-width: 736px;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="header">
+        <img
+          src="https://deeto-images-dev.s3.us-east-1.amazonaws.com/avatars/deetoPhotoUploads-dbf5e1c3-c48c-4b3b-a7e0-53f75cb37e69"
+          id="logo"
+          alt="Company Logo"
+        />
+        <div class="deeto-wrapper">
+          <div>In partnership with</div>
+          <div class="deeto-logo">
+            <svg
+              width="4rem"
+              height="43"
+              viewBox="0 0 150 43"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M65.2391 21.6364C65.2391 13.9375 57.3549 10.0881 50.6435 10.0881C42.2379 10.0881 34.8749 16.4596 34.8749 26.415C34.8749 36.3703 41.3257 42.0781 52.5982 42.0781C56.1168 42.0781 60.678 41.4808 64.3269 39.2242V30.3971C60.8735 32.9855 57.0942 34.2465 53.1847 34.2465C48.4645 34.2465 45.98 32.7459 44.7642 30.6964C46.3814 31.1451 48.3362 31.5254 50.6435 31.5254C58.1368 31.5254 65.2391 29.1361 65.2391 21.6364ZM44.009 23.4841C44.712 20.0508 46.8043 17.9197 50.5783 17.9197C53.7711 17.9197 56.1168 19.5126 56.1168 21.5036C56.1168 22.6983 55.1395 24.2911 49.6661 24.2911C47.8318 24.2911 45.9005 23.9294 44.009 23.4841Z"
+                fill="currentColor"
+                class="sc-beqWaB sc-gueYoa sc-dmqHEX cEtBaN dEvOkn"
+              ></path>
+              <path
+                d="M132.418 10.0881C123.166 10.0881 116.389 16.4596 116.389 26.0831C116.389 35.7067 123.166 42.0781 132.418 42.0781C141.671 42.0781 148.382 35.7067 148.382 26.0831C148.382 16.4596 141.606 10.0881 132.418 10.0881ZM132.418 33.4501C128.248 33.4501 125.837 30.1316 125.837 26.0831C125.837 22.0346 128.248 18.7161 132.418 18.7161C136.588 18.7161 138.934 22.0346 138.934 26.0831C138.934 30.1316 136.523 33.4501 132.418 33.4501Z"
+                fill="currentColor"
+                class="sc-beqWaB sc-gueYoa sc-dmqHEX cEtBaN dEvOkn"
+              ></path>
+              <path
+                d="M97.1671 21.6364C97.1671 13.9375 89.2828 10.0881 82.5715 10.0881C74.1659 10.0881 66.8029 16.4596 66.8029 26.415C66.8029 36.3703 73.2537 42.0781 84.5262 42.0781C88.0448 42.0781 92.606 41.4808 96.2549 39.2242V30.3971C92.8014 32.9855 89.0222 34.2465 85.1127 34.2465C80.3925 34.2465 77.908 32.7459 76.6921 30.6964C78.3094 31.1451 80.2642 31.5254 82.5715 31.5254C90.0648 31.5254 97.1671 29.1361 97.1671 21.6364ZM75.9369 23.4841C76.64 20.0508 78.7323 17.9197 82.5063 17.9197C85.6991 17.9197 88.0448 19.5126 88.0448 21.5036C88.0448 22.6983 87.0674 24.2911 81.5941 24.2911C79.7598 24.2911 77.8285 23.9294 75.9369 23.4841Z"
+                fill="currentColor"
+                class="sc-beqWaB sc-gueYoa sc-dmqHEX cEtBaN dEvOkn"
+              ></path>
+              <path
+                d="M108.7 4.91132V0H99.2522V28.5388C99.2522 36.0385 103.553 42.1445 111.567 42.0781C112.936 42.0781 114.695 41.9453 115.672 41.6799V33.1846C115.021 33.3837 114.369 33.4501 113.652 33.4501C109.743 33.4501 108.7 30.7953 108.7 28.406V18.6497H108.765C109.482 19.2471 111.958 19.5789 112.936 19.5789C113.978 19.5789 114.89 19.5125 115.672 19.3798V10.7518C115.086 10.8182 114.499 10.8182 113.652 10.8182C110.199 10.8182 108.7 7.96431 108.7 4.91132Z"
+                fill="currentColor"
+                class="sc-beqWaB sc-gueYoa sc-dmqHEX cEtBaN dEvOkn"
+              ></path>
+              <path
+                d="M17.0214 33.3174C12.8512 33.3174 10.4403 30.1316 10.4403 26.2158C10.4403 22.3001 12.8512 19.5126 17.0214 19.5126H19.3019C20.4096 19.5126 22.8205 19.2471 23.4721 18.5834H23.5373V26.2158C23.5373 30.8617 21.1915 33.3174 17.0214 33.3174ZM17.0214 42.0781C26.274 42.0781 32.9854 36.3703 32.9854 26.2158V0H23.5373V5.30954C23.5373 8.628 22.625 10.7518 17.8033 10.7518H17.0214C8.61581 10.7518 0.992188 16.1941 0.992188 26.2158C0.992188 36.2376 7.76874 42.0781 17.0214 42.0781Z"
+                fill="currentColor"
+                class="sc-beqWaB sc-gueYoa sc-dmqHEX cEtBaN dEvOkn"
+              ></path>
+            </svg>
+          </div>
+        </div>
+      </div>
+      <main>
+        <div class="text">
+          <div>
+            <h1>Your Experience, <bold>Amplified.</bold></h1>
+          </div>
+          <h2>
+            As a RnD Vendor2 user, you have a unique perspective. Your personal
+            experience & acquired knowledge can help others learn about our
+            brand & ultimately lead them to make better decisions. We would like
+            to invite you to join our exclusive advocates club.
+          </h2>
+          <button class="action-button">Share Your Knowledge Here</button>
+          <div class="action-login">
+            Already registered <button>Login</button>
+          </div>
+        </div>
+        <div class="image-container">
+          <img
+            src="https://idan.register-dev.deeto.ai/assets/selfRegistrationMainImg-BPTf0p-4.png"
+          />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
