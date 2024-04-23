@@ -39,8 +39,8 @@ export default function Fonts({
 
     swapStyles({
       ...styles,
-      container: {
-        ...styles.container,
+      [selectors[0]]: {
+        ...styles[selectors[0]],
         fontFamily: `"${defaultValue}"`,
       },
     });

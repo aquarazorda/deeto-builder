@@ -39,11 +39,7 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          <Content
-            htmlUrl={htmlUrl}
-            setHtml={setHtml}
-            metadata={metadata ?? stylingMetadata}
-          />
+          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
