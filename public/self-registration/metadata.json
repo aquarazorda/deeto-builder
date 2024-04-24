@@ -1,0 +1,181 @@
+{
+  "contentEditables": ["h1", "h2"],
+  "list": [
+    {
+      "type": "section",
+      "title": "Visual Settings",
+      "elements": [
+        {
+          "type": "group",
+          "title": "Page Settings",
+          "description": "Here you can upload your logo or background image",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "image",
+              "title": "Logo",
+              "defaultValue": "/html_builder/images/placeholder-logo.svg",
+              "defaultLink": "https://company.com",
+              "selectors": ["img[alt='logo']"]
+            },
+            {
+              "type": "item",
+              "behaviour": "background",
+              "title": "Page background",
+              "defaultValue": "#041527",
+              "selectors": [".container"]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Colors",
+          "description": "Here you can choose colors",
+          "elements": [
+            {
+              "type": "group",
+              "title": "Texts",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "Webpage text",
+                  "defaultValue": "white",
+                  "selectors": ["h1", "h2"]
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "title": "Interactive components",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "color-background",
+                  "title": "Button color",
+                  "defaultValue": "#0057FF",
+                  "selectors": ["main .action-button"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "color",
+                  "title": "Link color",
+                  "defaultValue": "#0057FF",
+                  "selectors": [".action-login button"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Fonts",
+          "description": "Here you can choose fonts",
+          "elements": [
+            {
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Inter",
+                  "title": "Inter",
+                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Libre Baskerville",
+                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
+                  "title": "Libre baskerville",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Oswald",
+                  "title": "Oswald",
+                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Work Sans",
+                  "title": "Work sans",
+                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Slabo 27px",
+                  "title": "Slabo",
+                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Raleway",
+                  "title": "Raleway",
+                  "link": "https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap",
+                  "selectors": [".container"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Merriweather",
+                  "title": "Merriweather",
+                  "link": "https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&display=swap",
+                  "selectors": [".container"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Content",
+      "elements": [
+        {
+          "type": "group",
+          "title": "Page Title",
+          "elements": [
+            {
+              "type": "group",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "text",
+                  "defaultValue": "Referral Program By",
+                  "selectors": ["title"]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Advanced",
+      "elements": [
+        {
+          "type": "group",
+          "title": "CSS editor",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "css-editor",
+              "defaultValue": "/*footer {background-color: purple;}*/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

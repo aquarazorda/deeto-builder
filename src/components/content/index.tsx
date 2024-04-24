@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/lib/local-storage";
 import { CheerioAPI, load } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
-import { Metadata } from "@/state/panel";
+import { Metadata, usePanel } from "@/state/panel";
 import morphdom from "morphdom";
 
 const contentEditableListener =
@@ -25,13 +25,12 @@ const contentEditableListener =
 export default function Content({
   htmlUrl,
   setHtml: setHtmlParent,
-  metadata,
 }: {
   htmlUrl?: string;
-  metadata?: Metadata;
   setHtml?: (html: string) => void;
 }) {
   const { mobileMode } = useLocalStorage();
+  const meta = usePanel(useShallow((state) => state.metadata));
   const [html, $, loadHtml, setMutable, setHtml] = useHtml(
     useShallow((state) => [
       state.html,
@@ -49,8 +48,8 @@ export default function Content({
     loadHtml(htmlUrl).then(({ html, set }) => {
       const $ = load(html);
 
-      if (metadata?.contentEditables?.length) {
-        metadata.contentEditables.forEach((selector) => {
+      if (meta?.contentEditables?.length) {
+        meta.contentEditables.forEach((selector) => {
           $(selector).attr("contenteditable", "");
         });
       }
@@ -62,7 +61,7 @@ export default function Content({
         $,
       }));
     });
-  }, [htmlUrl]);
+  }, [htmlUrl, meta]);
 
   useEffect(() => {
     setHtmlParent && setMutable(setHtmlParent);
