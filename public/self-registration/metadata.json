@@ -16,7 +16,7 @@
               "title": "Logo",
               "defaultValue": "/html_builder/images/placeholder-logo.svg",
               "defaultLink": "https://company.com",
-              "selectors": ["img[alt='logo']"]
+              "selectors": ["#logo"]
             },
             {
               "type": "item",
