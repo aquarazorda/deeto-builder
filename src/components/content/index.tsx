@@ -6,7 +6,7 @@ import { useLocalStorage } from "@/lib/local-storage";
 import { CheerioAPI, load } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
-import { Metadata, usePanel } from "@/state/panel";
+import { usePanel } from "@/state/panel";
 import morphdom from "morphdom";
 
 const contentEditableListener =
