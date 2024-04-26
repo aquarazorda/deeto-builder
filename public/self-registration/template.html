@@ -13,6 +13,15 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/html_builder/reset.css" />
+    <script>
+      function sendHeightToParent() {
+        const height = document.documentElement.scrollHeight;
+        window.parent.postMessage({ type: "iframeHeight", height }, "*");
+      }
+
+      window.addEventListener("load", sendHeightToParent);
+      window.addEventListener("resize", sendHeightToParent);
+    </script>
   </head>
   <style>
     .container {

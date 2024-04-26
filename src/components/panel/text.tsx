@@ -3,6 +3,7 @@ import { Input } from "../ui/input";
 import { useHtml } from "@/state/html";
 import { useShallow } from "zustand/react/shallow";
 import { Label } from "../ui/label";
+import { load } from "cheerio";
 
 export default function Text({
   item: { title, selectors, defaultValue },
@@ -22,7 +23,7 @@ export default function Text({
       link ? $(selector).attr("href", value) : $(selector).text(value);
     });
 
-    set($);
+    set(load($.html()));
   };
 
   return (
