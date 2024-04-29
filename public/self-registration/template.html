@@ -12,15 +12,33 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="/html_builder/reset.css" />
+    <link rel="stylesheet" href="https://dev.deeto.ai/html_builder/reset.css" />
     <script>
       function sendHeightToParent() {
         const height = document.documentElement.scrollHeight;
         window.parent.postMessage({ type: "iframeHeight", height }, "*");
       }
 
-      window.addEventListener("load", sendHeightToParent);
+      function setLoaded() {
+        sendHeightToParent();
+        window.parent.postMessage({ type: "iframeLoaded" }, "*");
+      }
+
       window.addEventListener("resize", sendHeightToParent);
+
+      window.addEventListener("message", function (event) {
+        if (event.data.type === "setLogo") {
+          const logo = document.getElementById("logo");
+          if (!logo.src) {
+            logo.src = event.data.payload;
+          }
+        }
+      });
+      window.addEventListener("load", setLoaded);
+
+      function clickAction() {
+        window.parent.postMessage({ type: "clickAction" }, "*");
+      }
     </script>
   </head>
   <style>
@@ -104,10 +122,11 @@
       font-size: 20px;
     }
 
-    main .action-login button {
+    main .action-login a {
       text-decoration: underline;
       font-weight: 700;
       cursor: pointer;
+      color: white;
     }
 
     .image-container {
@@ -138,11 +157,7 @@
   <body>
     <div class="container">
       <div class="header">
-        <img
-          src="https://deeto-images-dev.s3.us-east-1.amazonaws.com/avatars/deetoPhotoUploads-dbf5e1c3-c48c-4b3b-a7e0-53f75cb37e69"
-          id="logo"
-          alt="Company Logo"
-        />
+        <img id="logo" alt="Company Logo" />
         <div class="deeto-wrapper">
           <div>In partnership with</div>
           <div class="deeto-logo">
@@ -193,9 +208,12 @@
             brand & ultimately lead them to make better decisions. We would like
             to invite you to join our exclusive advocates club.
           </h2>
-          <button class="action-button">Share Your Knowledge Here</button>
+          <button class="action-button" onclick="clickAction()">
+            Share Your Knowledge Here
+          </button>
           <div class="action-login">
-            Already registered <button>Login</button>
+            Already registered
+            <a href="https://app.deeto.ai/login-with-email">Login</a>
           </div>
         </div>
         <div class="image-container">

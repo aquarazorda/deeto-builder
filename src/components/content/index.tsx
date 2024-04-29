@@ -24,10 +24,12 @@ const contentEditableListener =
 
 export default function Content({
   htmlUrl,
+  logoUrl,
   setHtml: setHtmlParent,
 }: {
   htmlUrl?: string;
   setHtml?: (html: string) => void;
+  logoUrl?: string;
 }) {
   const { mobileMode } = useLocalStorage();
   const meta = usePanel(useShallow((state) => state.metadata));
@@ -47,6 +49,10 @@ export default function Content({
   useEffect(() => {
     loadHtml(htmlUrl).then(({ html, set }) => {
       const $ = load(html);
+
+      if (logoUrl && !$("#logo").attr("src")) {
+        $("#logo").attr("src", logoUrl);
+      }
 
       if (meta?.contentEditables?.length) {
         meta.contentEditables.forEach((selector) => {

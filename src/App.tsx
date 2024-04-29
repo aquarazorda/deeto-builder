@@ -17,6 +17,7 @@ type Props = Partial<{
   url: string;
   metadata: Metadata;
   stylingMetadata: Metadata;
+  logoUrl: string;
   saveImage: (name: string, blob: Blob) => Promise<string>;
 }>;
 
@@ -26,6 +27,7 @@ function App({
   saveImage,
   metadata,
   stylingMetadata,
+  logoUrl,
 }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
@@ -39,7 +41,7 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+          <Content htmlUrl={htmlUrl} setHtml={setHtml} logoUrl={logoUrl} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel

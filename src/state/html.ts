@@ -74,9 +74,11 @@ export const useHtml = create<HtmlState>((set) => ({
       styles: parseStyleTag(state.history[state.currentIdx + 1]),
     })),
   loadHtml: async (htmlUrl?: string) => {
-    const html = await fetch(htmlUrl ?? ROOT_URL + "/template.html")
+    const html = await fetch(
+      htmlUrl ?? ROOT_URL + "/self-registration/index.html",
+    )
       .then((res) => res.text())
-      .then((html) => html.replace(/\/html_builder/g, ROOT_URL));
+      .then((html) => html.replace(/"\/html_builder/g, ROOT_URL));
 
     set((state) => ({
       ...state,
