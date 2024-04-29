@@ -64,6 +64,7 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+      z-index: 10;
     }
 
     h1 {
@@ -122,6 +123,18 @@
     }
   </style>
   <style></style>
+  <style>
+    @media only screen and (max-width: 1024px) {
+      .image-container {
+        position: absolute;
+        opacity: 0.9;
+      }
+
+      main {
+        padding: 0 48px;
+      }
+    }
+  </style>
   <body>
     <div class="container">
       <div class="header">
