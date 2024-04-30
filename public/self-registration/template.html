@@ -27,11 +27,16 @@
       window.addEventListener("resize", sendHeightToParent);
 
       window.addEventListener("message", function (event) {
-        if (event.data.type === "setLogo") {
+        if (event.data.type === "vendorData") {
           const logo = document.getElementById("logo");
           if (!logo.src) {
-            logo.src = event.data.payload;
+            logo.src = event.data.payload.appLogo.url;
           }
+
+          const vendorName = event.data.payload.name;
+          document.querySelector("h2").innerHTML = document
+            .querySelector("h2")
+            .innerHTML.replace("{{ vendorName }}", vendorName);
         }
       });
       window.addEventListener("load", setLoaded);
@@ -203,10 +208,10 @@
             <h1>Your Experience, <bold>Amplified.</bold></h1>
           </div>
           <h2>
-            As a RnD Vendor2 user, you have a unique perspective. Your personal
-            experience & acquired knowledge can help others learn about our
-            brand & ultimately lead them to make better decisions. We would like
-            to invite you to join our exclusive advocates club.
+            As a {{ vendorName }} user, you have a unique perspective. Your
+            personal experience & acquired knowledge can help others learn about
+            our brand & ultimately lead them to make better decisions. We would
+            like to invite you to join our exclusive advocates club.
           </h2>
           <button class="action-button" onclick="clickAction()">
             Share Your Knowledge Here
