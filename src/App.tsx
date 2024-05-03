@@ -11,14 +11,16 @@ import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
 import { Metadata } from "./state/panel";
 import { ScrollArea } from "./components/ui/scroll-area";
+import { useExtra } from "./state/extra";
+import { useEffect } from "react";
 
 type Props = Partial<{
   setHtml: (html: string) => void;
   url: string;
   metadata: Metadata;
   stylingMetadata: Metadata;
-  logoUrl: string;
   saveImage: (name: string, blob: Blob) => Promise<string>;
+  extra: Record<string, any>;
 }>;
 
 function App({
@@ -27,10 +29,19 @@ function App({
   saveImage,
   metadata,
   stylingMetadata,
-  logoUrl,
+  extra,
 }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
+  const { set: setExtra } = useExtra();
+
+  useEffect(() => {
+    if (extra)
+      setExtra({
+        set: setExtra,
+        state: extra,
+      });
+  }, [extra]);
 
   return (
     <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50">
@@ -41,7 +52,7 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          <Content htmlUrl={htmlUrl} setHtml={setHtml} logoUrl={logoUrl} />
+          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel

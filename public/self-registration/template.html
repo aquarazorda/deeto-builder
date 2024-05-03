@@ -14,35 +14,8 @@
     />
     <link rel="stylesheet" href="https://dev.deeto.ai/html_builder/reset.css" />
     <script>
-      function sendHeightToParent() {
-        const height = document.documentElement.scrollHeight;
-        window.parent.postMessage({ type: "iframeHeight", height }, "*");
-      }
-
-      function setLoaded() {
-        sendHeightToParent();
-        window.parent.postMessage({ type: "iframeLoaded" }, "*");
-      }
-
-      window.addEventListener("resize", sendHeightToParent);
-
-      window.addEventListener("message", function (event) {
-        if (event.data.type === "vendorData") {
-          const logo = document.getElementById("logo");
-          if (!logo.src) {
-            logo.src = event.data.payload.appLogo.url;
-          }
-
-          const vendorName = event.data.payload.name;
-          document.querySelector("h2").innerHTML = document
-            .querySelector("h2")
-            .innerHTML.replace("{{ vendorName }}", vendorName);
-        }
-      });
-      window.addEventListener("load", setLoaded);
-
       function clickAction() {
-        window.parent.postMessage({ type: "clickAction" }, "*");
+        window.postMessage({ type: "clickAction" }, "*");
       }
     </script>
   </head>
@@ -55,6 +28,7 @@
       display: flex;
       flex-direction: column;
       font-family: Inter;
+      overflow-x: hidden;
     }
 
     .header {
@@ -149,13 +123,10 @@
   <style></style>
   <style>
     @media only screen and (max-width: 1024px) {
-      .image-container {
-        position: absolute;
-        opacity: 0.9;
-      }
-
       main {
-        padding: 0 48px;
+        flex-direction: column-reverse;
+        gap: 20px;
+        padding: 48px;
       }
     }
   </style>
@@ -227,6 +198,7 @@
           />
         </div>
       </main>
+      <div id="reactWrapper"></div>
     </div>
   </body>
 </html>

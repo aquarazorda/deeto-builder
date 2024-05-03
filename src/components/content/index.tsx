@@ -8,6 +8,7 @@ import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
 import { usePanel } from "@/state/panel";
 import morphdom from "morphdom";
+import { useExtra } from "@/state/extra";
 
 const contentEditableListener =
   (
@@ -24,14 +25,13 @@ const contentEditableListener =
 
 export default function Content({
   htmlUrl,
-  logoUrl,
   setHtml: setHtmlParent,
 }: {
   htmlUrl?: string;
   setHtml?: (html: string) => void;
-  logoUrl?: string;
 }) {
   const { mobileMode } = useLocalStorage();
+  const state = useExtra(useShallow((state) => state.state));
   const meta = usePanel(useShallow((state) => state.metadata));
   const [html, $, loadHtml, setMutable, setHtml] = useHtml(
     useShallow((state) => [
@@ -48,10 +48,12 @@ export default function Content({
 
   useEffect(() => {
     loadHtml(htmlUrl).then(({ html, set }) => {
-      const $ = load(html);
+      const $ = load(
+        html.replace(/\{\{\s*vendorName\s*\}\}/g, state?.vendor?.name),
+      );
 
-      if (logoUrl && !$("#logo").attr("src")) {
-        $("#logo").attr("src", logoUrl);
+      if (!$("#logo").attr("src") && state?.vendor?.appLogo?.url) {
+        $("#logo").attr("src", state.vendor.appLogo.url);
       }
 
       if (meta?.contentEditables?.length) {

@@ -14,7 +14,6 @@
               "type": "item",
               "behaviour": "image",
               "title": "Logo",
-              "defaultValue": "/html_builder/images/placeholder-logo.svg",
               "defaultLink": "https://company.com",
               "selectors": ["#logo"]
             },
@@ -24,6 +23,13 @@
               "title": "Page background",
               "defaultValue": "#041527",
               "selectors": [".container"]
+            },
+            {
+              "type": "item",
+              "behaviour": "image",
+              "title": "Hero Image",
+              "defaultLink": "https://company.com",
+              "selectors": [".image-container img"]
             }
           ]
         },

@@ -7,6 +7,7 @@ import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import LoadingSpinner from "../ui/loading-spinner";
 import { load } from "cheerio";
+import { cn } from "@/lib/utils";
 
 export default function Images({
   item: { selectors, title, defaultValue, defaultLink },
@@ -44,7 +45,12 @@ export default function Images({
   return (
     <div className="rounded-2xl border border-[#DDD7E5] bg-white flex flex-col p-4 gap-4">
       <span className="text-base font-medium">{title}</span>
-      <div className="rounded-[100px] py-4 px-5 bg-[#DDD7E5] flex justify-center">
+      <div
+        className={cn(
+          "rounded-[100px] py-4 px-5 flex justify-center",
+          !imageUrl && "bg-[#DDD7E5]",
+        )}
+      >
         <UploadImageDialog onSave={changeUrl}>
           {(isLoading: boolean) =>
             isLoading ? (
