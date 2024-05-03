@@ -1,16 +1,17 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { usePanel } from "@/state/panel";
 import { useShallow } from "zustand/react/shallow";
 
 type Props = {
-  children: React.ReactNode;
+  children: (isLoading: boolean) => React.ReactNode;
   onSave: (url: string) => void;
 };
 
 export default function UploadImageDialog({ children, onSave }: Props) {
   const file = useRef<File>();
   const inputRef = useRef<HTMLInputElement>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const save = usePanel(useShallow((state) => state.saveImage));
 
@@ -19,13 +20,19 @@ export default function UploadImageDialog({ children, onSave }: Props) {
       return;
     }
 
-    const res = await save(file.current.name, file.current);
-    onSave(res);
+    setIsLoading(true);
+
+    try {
+      const res = await save(file.current.name, file.current);
+      onSave(res);
+    } catch {}
+
+    setIsLoading(false);
   };
 
   return (
     <div onClick={() => inputRef.current?.click()} className="cursor-pointer">
-      {children}
+      {children(isLoading)}
       <Input
         ref={inputRef}
         className="hidden"

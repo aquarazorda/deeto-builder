@@ -6,8 +6,9 @@ import { useLocalStorage } from "@/lib/local-storage";
 import { CheerioAPI, load } from "cheerio";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import { onClickMutatorListener } from "./listeners";
-import { Metadata, usePanel } from "@/state/panel";
+import { usePanel } from "@/state/panel";
 import morphdom from "morphdom";
+import { useExtra } from "@/state/extra";
 
 const contentEditableListener =
   (
@@ -30,6 +31,7 @@ export default function Content({
   setHtml?: (html: string) => void;
 }) {
   const { mobileMode } = useLocalStorage();
+  const state = useExtra(useShallow((state) => state.state));
   const meta = usePanel(useShallow((state) => state.metadata));
   const [html, $, loadHtml, setMutable, setHtml] = useHtml(
     useShallow((state) => [
@@ -46,7 +48,13 @@ export default function Content({
 
   useEffect(() => {
     loadHtml(htmlUrl).then(({ html, set }) => {
-      const $ = load(html);
+      const $ = load(
+        html.replace(/\{\{\s*vendorName\s*\}\}/g, state?.vendor?.name),
+      );
+
+      if (!$("#logo").attr("src") && state?.vendor?.appLogo?.url) {
+        $("#logo").attr("src", state.vendor.appLogo.url);
+      }
 
       if (meta?.contentEditables?.length) {
         meta.contentEditables.forEach((selector) => {

@@ -5,15 +5,16 @@ import { Item } from "@/state/panel";
 import UploadImageDialog from "../dialogs/upload-image";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import LoadingSpinner from "../ui/loading-spinner";
+import { load } from "cheerio";
+import { cn } from "@/lib/utils";
 
 export default function Images({
   item: { selectors, title, defaultValue, defaultLink },
 }: {
   item: Item;
 }) {
-  const [$, set] = useHtml(
-    useShallow((state) => [state.$, state.setHtml, state.styles]),
-  );
+  const [$, set] = useHtml(useShallow((state) => [state.$, state.setHtml]));
 
   const imageUrl = useMemo(
     () => $?.(selectors[0]).attr("src") ?? defaultValue,
@@ -28,23 +29,36 @@ export default function Images({
       $(selector).attr("src", src);
     });
 
-    set($);
+    set(load($.html()));
   };
 
   const changeHref = (href: string) => {
     if (!$) return;
+
     selectors.forEach((selector) => {
       $(selector).parent().attr("href", href);
     });
-    set($);
+
+    set(load($.html()));
   };
 
   return (
     <div className="rounded-2xl border border-[#DDD7E5] bg-white flex flex-col p-4 gap-4">
       <span className="text-base font-medium">{title}</span>
-      <div className="rounded-[100px] py-4 px-5 bg-[#DDD7E5] flex justify-center">
+      <div
+        className={cn(
+          "rounded-[100px] py-4 px-5 flex justify-center",
+          !imageUrl && "bg-[#DDD7E5]",
+        )}
+      >
         <UploadImageDialog onSave={changeUrl}>
-          <img src={imageUrl} width={157} height={53} />
+          {(isLoading: boolean) =>
+            isLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <img src={imageUrl} width={157} height={53} />
+            )
+          }
         </UploadImageDialog>
       </div>
       <span className="text-[#877997] text-xs">

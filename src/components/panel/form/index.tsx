@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useHtml } from "@/state/html";
-import { Form } from "@/state/panel";
+import type { Form } from "@/state/panel";
 import { Cheerio, Element, load } from "cheerio";
 import { useEffect, useMemo, useState } from "react";
 import { useShallow } from "zustand/react/shallow";

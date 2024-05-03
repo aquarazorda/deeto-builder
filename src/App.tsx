@@ -11,6 +11,8 @@ import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
 import { Metadata } from "./state/panel";
 import { ScrollArea } from "./components/ui/scroll-area";
+import { useExtra } from "./state/extra";
+import { useEffect } from "react";
 
 type Props = Partial<{
   setHtml: (html: string) => void;
@@ -18,6 +20,7 @@ type Props = Partial<{
   metadata: Metadata;
   stylingMetadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
+  extra: Record<string, any>;
 }>;
 
 function App({
@@ -26,9 +29,19 @@ function App({
   saveImage,
   metadata,
   stylingMetadata,
+  extra,
 }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
+  const { set: setExtra } = useExtra();
+
+  useEffect(() => {
+    if (extra)
+      setExtra({
+        set: setExtra,
+        state: extra,
+      });
+  }, [extra]);
 
   return (
     <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50">

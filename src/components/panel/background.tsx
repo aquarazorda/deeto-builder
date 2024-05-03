@@ -8,6 +8,7 @@ import { PopoverTrigger } from "@radix-ui/react-popover";
 import { ColorResult, SketchPicker } from "react-color";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import UploadImageDialog from "../dialogs/upload-image";
+import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Background({
   item: { selectors, title, defaultValue },
@@ -105,7 +106,13 @@ export default function Background({
           }}
         >
           <UploadImageDialog onSave={bgChangeImage}>
-            <img src={bgUrl} width={157} height={53} />
+            {(isLoading) =>
+              isLoading ? (
+                <LoadingSpinner />
+              ) : (
+                <img src={bgUrl} width={157} height={53} />
+              )
+            }
           </UploadImageDialog>
         </div>
       )}
