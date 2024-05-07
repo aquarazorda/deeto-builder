@@ -131,7 +131,7 @@ button {
   inner {
     display: flex !important;
     flex-direction: column;
-    padding: 12px !important;
+    padding: 24px 32px !important;
   }
 
   form {
