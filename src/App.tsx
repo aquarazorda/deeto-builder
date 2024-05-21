@@ -1,5 +1,4 @@
 import Header from "./components/header";
-import Content from "./components/content";
 import Panel from "./components/panel";
 import { Toaster } from "./components/ui/sonner";
 import {
@@ -11,8 +10,9 @@ import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
 import { Metadata } from "./state/panel";
 import { ScrollArea } from "./components/ui/scroll-area";
-import { useExtra } from "./state/extra";
-import { useEffect } from "react";
+import { useExtra, Extra } from "./state/extra";
+import { lazy, useEffect } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 type Props = Partial<{
   setHtml: (html: string) => void;
@@ -20,8 +20,18 @@ type Props = Partial<{
   metadata: Metadata;
   stylingMetadata: Metadata;
   saveImage: (name: string, blob: Blob) => Promise<string>;
-  extra: Record<string, any>;
+  extra: Extra["state"];
 }>;
+
+const Content = lazy(() => import("./components/content"));
+const WidgetContent = lazy(() => import("./components/content/widget"));
+
+const mockExtras = {
+  isWidget: true,
+  variables: {
+    "main-color": "#481453",
+  },
+};
 
 function App({
   url: htmlUrl,
@@ -33,14 +43,11 @@ function App({
 }: Props) {
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
-  const { set: setExtra } = useExtra();
+  const setExtra = useExtra(useShallow((state) => state.set));
 
   useEffect(() => {
-    if (extra)
-      setExtra({
-        set: setExtra,
-        state: extra,
-      });
+    // if (extra)
+    setExtra(mockExtras);
   }, [extra]);
 
   return (
@@ -52,7 +59,11 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+          {!extra?.isWidget ? (
+            <WidgetContent />
+          ) : (
+            <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+          )}
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
