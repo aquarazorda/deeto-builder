@@ -15,12 +15,12 @@ import useDebouncedCallback from "@/lib/debounced-callback";
 
 const Input = forwardRef<
   HTMLInputElement,
-  InputHTMLAttributes<HTMLInputElement>
->((props, ref) => {
+  InputHTMLAttributes<HTMLInputElement> & { title: string }
+>(({ title, ...props }, ref) => {
   return (
     <FormControl>
       <div className="flex flex-col flex-1 shadow-input p-4 rounded-2xl">
-        <span className="font-medium text-[#877997]">X offset</span>
+        <span className="font-medium text-[#877997]">{title}</span>
         <input
           ref={ref}
           className="text-base font-medium text-[#2E1334] w-fit"
@@ -91,22 +91,26 @@ export default function Shadow({ item }: { item: Item }) {
           color ? toString(color) : defaultValues.color
         }`;
 
-        item.variables?.forEach((variable) => {
-          set({
-            ...state,
-            variables: {
-              ...state.variables,
-              [variable]: value,
-            },
-          });
+        const values = item.variables?.reduce(
+          (acc, variable: string) => {
+            acc[variable] = value;
+            return acc;
+          },
+          {} as Record<string, string>,
+        );
+
+        debouncedSet({
+          ...state,
+          variables: {
+            ...state.variables,
+            ...values,
+          },
         });
       },
     );
 
     return unsubscribe;
   }, []);
-
-  console.log(state.variables);
 
   return (
     <WithAccordion item={item}>
@@ -115,24 +119,32 @@ export default function Shadow({ item }: { item: Item }) {
           <FormField
             name="xOffset"
             control={form.control}
-            render={({ field }) => <Input {...field} type="number" />}
+            render={({ field }) => (
+              <Input title="X offset" {...field} type="number" />
+            )}
           />
           <FormField
             name="yOffset"
             control={form.control}
-            render={({ field }) => <Input {...field} type="number" />}
+            render={({ field }) => (
+              <Input title="Y offset" {...field} type="number" />
+            )}
           />
         </div>
         <div className="flex gap-2 w-full">
           <FormField
             name="blurRadius"
             control={form.control}
-            render={({ field }) => <Input {...field} type="number" />}
+            render={({ field }) => (
+              <Input title="Blur" {...field} type="number" />
+            )}
           />
           <FormField
             name="spreadRadius"
             control={form.control}
-            render={({ field }) => <Input {...field} type="number" />}
+            render={({ field }) => (
+              <Input title="Spread" {...field} type="number" />
+            )}
           />
         </div>
         <FormField
