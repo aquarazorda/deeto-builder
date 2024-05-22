@@ -38,7 +38,6 @@ const DrawGroup = ({
 };
 
 const DrawItem = ({ element }: { element: Item }) => {
-  console.log(element);
   return match(element)
     .with({ behaviour: "image" }, (el) => <Images item={el} />)
     .with({ behaviour: "background" }, (el) => <Background item={el} />)

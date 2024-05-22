@@ -13,7 +13,6 @@ const getContent = (item: any) => {
 };
 
 export default function ComponentGroup({ item }: { item: Item }) {
-  console.log(item);
   return (
     <div className="flex flex-col bg-white border border-[#DDD7E5] rounded-2xl p-4 divide-y divide-[#DDD7E5]">
       <span className="font-bold text-[#51425E] font-inter mb-4">
