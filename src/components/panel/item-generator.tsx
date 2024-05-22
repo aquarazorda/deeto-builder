@@ -9,6 +9,7 @@ import Text from "./text";
 import Form from "./form";
 import CssEditor from "./css-editor";
 import Shape from "./shape";
+import ComponentGroup from "./group";
 
 const DrawGroup = ({
   element,
@@ -37,6 +38,7 @@ const DrawGroup = ({
 };
 
 const DrawItem = ({ element }: { element: Item }) => {
+  console.log(element);
   return match(element)
     .with({ behaviour: "image" }, (el) => <Images item={el} />)
     .with({ behaviour: "background" }, (el) => <Background item={el} />)
@@ -47,6 +49,9 @@ const DrawItem = ({ element }: { element: Item }) => {
     .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
     .with({ behaviour: "text" }, (el) => <Text item={el} />)
     .with({ behaviour: "shape" }, (el) => <Shape item={el} />)
+    .with({ behaviour: "component-group" }, (el) => (
+      <ComponentGroup item={el} />
+    ))
     .with({ behaviour: "css-editor" }, (el) => (
       <CssEditor defaultValue={el.defaultValue} />
     ))

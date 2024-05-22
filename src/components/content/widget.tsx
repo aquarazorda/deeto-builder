@@ -64,5 +64,21 @@ export default function WidgetContent() {
     ref.current?.shadowRoot?.appendChild(template);
   }, [state]);
 
-  return <div className="relative w-full h-full"></div>;
+  return (
+    <div className="relative w-full h-full bg-widget-background flex flex-col gap-8 p-10">
+      <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
+      <div className="flex-1 gap-10 flex flex-col">
+        {Array.from({ length: 2 }).map((_, index) => (
+          <div key={index} className="flex flex-1 flex-wrap gap-10">
+            {Array.from({ length: 3 }).map((_, idx) => (
+              <div
+                key={idx}
+                className="flex-1 border-[10px] border-white border-opacity-10 rounded-2xl"
+              />
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }

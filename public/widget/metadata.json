@@ -190,37 +190,50 @@
       "title": "Components",
       "elements": [
         {
-          "type": "component-group",
+          "type": "group",
           "title": "Activation button",
           "elements": [
             {
-              "type": "background",
-              "title": "Background",
-              "defaultValue": "#481453",
-              "variables": ["activation-button-background"]
-            },
-            {
-              "type": "corner-radius",
-              "title": "Corner radius",
-              "defaultValue": "0px 0px 40px 40px",
-              "variables": ["activation-button-radius"]
-            },
-            {
-              "type": "background",
-              "title": "Icon",
-              "variables": ["activation-button-icon"],
-              "extra": {
-                "hideOption": { "background": false }
-              }
-            },
-            {
-              "type": "border",
-              "title": "Border",
-              "variables": ["activation-button-border"],
-              "defaultValue": {
-                "color": "white",
-                "width": "0px"
-              }
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "All component",
+              "options": [
+                {
+                  "type": "background",
+                  "title": "Background",
+                  "defaultValue": "#481453",
+                  "variables": ["activation-button-background"]
+                },
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "0px 0px 40px 40px",
+                  "variables": ["activation-button-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["activation-button-shadow"]
+                },
+                {
+                  "type": "image",
+                  "title": "Icon",
+                  "variables": ["activation-button-icon"],
+                  "extra": {
+                    "hideOption": { "background": false }
+                  }
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["activation-button-border"],
+                  "defaultValue": {
+                    "color": "white",
+                    "width": "0px"
+                  }
+                }
+              ]
             }
           ]
         },
