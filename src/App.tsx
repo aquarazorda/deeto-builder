@@ -15,7 +15,7 @@ import { lazy, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 type Props = Partial<{
-  setHtml: (html: string) => void;
+  onSubmit: (html: any) => void;
   url: string;
   metadata: Metadata;
   stylingMetadata: Metadata;
@@ -35,7 +35,7 @@ const mockExtras = {
 
 function App({
   url: htmlUrl,
-  setHtml,
+  onSubmit,
   saveImage,
   metadata,
   stylingMetadata,
@@ -62,7 +62,7 @@ function App({
           {!extra?.isWidget ? (
             <WidgetContent />
           ) : (
-            <Content htmlUrl={htmlUrl} setHtml={setHtml} />
+            <Content htmlUrl={htmlUrl} setHtml={onSubmit} />
           )}
         </ResizablePanel>
         <ResizableHandle withHandle />

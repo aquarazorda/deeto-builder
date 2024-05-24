@@ -24,8 +24,10 @@ export default function WidgetContent() {
     document.body.appendChild(script);
 
     return () => {
-      document.body.removeChild(script);
-      document.body.removeChild(loadedElement);
+      try {
+        document.body.removeChild(script);
+        document.body.removeChild(loadedElement);
+      } catch {}
     };
   }, []);
 
