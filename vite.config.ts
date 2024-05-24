@@ -4,6 +4,9 @@ import path from "path";
 import federation from "@originjs/vite-plugin-federation";
 import svgr from "vite-plugin-svgr";
 
+// @ts-expect-error
+import { WIDGET_URL } from "@/config";
+
 // https://vitejs.dev/config/
 export default defineConfig({
   base: "/html_builder/",
@@ -43,7 +46,7 @@ export default defineConfig({
         "./HtmlBuilder": "./src/html-builder",
       },
       remotes: {
-        widget: "http://localhost:4173/assets/remoteEntry.js",
+        widget: WIDGET_URL,
       },
     }),
   ],
