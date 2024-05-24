@@ -23,7 +23,7 @@ export default function Background({
   const bgChange = useDebouncedCallback((color: ColorResult) => {
     const newStyles = { ...styles };
 
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       newStyles[selector].background = color.hex;
     });
 
@@ -33,7 +33,7 @@ export default function Background({
   const bgChangeImage = (url: string) => {
     const newStyles = { ...styles };
 
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       styles[selector].background = `url(${url})`;
       styles[selector].backgroundSize = `100% 100%`;
       styles[selector].backgroundRepeat = `no-repeat`;
@@ -47,7 +47,7 @@ export default function Background({
     url: bgUrl,
     color: bgColor,
   } = useMemo(() => {
-    const bg = styles?.[selectors[0]]?.background;
+    const bg = selectors?.[0] && styles?.[selectors[0]]?.background;
 
     if (bg?.includes("url")) {
       return {

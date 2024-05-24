@@ -17,15 +17,15 @@ export default function Images({
   const [$, set] = useHtml(useShallow((state) => [state.$, state.setHtml]));
 
   const imageUrl = useMemo(
-    () => $?.(selectors[0]).attr("src") ?? defaultValue,
+    () => $?.(selectors?.[0]).attr("src") ?? defaultValue,
     [$],
   );
 
-  const clickHref = $?.(selectors[0]).parent().attr("href");
+  const clickHref = selectors?.[0] && $?.(selectors[0]).parent().attr("href");
 
   const changeUrl = (src: string) => {
     if (!$) return;
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       $(selector).attr("src", src);
     });
 
@@ -35,7 +35,7 @@ export default function Images({
   const changeHref = (href: string) => {
     if (!$) return;
 
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       $(selector).parent().attr("href", href);
     });
 
