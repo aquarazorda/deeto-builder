@@ -51,8 +51,7 @@ function App({
   }, []);
 
   useEffect(() => {
-    // if (extra)
-    setExtra(mockExtras);
+    setExtra(extra ?? mockExtras);
   }, [extra]);
 
   return (
@@ -64,7 +63,7 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          {!extra?.isWidget ? (
+          {extra?.isWidget ? (
             <WidgetContent />
           ) : (
             <Content htmlUrl={htmlUrl} setHtml={onSubmit} />
