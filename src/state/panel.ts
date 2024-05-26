@@ -33,6 +33,7 @@ export type Item = {
   defaultLink?: string;
   link?: string;
   options?: any[];
+  extra?: Record<string, any>;
 } & GeneralItem;
 
 export type FormItem = {

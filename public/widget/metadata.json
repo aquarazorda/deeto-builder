@@ -236,13 +236,14 @@
           ]
         },
         {
-          "type": "section",
+          "type": "group",
           "title": "Widget",
           "elements": [
             {
-              "type": "component-group",
+              "type": "item",
+              "behaviour": "component-group",
               "title": "All component",
-              "elements": [
+              "options": [
                 {
                   "type": "background",
                   "title": "Background",
@@ -256,26 +257,27 @@
                   "variables": ["widget-radius"]
                 },
                 {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["activation-button-shadow"]
+                },
+                {
                   "type": "border",
                   "title": "Border",
                   "variables": ["widget-border"],
                   "defaultValue": {
-                    "color": "white",
-                    "width": "0px"
+                    "color": "#fff",
+                    "width": 0
                   }
                 }
               ]
             },
             {
-              "type": "component-group",
+              "type": "item",
+              "behaviour": "component-group",
               "title": "Avatar & Name",
-              "elements": [
-                {
-                  "type": "selector",
-                  "title": "General",
-                  "defaultValue": "#481453",
-                  "variables": ["widget-background"]
-                },
+              "options": [
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
@@ -287,8 +289,24 @@
                   "title": "Border",
                   "variables": ["widget-border"],
                   "defaultValue": {
-                    "color": "white",
-                    "width": "0px"
+                    "color": "#fff",
+                    "width": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Main button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["see-more-color"],
+                  "defaultValue": "#e5e7eb",
+                  "extra": {
+                    "label": "Background color"
                   }
                 }
               ]

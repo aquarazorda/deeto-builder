@@ -5,6 +5,7 @@ import CornerRadius from "./corner-radius";
 import Shadow from "./shadow";
 import GroupImage from "./image";
 import Border from "./border";
+import GroupColor from "./color";
 
 const getContent = (item: any) => {
   return match(item.type)
@@ -13,6 +14,7 @@ const getContent = (item: any) => {
     .with("shadow", () => <Shadow item={item} />)
     .with("image", () => <GroupImage item={item} />)
     .with("border", () => <Border item={item} />)
+    .with("color", () => <GroupColor item={item} />)
     .otherwise(() => null);
 };
 

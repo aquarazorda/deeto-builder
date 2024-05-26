@@ -50,18 +50,43 @@ export default function Border({ item }: { item: Item }) {
     });
   };
 
+  const widthChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newStyles = item.variables?.reduce(
+      (acc, key) => {
+        acc[key + "-width"] = e.target.value + "px";
+        return acc;
+      },
+      {} as Record<string, string>,
+    );
+
+    set({
+      ...extra,
+      variables: {
+        ...extra.variables,
+        ...newStyles,
+      },
+    });
+  };
+
   return (
     <WithAccordion item={item}>
       <div className="flex gap-[10px] flex-1 w-full">
         <Popover>
           <PopoverTrigger className="w-2/3">
             <div
-              className="rounded-[100px] rounded-tl-none py-4 px-5 flex justify-center cursor-pointer border border-[#DDD7E5]"
+              className="rounded-[100px] items-center rounded-tl-none py-4 px-5 flex justify-center cursor-pointer border border-[#DDD7E5]"
               style={{
                 height: "66px",
                 backgroundColor: value.color,
               }}
-            />
+            >
+              <span
+                style={{ mixBlendMode: "difference", filter: "invert(1)" }}
+                className="text-base font-semibold"
+              >
+                Border color
+              </span>
+            </div>
           </PopoverTrigger>
           <PopoverContent style={{ zIndex: 1000 }}>
             <SketchPicker
@@ -72,7 +97,11 @@ export default function Border({ item }: { item: Item }) {
         </Popover>
         <div className="min-w-0 w-1/3 flex flex-col shadow-input p-4 rounded-2xl">
           <span className="font-medium text-[#877997]">Width</span>
-          <input className="text-base font-medium text-[#2E1334] w-full" />
+          <input
+            className="text-base font-medium text-[#2E1334] w-full"
+            value={value.width}
+            onChange={widthChange}
+          />
         </div>
       </div>
     </WithAccordion>
