@@ -2,9 +2,10 @@ import { useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { usePanel } from "@/state/panel";
 import { useShallow } from "zustand/react/shallow";
+import LoadingSpinner from "../ui/loading-spinner";
 
 type Props = {
-  children: (isLoading: boolean) => React.ReactNode;
+  children: React.ReactNode;
   onSave: (url: string) => void;
 };
 
@@ -32,7 +33,7 @@ export default function UploadImageDialog({ children, onSave }: Props) {
 
   return (
     <div onClick={() => inputRef.current?.click()} className="cursor-pointer">
-      {children(isLoading)}
+      {isLoading ? <LoadingSpinner /> : children}
       <Input
         ref={inputRef}
         className="hidden"

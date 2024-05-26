@@ -8,7 +8,7 @@ import {
 } from "./components/ui/resizable";
 import { useLocalStorage } from "./lib/local-storage";
 import useDebouncedCallback from "./lib/debounced-callback";
-import { Metadata } from "./state/panel";
+import { Metadata, usePanel } from "./state/panel";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { useExtra, Extra } from "./state/extra";
 import { lazy, useEffect } from "react";
@@ -44,6 +44,11 @@ function App({
   const { layout, set } = useLocalStorage();
   const debouncedSet = useDebouncedCallback(set, 400);
   const setExtra = useExtra(useShallow((state) => state.set));
+  const setSaveFn = usePanel(useShallow((state) => state.setSaveImgFn));
+
+  useEffect(() => {
+    if (saveImage) setSaveFn(saveImage);
+  }, []);
 
   useEffect(() => {
     // if (extra)
@@ -72,10 +77,7 @@ function App({
           className="bg-[#F0EDF4] rounded-r-2xl"
         >
           <ScrollArea className="h-[calc(100dvh-72px)]">
-            <Panel
-              saveImage={saveImage}
-              metadata={metadata ?? stylingMetadata}
-            />
+            <Panel metadata={metadata ?? stylingMetadata} />
           </ScrollArea>
         </ResizablePanel>
       </ResizablePanelGroup>

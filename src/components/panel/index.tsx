@@ -15,24 +15,22 @@ import { match } from "ts-pattern";
 
 type Props = {
   metadata?: Metadata;
-  saveImage?: (name: string, blob: Blob) => Promise<string>;
   html?: MutableRefObject<string>;
 };
 
-export default function Panel({ metadata, saveImage }: Props) {
+export default function Panel({ metadata }: Props) {
   const { activeTab, set: setLocalStorage } = useLocalStorage();
 
   const [html, setParentHtml] = useHtml(
     useShallow((state) => [state.html, state.setParentHtml]),
   );
 
-  const [active, set, load, meta, saveImgFn] = usePanel(
+  const [active, set, load, meta] = usePanel(
     useShallow((state) => [
       state.active,
       state.set,
       state.loadMetadata,
       state.metadata,
-      state.setSaveImgFn,
     ]),
   );
 
@@ -58,10 +56,6 @@ export default function Panel({ metadata, saveImage }: Props) {
   useEffect(() => {
     load(metadata);
   }, [metadata]);
-
-  useEffect(() => {
-    saveImage && saveImgFn(saveImage);
-  }, []);
 
   const Acc = useCallback(
     ({ group }: { group: Group }) =>

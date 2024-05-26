@@ -52,13 +52,7 @@ export default function Images({
         )}
       >
         <UploadImageDialog onSave={changeUrl}>
-          {(isLoading: boolean) =>
-            isLoading ? (
-              <LoadingSpinner />
-            ) : (
-              <img src={imageUrl} width={157} height={53} />
-            )
-          }
+          <img src={imageUrl} width={157} height={53} />
         </UploadImageDialog>
       </div>
       <span className="text-[#877997] text-xs">

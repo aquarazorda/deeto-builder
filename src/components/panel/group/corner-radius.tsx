@@ -37,13 +37,15 @@ const Input = forwardRef<
 >(({ rotate, ...props }, ref) => {
   return (
     <FormControl>
-      <div className="min-w-0 flex flex-1 shadow-input p-4 rounded-2xl items-center gap-4">
-        <RadiusIcon
-          style={{ transform: rotate ? `rotate(${rotate}deg)` : undefined }}
-        />
+      <div className="min-w-0  max-w-fit relative flex flex-1 shadow-input p-4 rounded-2xl items-center gap-4">
+        <div className="flex-1">
+          <RadiusIcon
+            style={{ transform: rotate ? `rotate(${rotate}deg)` : undefined }}
+          />
+        </div>
         <input
           ref={ref}
-          className="text-base font-medium text-[#2E1334]"
+          className="text-base font-medium text-[#2E1334] w-full"
           type="number"
           {...props}
         />
@@ -102,7 +104,7 @@ export default function CornerRadius({ item }: { item: Item }) {
   return (
     <WithAccordion item={item}>
       <Form {...form}>
-        <div className="flex gap-2 flex-1 max-w-full">
+        <div className="flex gap-2 flex-1">
           <FormField
             name="topLeft"
             render={({ field }) => <Input {...field} />}
@@ -112,7 +114,7 @@ export default function CornerRadius({ item }: { item: Item }) {
             render={({ field }) => <Input {...field} rotate={90} />}
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-1 gap-2">
           <FormField
             name="bottomLeft"
             render={({ field }) => <Input {...field} rotate={270} />}

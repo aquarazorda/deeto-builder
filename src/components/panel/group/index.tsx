@@ -3,12 +3,14 @@ import Background from "./background";
 import { match } from "ts-pattern";
 import CornerRadius from "./corner-radius";
 import Shadow from "./shadow";
+import GroupImage from "./image";
 
 const getContent = (item: any) => {
   return match(item.type)
     .with("background", () => <Background item={item} />)
     .with("corner-radius", () => <CornerRadius item={item} />)
     .with("shadow", () => <Shadow item={item} />)
+    .with("image", () => <GroupImage item={item} />)
     .otherwise(() => null);
 };
 
@@ -22,7 +24,7 @@ export default function ComponentGroup({ item }: { item: Item }) {
         {item.options?.map(
           (option) =>
             getContent(option) && (
-              <div className="pt-2 pb-5 max-w-full" key={option.type}>
+              <div className="pt-2 max-w-full" key={option.type}>
                 {getContent(option)}
               </div>
             ),

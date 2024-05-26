@@ -100,19 +100,12 @@ export default function Background({
       ) : (
         <div
           className="rounded-[100px] py-4 px-5 flex justify-center cursor-pointer"
-          onClick={() => {}}
           style={{
             backgroundColor: "#DDD7E5",
           }}
         >
           <UploadImageDialog onSave={bgChangeImage}>
-            {(isLoading) =>
-              isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <img src={bgUrl} width={157} height={53} />
-              )
-            }
+            <img src={bgUrl} width={157} height={53} />
           </UploadImageDialog>
         </div>
       )}
