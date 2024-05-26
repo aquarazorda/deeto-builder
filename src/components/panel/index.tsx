@@ -69,12 +69,12 @@ export default function Panel({ metadata, saveImage }: Props) {
         <AccordionItem
           key={group.title}
           value={group.title?.toLowerCase()}
-          className="px-8"
+          className="px-8 max-w-full"
         >
           <AccordionTrigger className="text-2xl text-[#481453]">
             {group.title}
           </AccordionTrigger>
-          <AccordionContent>
+          <AccordionContent className="max-w-full">
             <ItemGenerator element={group} isMain />
           </AccordionContent>
         </AccordionItem>

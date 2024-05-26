@@ -14,7 +14,7 @@ const getContent = (item: any) => {
 
 export default function ComponentGroup({ item }: { item: Item }) {
   return (
-    <div className="flex flex-col bg-white border border-[#DDD7E5] rounded-2xl p-4 divide-y divide-[#DDD7E5]">
+    <div className="flex flex-col max-w-full bg-white border border-[#DDD7E5] rounded-2xl p-4 divide-y divide-[#DDD7E5]">
       <span className="font-bold text-[#51425E] font-inter mb-4">
         {item.title}
       </span>
@@ -22,7 +22,7 @@ export default function ComponentGroup({ item }: { item: Item }) {
         {item.options?.map(
           (option) =>
             getContent(option) && (
-              <div className="pt-2 pb-5" key={option.type}>
+              <div className="pt-2 pb-5 max-w-full" key={option.type}>
                 {getContent(option)}
               </div>
             ),
