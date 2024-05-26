@@ -4,6 +4,7 @@ import { match } from "ts-pattern";
 import CornerRadius from "./corner-radius";
 import Shadow from "./shadow";
 import GroupImage from "./image";
+import Border from "./border";
 
 const getContent = (item: any) => {
   return match(item.type)
@@ -11,6 +12,7 @@ const getContent = (item: any) => {
     .with("corner-radius", () => <CornerRadius item={item} />)
     .with("shadow", () => <Shadow item={item} />)
     .with("image", () => <GroupImage item={item} />)
+    .with("border", () => <Border item={item} />)
     .otherwise(() => null);
 };
 

@@ -227,8 +227,8 @@
                   "title": "Border",
                   "variables": ["activation-button-border"],
                   "defaultValue": {
-                    "color": "white",
-                    "width": "0px"
+                    "color": "#fff",
+                    "width": 0
                   }
                 }
               ]
