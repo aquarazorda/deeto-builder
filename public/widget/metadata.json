@@ -247,7 +247,7 @@
                 {
                   "type": "background",
                   "title": "Background",
-                  "defaultValue": "#481453",
+                  "defaultValue": "#fff",
                   "variables": ["widget-background"]
                 },
                 {
@@ -260,7 +260,7 @@
                   "type": "shadow",
                   "title": "Shadow",
                   "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
-                  "variables": ["activation-button-shadow"]
+                  "variables": ["widget-button-shadow"]
                 },
                 {
                   "type": "border",
