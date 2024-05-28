@@ -75,8 +75,14 @@ module.exports = {
         inter: ["Inter", "sans-serif"],
         dm: ["DM Sans", "sans-serif"],
       },
+      backgroundImage: {
+        "widget-background":
+          "linear-gradient(180deg, #481453 0%, #877997 100%)",
+      },
+      boxShadow: {
+        input: "inset 0px 0px 10px 0px rgba(59, 0, 135, 0.22)",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
 };
-

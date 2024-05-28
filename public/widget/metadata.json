@@ -1,0 +1,319 @@
+{
+  "list": [
+    {
+      "type": "section",
+      "title": "Visual Settings",
+      "elements": [
+        {
+          "type": "group",
+          "title": "Colors",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "color",
+              "title": "Buttons & Accent",
+              "defaultValue": "purple",
+              "variables": ["main-color"]
+            },
+            {
+              "type": "item",
+              "behaviour": "color",
+              "title": "Primary Text",
+              "defaultValue": "white",
+              "variables": ["primary-text"]
+            },
+            {
+              "type": "item",
+              "behaviour": "color-background",
+              "title": "Main background",
+              "defaultValue": "white",
+              "selectors": ["background-main"]
+            },
+            {
+              "type": "item",
+              "behaviour": "color-background",
+              "title": "Content background",
+              "defaultValue": "white",
+              "selectors": ["background-content"]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Fonts",
+          "elements": [
+            {
+              "type": "group",
+              "title": "Title font",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Inter",
+                  "title": "Inter",
+                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+                  "variables": ["primary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Libre Baskerville",
+                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
+                  "title": "Libre baskerville",
+                  "variables": ["primary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Oswald",
+                  "title": "Oswald",
+                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
+                  "variables": ["primary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Work Sans",
+                  "title": "Work sans",
+                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+                  "variables": ["primary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Slabo 27px",
+                  "title": "Slabo",
+                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
+                  "variables": ["primary-font-style"]
+                }
+              ]
+            },
+            {
+              "type": "group",
+              "title": "Body font",
+              "elements": [
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Inter",
+                  "title": "Inter",
+                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
+                  "variables": ["secondary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Libre Baskerville",
+                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
+                  "title": "Libre baskerville",
+                  "variables": ["secondary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Oswald",
+                  "title": "Oswald",
+                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
+                  "variables": ["secondary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Work Sans",
+                  "title": "Work sans",
+                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
+                  "variables": ["secondary-font-style"]
+                },
+                {
+                  "type": "item",
+                  "behaviour": "font",
+                  "defaultValue": "Slabo 27px",
+                  "title": "Slabo",
+                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
+                  "variables": ["secondary-font-style"]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Widget shape",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "shape",
+              "defaultValue": "teardrop",
+              "variables": ["activation-button-radius"],
+              "options": [
+                {
+                  "type": "item",
+                  "title": "Teardrop",
+                  "behaviour": "teardrop",
+                  "defaultValue": {
+                    "top-right": "1.5rem",
+                    "top-left": "0",
+                    "bottom-right": "1.5rem",
+                    "bottom-left": "1.5rem"
+                  }
+                },
+                {
+                  "type": "item",
+                  "title": "Ellipse",
+                  "behaviour": "ellipse",
+                  "defaultValue": {
+                    "top-right": "1.5rem",
+                    "top-left": "1.5rem",
+                    "bottom-right": "1.5rem",
+                    "bottom-left": "1.5rem"
+                  }
+                },
+                {
+                  "type": "item",
+                  "title": "Square",
+                  "behaviour": "square",
+                  "defaultValue": {
+                    "top-right": "0",
+                    "top-left": "0",
+                    "bottom-right": "0",
+                    "bottom-left": "0"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "section",
+      "title": "Components",
+      "elements": [
+        {
+          "type": "group",
+          "title": "Activation button",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "All component",
+              "options": [
+                {
+                  "type": "background",
+                  "title": "Background",
+                  "defaultValue": "#481453",
+                  "variables": ["activation-button-bg"]
+                },
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "40px 40px 0px 40px",
+                  "variables": ["activation-button-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["activation-button-shadow"]
+                },
+                {
+                  "type": "image",
+                  "title": "Icon",
+                  "variables": ["activation-button-icon"],
+                  "defaultValue": "https://deeto-widget-dev.s3.amazonaws.com/Quote.svg"
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["activation-button-border"],
+                  "defaultValue": {
+                    "color": "#fff",
+                    "width": 0
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Widget",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "All component",
+              "options": [
+                {
+                  "type": "background",
+                  "title": "Background",
+                  "defaultValue": "#fff",
+                  "variables": ["widget-background"]
+                },
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "0px 0px 40px 40px",
+                  "variables": ["widget-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["widget-button-shadow"]
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["widget-border"],
+                  "defaultValue": {
+                    "color": "#fff",
+                    "width": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Avatar & Name",
+              "options": [
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "0px 0px 40px 40px",
+                  "variables": ["avatar-radius"]
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["avatar-border"],
+                  "defaultValue": {
+                    "color": "#fff",
+                    "width": 0
+                  }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Main button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["see-more-color"],
+                  "defaultValue": "#e5e7eb",
+                  "extra": {
+                    "label": "Background color"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -23,7 +23,7 @@ export default function Background({
   const bgChange = useDebouncedCallback((color: ColorResult) => {
     const newStyles = { ...styles };
 
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       newStyles[selector].background = color.hex;
     });
 
@@ -33,7 +33,7 @@ export default function Background({
   const bgChangeImage = (url: string) => {
     const newStyles = { ...styles };
 
-    selectors.forEach((selector) => {
+    selectors?.forEach((selector) => {
       styles[selector].background = `url(${url})`;
       styles[selector].backgroundSize = `100% 100%`;
       styles[selector].backgroundRepeat = `no-repeat`;
@@ -47,7 +47,7 @@ export default function Background({
     url: bgUrl,
     color: bgColor,
   } = useMemo(() => {
-    const bg = styles?.[selectors[0]]?.background;
+    const bg = selectors?.[0] && styles?.[selectors[0]]?.background;
 
     if (bg?.includes("url")) {
       return {
@@ -100,19 +100,12 @@ export default function Background({
       ) : (
         <div
           className="rounded-[100px] py-4 px-5 flex justify-center cursor-pointer"
-          onClick={() => {}}
           style={{
             backgroundColor: "#DDD7E5",
           }}
         >
           <UploadImageDialog onSave={bgChangeImage}>
-            {(isLoading) =>
-              isLoading ? (
-                <LoadingSpinner />
-              ) : (
-                <img src={bgUrl} width={157} height={53} />
-              )
-            }
+            <img src={bgUrl} width={157} height={53} />
           </UploadImageDialog>
         </div>
       )}

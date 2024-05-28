@@ -5,10 +5,12 @@ export type ItemType = "item" | "group" | "form" | "section";
 export type Behaviour =
   | "image"
   | "background"
+  | "component-group"
   | "color"
   | "color-background"
   | "text"
   | "font"
+  | "shape"
   | "css-editor";
 
 type GeneralItem = {
@@ -25,10 +27,13 @@ export type Group = {
 export type Item = {
   type: "item";
   behaviour: Behaviour;
-  selectors: string[];
+  selectors?: string[];
+  variables?: string[];
   defaultValue: string;
   defaultLink?: string;
   link?: string;
+  options?: any[];
+  extra?: Record<string, any>;
 } & GeneralItem;
 
 export type FormItem = {
@@ -70,11 +75,9 @@ export const usePanel = create<PanelState>((set) => ({
     set((state) => (state.active != active ? { ...state, active } : state));
   },
   loadMetadata: async (metadata?: Metadata) => {
-    const res =
-      metadata ??
-      (await fetch(ROOT_URL + "/metadata.json").then(
-        (res) => res.json() as Promise<Metadata>,
-      ));
+    const res = await fetch(ROOT_URL + "/widget/metadata.json").then(
+      (res) => res.json() as Promise<Metadata>,
+    );
     set((state) => ({ ...state, metadata: res }));
   },
 }));
