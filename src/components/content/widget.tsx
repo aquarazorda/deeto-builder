@@ -10,7 +10,7 @@ export default function WidgetContent({
   configurationId: string;
 }) {
   const ref = useRef<HTMLElement>();
-  const wrapperRef = useRef<HTMLElement>();
+  const mountRef = useRef<HTMLDivElement>(null);
   const { state } = useExtra();
 
   useEffect(() => {
@@ -24,7 +24,8 @@ export default function WidgetContent({
       // @ts-ignore
       window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
         dt.element.configurationId = configurationId;
-        loadedElement = dt.mountWidget(wrapperRef) as HTMLElement;
+        dt.element.mountTarget = mountRef.current;
+        loadedElement = dt.mountWidget(mountRef.current) as HTMLElement;
         ref.current = loadedElement;
       });
     };
@@ -96,7 +97,7 @@ export default function WidgetContent({
 
   return (
     <div
-      ref={wrapperRef}
+      ref={mountRef}
       className="relative w-full h-full bg-widget-background flex flex-col gap-8 p-10"
     >
       <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
