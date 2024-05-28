@@ -144,7 +144,7 @@
               "type": "item",
               "behaviour": "shape",
               "defaultValue": "teardrop",
-              "variables": ["widget-shape"],
+              "variables": ["activation-button-radius"],
               "options": [
                 {
                   "type": "item",
@@ -207,7 +207,7 @@
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
-                  "defaultValue": "0px 0px 40px 40px",
+                  "defaultValue": "40px 40px 0px 40px",
                   "variables": ["activation-button-radius"]
                 },
                 {
@@ -282,12 +282,12 @@
                   "type": "corner-radius",
                   "title": "Corner radius",
                   "defaultValue": "0px 0px 40px 40px",
-                  "variables": ["widget-radius"]
+                  "variables": ["avatar-radius"]
                 },
                 {
                   "type": "border",
                   "title": "Border",
-                  "variables": ["widget-border"],
+                  "variables": ["avatar-border"],
                   "defaultValue": {
                     "color": "#fff",
                     "width": 0

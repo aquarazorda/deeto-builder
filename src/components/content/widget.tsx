@@ -59,7 +59,7 @@ export default function WidgetContent() {
     }
 
     // TODO
-    template.innerHTML = `.CLASS_34e32793-22d7-42dd-9a5d-7aea795634d6 {
+    template.innerHTML = `* {
       ${styles}
       }`;
 

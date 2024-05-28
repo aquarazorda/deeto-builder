@@ -36,16 +36,19 @@ export default function Shape({
   );
 
   const onSelect = (value: Record<string, string>) => {
-    const newValue = Object.keys(value).reduce(
-      (acc, key) => {
-        variables.forEach((variable) => {
-          acc[variable + "-" + key] = value[key];
-        });
+    let newValue = {} as Record<string, string>;
 
-        return acc;
-      },
-      {} as Record<string, string>,
-    );
+    variables.forEach((variable) => {
+      if (variable.includes("-radius")) {
+        newValue[variable] =
+          `${value["top-left"]} ${value["top-right"]} ${value["bottom-right"]} ${value["bottom-left"]}`;
+        return;
+      }
+
+      Object.keys(value).forEach((key) => {
+        newValue[variable + "-" + key] = value[key];
+      });
+    });
 
     setActive(value);
     setExtra({
