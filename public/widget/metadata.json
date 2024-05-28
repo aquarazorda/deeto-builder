@@ -44,7 +44,6 @@
           "elements": [
             {
               "type": "group",
-              "title": "Title font",
               "elements": [
                 {
                   "type": "item",
@@ -85,52 +84,6 @@
                   "title": "Slabo",
                   "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
                   "variables": ["primary-font-style"]
-                }
-              ]
-            },
-            {
-              "type": "group",
-              "title": "Body font",
-              "elements": [
-                {
-                  "type": "item",
-                  "behaviour": "font",
-                  "defaultValue": "Inter",
-                  "title": "Inter",
-                  "link": "https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap",
-                  "variables": ["secondary-font-style"]
-                },
-                {
-                  "type": "item",
-                  "behaviour": "font",
-                  "defaultValue": "Libre Baskerville",
-                  "link": "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
-                  "title": "Libre baskerville",
-                  "variables": ["secondary-font-style"]
-                },
-                {
-                  "type": "item",
-                  "behaviour": "font",
-                  "defaultValue": "Oswald",
-                  "title": "Oswald",
-                  "link": "https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap",
-                  "variables": ["secondary-font-style"]
-                },
-                {
-                  "type": "item",
-                  "behaviour": "font",
-                  "defaultValue": "Work Sans",
-                  "title": "Work sans",
-                  "link": "https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap",
-                  "variables": ["secondary-font-style"]
-                },
-                {
-                  "type": "item",
-                  "behaviour": "font",
-                  "defaultValue": "Slabo 27px",
-                  "title": "Slabo",
-                  "link": "https://fonts.googleapis.com/css2?family=Slabo+27px&display=swap",
-                  "variables": ["secondary-font-style"]
                 }
               ]
             }

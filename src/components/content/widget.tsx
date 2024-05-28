@@ -34,7 +34,26 @@ export default function WidgetContent() {
 
   useEffect(() => {
     if (state.fonts) {
-      const fonts = Object.keys(state.fonts).map((key) => state.fonts[key]);
+      const createFontLink = (url: string) => {
+        const link = document.createElement("style");
+        link.id = "font-link";
+        link.textContent = `
+            @import url('${url}');
+        `;
+        return link;
+      };
+
+      const oldLinks = document.body.querySelectorAll("-link");
+
+      oldLinks?.forEach((link) => {
+        try {
+          document.body.removeChild(link);
+        } catch {}
+      });
+
+      state.fonts.forEach((link: string) => {
+        document.body.appendChild(createFontLink(link));
+      });
     }
 
     if (!state.variables) {

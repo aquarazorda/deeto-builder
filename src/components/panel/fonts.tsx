@@ -42,14 +42,7 @@ export default function Fonts({
         newExtras.variables[variable] = defaultValue;
       });
 
-      if (!newExtras.fonts) {
-        newExtras.fonts = {};
-      }
-
-      newExtras.fonts[variables![0]] = {
-        name: defaultValue,
-        link,
-      };
+      newExtras.fonts = [link];
 
       setExtras(newExtras);
       return;
