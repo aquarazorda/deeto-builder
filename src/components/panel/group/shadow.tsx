@@ -9,7 +9,7 @@ import { Item } from "@/state/panel";
 import { InputHTMLAttributes, forwardRef, useEffect, useMemo } from "react";
 import { RGBColor, SketchPicker } from "react-color";
 import { useForm } from "react-hook-form";
-import WithAccordion from "./with-accordiont";
+import WithAccordion from "./with-accordion";
 import { useShallow } from "zustand/react/shallow";
 import useDebouncedCallback from "@/lib/debounced-callback";
 

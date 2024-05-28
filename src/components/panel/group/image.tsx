@@ -1,5 +1,5 @@
 import { Item } from "@/state/panel";
-import WithAccordion from "./with-accordiont";
+import WithAccordion from "./with-accordion";
 import { useMemo } from "react";
 import { useExtra } from "@/state/extra";
 import { useShallow } from "zustand/react/shallow";
@@ -46,7 +46,7 @@ export default function GroupImage({ item }: { item: Item }) {
         }}
       >
         <UploadImageDialog onSave={onChange}>
-          <img src={value} width={157} height={38} />
+          <img src={value} width={157} height={38} className="max-h-[38px]" />
         </UploadImageDialog>
       </div>
     </WithAccordion>

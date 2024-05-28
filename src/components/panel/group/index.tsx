@@ -20,7 +20,7 @@ const getContent = (item: any) => {
 
 export default function ComponentGroup({ item }: { item: Item }) {
   return (
-    <div className="flex flex-col max-w-full bg-white border border-[#DDD7E5] rounded-2xl p-4 divide-y divide-[#DDD7E5]">
+    <div className="flex flex-col max-w-full bg-white rounded-2xl p-4 divide-y divide-[#DDD7E5]">
       <span className="font-bold text-[#51425E] font-inter mb-4">
         {item.title}
       </span>

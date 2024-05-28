@@ -172,8 +172,8 @@
                 {
                   "type": "image",
                   "title": "Icon",
-                  "variables": ["activation-button-icon"],
-                  "defaultValue": "https://deeto-widget-dev.s3.amazonaws.com/Quote.svg"
+                  "variables": ["activation-button-img"],
+                  "defaultValue": "https://deeto-widget-dev.s3.amazonaws.com/icons/Quote.svg"
                 },
                 {
                   "type": "border",

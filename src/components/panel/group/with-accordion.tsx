@@ -18,7 +18,7 @@ export default function WithAccordion({
 
   return (
     <Accordion type="single" value={value}>
-      <AccordionItem value={item.title}>
+      <AccordionItem value={item.title} className="border-none">
         <div className="flex justify-between mb-2">
           {item.title}
           {value ? (

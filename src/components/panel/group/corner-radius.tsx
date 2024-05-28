@@ -1,5 +1,5 @@
 import { Item } from "@/state/panel";
-import WithAccordion from "./with-accordiont";
+import WithAccordion from "./with-accordion";
 import { Form, FormControl, FormField } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { useExtra } from "@/state/extra";
@@ -23,8 +23,8 @@ const RadiusIcon = ({ style }: { style: CSSProperties }) => (
     style={style}
   >
     <path
-      fill-rule="evenodd"
-      clip-rule="evenodd"
+      fillRule="evenodd"
+      clipRule="evenodd"
       d="M0 0H10.6154C11.3801 0 12 0.619913 12 1.38462C12 2.14932 11.3801 2.76923 10.6154 2.76923H2.76923V10.6154C2.76923 11.3801 2.14932 12 1.38462 12C0.619913 12 0 11.3801 0 10.6154V0Z"
       fill="#DDD7E5"
     />

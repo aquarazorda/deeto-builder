@@ -1,5 +1,5 @@
 import { Item } from "@/state/panel";
-import WithAccordion from "./with-accordiont";
+import WithAccordion from "./with-accordion";
 import {
   Popover,
   PopoverContent,

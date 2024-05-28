@@ -64,7 +64,7 @@ export default function Background({ item }: { item: Item }) {
           <Popover>
             <PopoverTrigger className="h-fit-content w-full">
               <div
-                className="rounded-full h-[70px]"
+                className="rounded-full border border-[#DDD7E5] h-[70px]"
                 style={{ backgroundColor: value }}
               />
             </PopoverTrigger>

@@ -51,7 +51,7 @@ function App({
   }, []);
 
   useEffect(() => {
-    setExtra(extra ?? mockExtras);
+    extra && setExtra(extra);
   }, [extra]);
 
   return (
