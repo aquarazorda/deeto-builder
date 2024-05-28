@@ -1,5 +1,6 @@
 import { useExtra } from "@/state/extra";
 import { useEffect, useRef } from "react";
+import { WIDGET_URL } from "@/config";
 
 export default function WidgetContent() {
   const ref = useRef<HTMLElement>();
@@ -7,7 +8,7 @@ export default function WidgetContent() {
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "http://localhost:4173/assets/main.js";
+    script.src = WIDGET_URL + "main.js";
     script.async = true;
     script.type = "module";
     let loadedElement: HTMLElement;

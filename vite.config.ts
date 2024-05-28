@@ -46,7 +46,7 @@ export default defineConfig({
         "./HtmlBuilder": "./src/html-builder",
       },
       remotes: {
-        widget: WIDGET_URL,
+        widget: WIDGET_URL + "remoteEntry.js",
       },
     }),
   ],
