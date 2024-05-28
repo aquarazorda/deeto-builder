@@ -15,7 +15,7 @@ import { lazy, useEffect } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 type Props = Partial<{
-  onSubmit: (html: any) => void;
+  onSubmit: (data: any) => void;
   url: string;
   metadata: Metadata;
   stylingMetadata: Metadata;
@@ -63,8 +63,11 @@ function App({
         className="flex flex-grow relative"
       >
         <ResizablePanel minSize={60} defaultSize={layout?.[0]}>
-          {extra?.isWidget || mockExtras.isWidget ? (
-            <WidgetContent />
+          {extra?.isWidget ? (
+            <WidgetContent
+              configurationId={extra.widgetConfigurationId as string}
+              onSubmit={onSubmit}
+            />
           ) : (
             <Content htmlUrl={htmlUrl} setHtml={onSubmit} />
           )}

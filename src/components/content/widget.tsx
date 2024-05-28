@@ -2,8 +2,15 @@ import { useExtra } from "@/state/extra";
 import { useEffect, useRef } from "react";
 import { WIDGET_URL } from "@/config";
 
-export default function WidgetContent() {
+export default function WidgetContent({
+  configurationId,
+  onSubmit,
+}: {
+  onSubmit?: (state: Record<string, any>) => void;
+  configurationId: string;
+}) {
   const ref = useRef<HTMLElement>();
+  const wrapperRef = useRef<HTMLElement>();
   const { state } = useExtra();
 
   useEffect(() => {
@@ -16,8 +23,8 @@ export default function WidgetContent() {
     script.onload = () => {
       // @ts-ignore
       window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
-        dt.element.configurationId = "34e32793-22d7-42dd-9a5d-7aea795634d6";
-        loadedElement = dt.mountWidget() as HTMLElement;
+        dt.element.configurationId = configurationId;
+        loadedElement = dt.mountWidget(wrapperRef) as HTMLElement;
         ref.current = loadedElement;
       });
     };
@@ -33,6 +40,7 @@ export default function WidgetContent() {
   }, []);
 
   useEffect(() => {
+    onSubmit?.(state);
     if (state.fonts) {
       const createFontLink = (url: string) => {
         const link = document.createElement("style");
@@ -87,7 +95,10 @@ export default function WidgetContent() {
   }, [state]);
 
   return (
-    <div className="relative w-full h-full bg-widget-background flex flex-col gap-8 p-10">
+    <div
+      ref={wrapperRef}
+      className="relative w-full h-full bg-widget-background flex flex-col gap-8 p-10"
+    >
       <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
       <div className="flex-1 gap-10 flex flex-col">
         {Array.from({ length: 2 }).map((_, index) => (
