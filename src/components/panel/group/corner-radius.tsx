@@ -62,6 +62,24 @@ export default function CornerRadius({ item }: { item: Item }) {
   const debouncedSet = useDebouncedCallback(set, 400);
 
   const defaultValues = useMemo(() => {
+    if (item.extra?.split) {
+      const tl =
+        extra.variables?.[item.variables![0] + "-tl"] ?? item.defaultValue;
+      const tr =
+        extra.variables?.[item.variables![0] + "-tr"] ?? item.defaultValue;
+      const br =
+        extra.variables?.[item.variables![0] + "-br"] ?? item.defaultValue;
+      const bl =
+        extra.variables?.[item.variables![0] + "-bl"] ?? item.defaultValue;
+
+      return {
+        topLeft: tl.replace("px", "") as string,
+        topRight: tr.replace("px", "") as string,
+        bottomRight: br.replace("px", "") as string,
+        bottomLeft: bl.replace("px", "") as string,
+      };
+    }
+
     const str = extra.variables?.[item.variables![0]] ?? item.defaultValue;
     const values = str.replace(/px/g, "").split(" ");
 
@@ -83,6 +101,14 @@ export default function CornerRadius({ item }: { item: Item }) {
 
       const toSave = item.variables?.reduce(
         (acc, variable) => {
+          if (item.extra?.split) {
+            acc[variable + "-tl"] = values.topLeft + "px";
+            acc[variable + "-tr"] = values.topRight + "px";
+            acc[variable + "-br"] = values.bottomRight + "px";
+            acc[variable + "-bl"] = values.bottomLeft + "px";
+            return acc;
+          }
+
           acc[variable] = value;
           return acc;
         },
@@ -99,7 +125,7 @@ export default function CornerRadius({ item }: { item: Item }) {
     });
 
     return unsubscribe;
-  }, []);
+  }, [extra]);
 
   return (
     <WithAccordion item={item}>

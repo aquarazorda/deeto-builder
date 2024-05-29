@@ -206,14 +206,17 @@
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
-                  "defaultValue": "0px 0px 40px 40px",
-                  "variables": ["widget-radius"]
+                  "defaultValue": "0px",
+                  "variables": ["widget-radius"],
+                  "extra": {
+                    "split": "true"
+                  }
                 },
                 {
                   "type": "shadow",
                   "title": "Shadow",
                   "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
-                  "variables": ["widget-button-shadow"]
+                  "variables": ["widget-shadow"]
                 },
                 {
                   "type": "border",

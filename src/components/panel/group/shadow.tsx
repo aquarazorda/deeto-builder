@@ -110,7 +110,7 @@ export default function Shadow({ item }: { item: Item }) {
     );
 
     return unsubscribe;
-  }, []);
+  }, [state]);
 
   return (
     <WithAccordion item={item}>

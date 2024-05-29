@@ -1,5 +1,5 @@
 import { useExtra } from "@/state/extra";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { WIDGET_URL } from "@/config";
 
 export default function WidgetContent({
@@ -12,6 +12,8 @@ export default function WidgetContent({
   const ref = useRef<HTMLElement>();
   const mountRef = useRef<HTMLDivElement>(null);
   const { state } = useExtra();
+  const [updateExtra, setUpdateExtra] =
+    useState<(extra: Record<string, any>) => void>();
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -25,7 +27,14 @@ export default function WidgetContent({
       window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
         dt.element.configurationId = configurationId;
         dt.element.mountTarget = mountRef.current;
-        loadedElement = dt.mountWidget(mountRef.current) as HTMLElement;
+        const { element, setExtra } = dt.mountWidget(mountRef.current) as {
+          element: HTMLElement;
+          setExtra: (extra: Record<string, any>) => void;
+        };
+
+        setUpdateExtra(() => setExtra);
+
+        loadedElement = element;
         ref.current = loadedElement;
       });
     };
@@ -41,7 +50,11 @@ export default function WidgetContent({
   }, []);
 
   useEffect(() => {
+    if (!updateExtra) return;
+
     onSubmit?.(state);
+    updateExtra(state);
+
     if (state.fonts) {
       const createFontLink = (url: string) => {
         const link = document.createElement("style");
@@ -93,7 +106,7 @@ export default function WidgetContent({
       }`;
 
     ref.current?.shadowRoot?.appendChild(template);
-  }, [state]);
+  }, [state, updateExtra]);
 
   return (
     <div
