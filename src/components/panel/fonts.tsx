@@ -4,12 +4,17 @@ import { useEffect, useMemo } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { ROOT_URL } from "@/config";
 import { cn } from "@/lib/utils";
+import { useExtra } from "@/state/extra";
 
 export default function Fonts({
-  item: { title, defaultValue, selectors, link },
+  item: { title, defaultValue, selectors, variables, link },
 }: {
   item: Item;
 }) {
+  const [extra, setExtras] = useExtra(
+    useShallow((state) => [state.state, state.set]),
+  );
+
   const [styles, swapStyles, $, setHtml] = useHtml(
     useShallow((state) => [
       state.styles,
@@ -20,14 +25,30 @@ export default function Fonts({
   );
 
   const activeFont = useMemo(
-    () => styles?.[selectors[0]]?.fontFamily?.replace(/"/g, ""),
-    [styles],
+    () =>
+      extra.isWidget
+        ? extra.variables[variables![0]]
+        : styles?.[selectors![0]]?.fontFamily?.replace(/"/g, ""),
+    [styles, extra],
   );
 
   const isActive = useMemo(() => activeFont === defaultValue, [activeFont]);
 
   const onClick = () => {
-    if (!$) return;
+    if (extra.isWidget) {
+      let newExtras = { ...extra };
+
+      variables!.forEach((variable) => {
+        newExtras.variables[variable] = defaultValue;
+      });
+
+      newExtras.fonts = [link];
+
+      setExtras(newExtras);
+      return;
+    }
+
+    if (!$ || !selectors) return;
 
     $("head")
       .children("link")
@@ -39,8 +60,8 @@ export default function Fonts({
 
     swapStyles({
       ...styles,
-      [selectors[0]]: {
-        ...styles[selectors[0]],
+      [selectors![0]]: {
+        ...styles[selectors![0]],
         fontFamily: `"${defaultValue}"`,
       },
     });

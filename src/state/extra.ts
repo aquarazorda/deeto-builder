@@ -1,10 +1,11 @@
 import { create } from "zustand";
 
-type Extra = {
-  state?: Record<string, any>;
+export type Extra = {
+  state: Record<string, any>;
   set: (state: Record<string, any>) => void;
 };
 
 export const useExtra = create<Extra>((set) => ({
-  set,
+  set: (state) => set((prev) => ({ ...prev, state })),
+  state: {},
 }));

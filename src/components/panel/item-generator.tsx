@@ -8,6 +8,8 @@ import Fonts from "./fonts";
 import Text from "./text";
 import Form from "./form";
 import CssEditor from "./css-editor";
+import Shape from "./shape";
+import ComponentGroup from "./group";
 
 const DrawGroup = ({
   element,
@@ -45,6 +47,10 @@ const DrawItem = ({ element }: { element: Item }) => {
     ))
     .with({ behaviour: "font" }, (el) => <Fonts item={el} />)
     .with({ behaviour: "text" }, (el) => <Text item={el} />)
+    .with({ behaviour: "shape" }, (el) => <Shape item={el} />)
+    .with({ behaviour: "component-group" }, (el) => (
+      <ComponentGroup item={el} />
+    ))
     .with({ behaviour: "css-editor" }, (el) => (
       <CssEditor defaultValue={el.defaultValue} />
     ))

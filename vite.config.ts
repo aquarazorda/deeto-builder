@@ -2,6 +2,10 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import federation from "@originjs/vite-plugin-federation";
+import svgr from "vite-plugin-svgr";
+
+// @ts-expect-error
+import { WIDGET_URL } from "@/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -34,11 +38,15 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    svgr(),
     federation({
       name: "html-builder",
       filename: "builderEntry.js",
       exposes: {
         "./HtmlBuilder": "./src/html-builder",
+      },
+      remotes: {
+        widget: WIDGET_URL + "remoteEntry.js",
       },
     }),
   ],
