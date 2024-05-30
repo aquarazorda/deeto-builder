@@ -72,10 +72,10 @@ export default function CornerRadius({ item }: { item: Item }) {
       const bl = extra.variables?.[item.variables![0] + "-bl"] ?? values[3];
 
       return {
-        topLeft: tl.replace("px", "") as string,
-        topRight: tr.replace("px", "") as string,
-        bottomRight: br.replace("px", "") as string,
-        bottomLeft: bl.replace("px", "") as string,
+        topLeft: tl?.replace("px", "") as string,
+        topRight: tr?.replace("px", "") as string,
+        bottomRight: br?.replace("px", "") as string,
+        bottomLeft: bl?.replace("px", "") as string,
       };
     }
 

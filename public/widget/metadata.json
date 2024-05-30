@@ -206,7 +206,7 @@
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
-                  "defaultValue": "0px",
+                  "defaultValue": "0px 0px 20px 20px",
                   "variables": ["widget-radius"],
                   "extra": {
                     "split": "true"
