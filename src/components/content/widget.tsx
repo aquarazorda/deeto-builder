@@ -9,7 +9,8 @@ export default function WidgetContent({
   onSubmit?: (state: Record<string, any>) => void;
   configurationId: string;
 }) {
-  const ref = useRef<HTMLElement>();
+  const widgetRef = useRef<HTMLElement>();
+  const popupRef = useRef<HTMLElement>();
   const mountRef = useRef<HTMLDivElement>(null);
   const { state } = useExtra();
   const [updateExtra, setUpdateExtra] =
@@ -27,15 +28,19 @@ export default function WidgetContent({
       window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
         dt.element.configurationId = configurationId;
         dt.element.mountTarget = mountRef.current;
-        const { element, setExtra } = dt.mountWidget(mountRef.current) as {
+        const { element, popupElement, setExtra } = dt.mountWidget(
+          mountRef.current,
+        ) as {
           element: HTMLElement;
+          popupElement: HTMLElement;
           setExtra: (extra: Record<string, any>) => void;
         };
 
         setUpdateExtra(() => setExtra);
 
         loadedElement = element;
-        ref.current = loadedElement;
+        widgetRef.current = loadedElement;
+        popupRef.current = popupElement;
       });
     };
 
@@ -93,11 +98,17 @@ export default function WidgetContent({
 
     if (!styles) return;
 
-    const oldTemplate =
-      ref.current?.shadowRoot?.getElementById("widget-styles");
+    const oldTemplateWidget =
+      widgetRef.current?.shadowRoot?.getElementById("widget-styles");
+    const oldTemplatePopup =
+      popupRef.current?.shadowRoot?.getElementById("widget-styles");
 
-    if (oldTemplate) {
-      ref.current?.shadowRoot?.removeChild(oldTemplate);
+    if (oldTemplateWidget) {
+      widgetRef.current?.shadowRoot?.removeChild(oldTemplateWidget);
+    }
+
+    if (oldTemplatePopup) {
+      popupRef.current?.shadowRoot?.removeChild(oldTemplatePopup);
     }
 
     // TODO
@@ -105,7 +116,8 @@ export default function WidgetContent({
       ${styles}
       }`;
 
-    ref.current?.shadowRoot?.appendChild(template);
+    widgetRef.current?.shadowRoot?.appendChild(template);
+    popupRef.current?.shadowRoot?.appendChild(template);
   }, [state, updateExtra]);
 
   return (

@@ -237,13 +237,87 @@
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
-                  "defaultValue": "0px 0px 40px 40px",
-                  "variables": ["avatar-radius"]
+                  "defaultValue": "100px 100px 100px 100px",
+                  "variables": ["widget-avatar-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["widget-avatar-shadow"]
                 },
                 {
                   "type": "border",
                   "title": "Border",
-                  "variables": ["avatar-border"],
+                  "variables": ["widget-avatar-border"],
+                  "defaultValue": {
+                    "color": "#481453",
+                    "width": 4
+                  }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Main button",
+              "options": [
+                {
+                  "type": "text",
+                  "title": "General",
+                  "variables": ["actionButtonText"],
+                  "defaultValue": "Read More...",
+                  "extra": {
+                    "label": "Button label"
+                  }
+                },
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["see-more-color"],
+                  "defaultValue": "#e5e7eb",
+                  "extra": {
+                    "label": "Background color"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "group",
+          "title": "Pop-up",
+          "elements": [
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "All component",
+              "options": [
+                {
+                  "type": "background",
+                  "title": "Background",
+                  "defaultValue": "#fff",
+                  "variables": ["popup-background"]
+                },
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "0px 48px 48px 48px",
+                  "variables": ["popup-radius"],
+                  "extra": {
+                    "split": "true"
+                  }
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["popup-shadow"]
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["popup-border"],
                   "defaultValue": {
                     "color": "#fff",
                     "width": 0
@@ -254,8 +328,45 @@
             {
               "type": "item",
               "behaviour": "component-group",
+              "title": "Avatar & Name",
+              "options": [
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "100px 100px 100px 100px",
+                  "variables": ["widget-avatar-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["widget-avatar-shadow"]
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["widget-avatar-border"],
+                  "defaultValue": {
+                    "color": "#481453",
+                    "width": 4
+                  }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
               "title": "Main button",
               "options": [
+                {
+                  "type": "text",
+                  "title": "General",
+                  "variables": ["actionButtonText"],
+                  "defaultValue": "Read More...",
+                  "extra": {
+                    "label": "Button label"
+                  }
+                },
                 {
                   "type": "color",
                   "title": "Color",
