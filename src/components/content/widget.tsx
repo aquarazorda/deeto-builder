@@ -35,6 +35,17 @@ export default function WidgetContent({
           popupElement: HTMLElement;
           setExtra: (extra: Record<string, any>) => void;
         };
+        customElements.whenDefined(`deeto-floating-reference`).then(() => {
+          const widgetStyle = document.createElement('style');
+          widgetStyle.innerHTML = `
+            .cursor-pointer.fixed {
+              bottom: 140px;
+            }
+            .dt-floater-container {
+              bottom: 120px;
+            }`;
+          element.shadowRoot?.appendChild(widgetStyle);
+        });
 
         setUpdateExtra(() => setExtra);
 
