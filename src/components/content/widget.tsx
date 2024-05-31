@@ -89,6 +89,10 @@ export default function WidgetContent({
 
     const template = document.createElement("style");
     template.id = "widget-styles";
+
+    const templatePopup = document.createElement("style");
+    templatePopup.id = "widget-styles";
+
     const styles = Object.keys(state.variables).reduce(
       (acc: string, variable: string) => {
         return acc + `--${variable}: ${state.variables[variable]};`;
@@ -111,13 +115,11 @@ export default function WidgetContent({
       popupRef.current?.shadowRoot?.removeChild(oldTemplatePopup);
     }
 
-    // TODO
-    template.innerHTML = `* {
-      ${styles}
-      }`;
+    template.innerHTML = `*{${styles}}`;
+    templatePopup.innerHTML = `*{${styles}}`;
 
     widgetRef.current?.shadowRoot?.appendChild(template);
-    popupRef.current?.shadowRoot?.appendChild(template);
+    popupRef.current?.shadowRoot?.appendChild(templatePopup);
   }, [state, updateExtra]);
 
   return (
