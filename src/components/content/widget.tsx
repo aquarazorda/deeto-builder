@@ -39,10 +39,10 @@ export default function WidgetContent({
           const widgetStyle = document.createElement('style');
           widgetStyle.innerHTML = `
             .cursor-pointer.fixed {
-              bottom: 120px;
+              bottom: 140px;
             }
             .dt-floater-container {
-              bottom: 100px;
+              bottom: 120px;
             }`;
           element.shadowRoot?.appendChild(widgetStyle);
         });
