@@ -75,9 +75,11 @@ export const usePanel = create<PanelState>((set) => ({
     set((state) => (state.active != active ? { ...state, active } : state));
   },
   loadMetadata: async (metadata?: Metadata) => {
-    const res = await fetch(ROOT_URL + "/widget/metadata.json").then(
-      (res) => res.json() as Promise<Metadata>,
-    );
+    const res =
+      metadata ??
+      (await fetch(ROOT_URL + "/widget/metadata.json").then(
+        (res) => res.json() as Promise<Metadata>,
+      ));
     set((state) => ({ ...state, metadata: res }));
   },
 }));
