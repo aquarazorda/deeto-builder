@@ -334,18 +334,18 @@
                   "type": "corner-radius",
                   "title": "Corner radius",
                   "defaultValue": "100px 100px 100px 100px",
-                  "variables": ["widget-avatar-radius"]
+                  "variables": ["popup-avatar-radius"]
                 },
                 {
                   "type": "shadow",
                   "title": "Shadow",
                   "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
-                  "variables": ["widget-avatar-shadow"]
+                  "variables": ["popup-avatar-shadow"]
                 },
                 {
                   "type": "border",
                   "title": "Border",
-                  "variables": ["widget-avatar-border"],
+                  "variables": ["popup-avatar-border"],
                   "defaultValue": {
                     "color": "#481453",
                     "width": 4
@@ -361,8 +361,8 @@
                 {
                   "type": "text",
                   "title": "General",
-                  "variables": ["actionButtonText"],
-                  "defaultValue": "Read More...",
+                  "variables": ["popupActionButtonText"],
+                  "defaultValue": "Book a demo",
                   "extra": {
                     "label": "Button label"
                   }
@@ -370,10 +370,31 @@
                 {
                   "type": "color",
                   "title": "Color",
-                  "variables": ["see-more-color"],
+                  "variables": ["popup-action-button-background"],
                   "defaultValue": "#e5e7eb",
                   "extra": {
                     "label": "Background color"
+                  }
+                },
+                {
+                  "type": "corner-radius",
+                  "title": "Corner radius",
+                  "defaultValue": "100px 100px 100px 100px",
+                  "variables": ["popup-action-button-radius"]
+                },
+                {
+                  "type": "shadow",
+                  "title": "Shadow",
+                  "defaultValue": "0px 0px 0px 0px rgba(0,0,0,1)",
+                  "variables": ["popup-action-button-shadow"]
+                },
+                {
+                  "type": "border",
+                  "title": "Border",
+                  "variables": ["popup-action-button-border"],
+                  "defaultValue": {
+                    "color": "#481453",
+                    "width": 0
                   }
                 }
               ]
