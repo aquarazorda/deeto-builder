@@ -19,11 +19,11 @@ const Input = forwardRef<
 >(({ title, ...props }, ref) => {
   return (
     <FormControl>
-      <div className="min-w-0 flex flex-col flex-1 shadow-input p-4 rounded-2xl">
+      <div className="min-w-0 max-w-fit flex flex-col flex-1 shadow-input p-4 rounded-2xl">
         <span className="font-medium text-[#877997]">{title}</span>
         <input
           ref={ref}
-          className="text-base font-medium text-[#2E1334] w-fit"
+          className="text-base font-medium text-[#2E1334] w-full"
           {...props}
         />
       </div>

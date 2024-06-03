@@ -9,7 +9,8 @@ export default function WidgetContent({
   onSubmit?: (state: Record<string, any>) => void;
   configurationId: string;
 }) {
-  const ref = useRef<HTMLElement>();
+  const widgetRef = useRef<HTMLElement>();
+  const popupRef = useRef<HTMLElement>();
   const mountRef = useRef<HTMLDivElement>(null);
   const { state } = useExtra();
   const [updateExtra, setUpdateExtra] =
@@ -27,15 +28,48 @@ export default function WidgetContent({
       window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
         dt.element.configurationId = configurationId;
         dt.element.mountTarget = mountRef.current;
-        const { element, setExtra } = dt.mountWidget(mountRef.current) as {
+        const { element, popupElement, setExtra } = dt.mountWidget(
+          mountRef.current,
+        ) as {
           element: HTMLElement;
+          popupElement: HTMLElement;
           setExtra: (extra: Record<string, any>) => void;
         };
+
+        customElements.whenDefined(`deeto-floating-reference`).then(() => {
+          const widgetStyle = document.createElement("style");
+          widgetStyle.innerHTML = `
+            .cursor-pointer.fixed {
+              bottom: 140px;
+              position: absolute;
+            }
+            .dt-floater-container {
+              bottom: 120px;
+            }`;
+          element.shadowRoot?.appendChild(widgetStyle);
+        });
+
+        customElements
+          .whenDefined("deeto-floating-reference-popup")
+          .then(() => {
+            const popupStyle = document.createElement("style");
+            popupStyle.innerHTML = `
+            .dt-embedded-reference-modal-index {
+            width: 100%;
+            position: absolute;
+            background-color: #00000038;
+            }
+            .dt-embedded-reference-modal-index > div:first-child {
+            display: none;
+            }`;
+            popupElement.shadowRoot?.appendChild(popupStyle);
+          });
 
         setUpdateExtra(() => setExtra);
 
         loadedElement = element;
-        ref.current = loadedElement;
+        widgetRef.current = loadedElement;
+        popupRef.current = popupElement;
       });
     };
 
@@ -84,6 +118,10 @@ export default function WidgetContent({
 
     const template = document.createElement("style");
     template.id = "widget-styles";
+
+    const templatePopup = document.createElement("style");
+    templatePopup.id = "widget-styles";
+
     const styles = Object.keys(state.variables).reduce(
       (acc: string, variable: string) => {
         return acc + `--${variable}: ${state.variables[variable]};`;
@@ -93,19 +131,24 @@ export default function WidgetContent({
 
     if (!styles) return;
 
-    const oldTemplate =
-      ref.current?.shadowRoot?.getElementById("widget-styles");
+    const oldTemplateWidget =
+      widgetRef.current?.shadowRoot?.getElementById("widget-styles");
+    const oldTemplatePopup =
+      popupRef.current?.shadowRoot?.getElementById("widget-styles");
 
-    if (oldTemplate) {
-      ref.current?.shadowRoot?.removeChild(oldTemplate);
+    if (oldTemplateWidget) {
+      widgetRef.current?.shadowRoot?.removeChild(oldTemplateWidget);
     }
 
-    // TODO
-    template.innerHTML = `* {
-      ${styles}
-      }`;
+    if (oldTemplatePopup) {
+      popupRef.current?.shadowRoot?.removeChild(oldTemplatePopup);
+    }
 
-    ref.current?.shadowRoot?.appendChild(template);
+    template.innerHTML = `*{${styles}}`;
+    templatePopup.innerHTML = `*{${styles}}`;
+
+    widgetRef.current?.shadowRoot?.appendChild(template);
+    popupRef.current?.shadowRoot?.appendChild(templatePopup);
   }, [state, updateExtra]);
 
   return (

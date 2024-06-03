@@ -62,26 +62,22 @@ export default function CornerRadius({ item }: { item: Item }) {
   const debouncedSet = useDebouncedCallback(set, 400);
 
   const defaultValues = useMemo(() => {
-    if (item.extra?.split) {
-      const tl =
-        extra.variables?.[item.variables![0] + "-tl"] ?? item.defaultValue;
-      const tr =
-        extra.variables?.[item.variables![0] + "-tr"] ?? item.defaultValue;
-      const br =
-        extra.variables?.[item.variables![0] + "-br"] ?? item.defaultValue;
-      const bl =
-        extra.variables?.[item.variables![0] + "-bl"] ?? item.defaultValue;
-
-      return {
-        topLeft: tl.replace("px", "") as string,
-        topRight: tr.replace("px", "") as string,
-        bottomRight: br.replace("px", "") as string,
-        bottomLeft: bl.replace("px", "") as string,
-      };
-    }
-
     const str = extra.variables?.[item.variables![0]] ?? item.defaultValue;
     const values = str.replace(/px/g, "").split(" ");
+
+    if (item.extra?.split) {
+      const tl = extra.variables?.[item.variables![0] + "-tl"] ?? values[0];
+      const tr = extra.variables?.[item.variables![0] + "-tr"] ?? values[1];
+      const br = extra.variables?.[item.variables![0] + "-br"] ?? values[2];
+      const bl = extra.variables?.[item.variables![0] + "-bl"] ?? values[3];
+
+      return {
+        topLeft: tl?.replace("px", "") as string,
+        topRight: tr?.replace("px", "") as string,
+        bottomRight: br?.replace("px", "") as string,
+        bottomLeft: bl?.replace("px", "") as string,
+      };
+    }
 
     return {
       topLeft: values[0] as string,

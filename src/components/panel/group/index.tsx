@@ -5,6 +5,7 @@ import CornerRadius from "./corner-radius";
 import Shadow from "./shadow";
 import GroupImage from "./image";
 import Border from "./border";
+import GroupText from "./text";
 import GroupColor from "./color";
 
 const getContent = (item: any) => {
@@ -15,6 +16,7 @@ const getContent = (item: any) => {
     .with("image", () => <GroupImage item={item} />)
     .with("border", () => <Border item={item} />)
     .with("color", () => <GroupColor item={item} />)
+    .with("text", () => <GroupText item={item} />)
     .otherwise(() => null);
 };
 
