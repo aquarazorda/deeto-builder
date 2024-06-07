@@ -13,28 +13,28 @@
               "behaviour": "color",
               "title": "Buttons & Accent",
               "defaultValue": "purple",
-              "variables": ["main-color"]
+              "variables": ["main-color", "arrow-color", "activation-button-bg"]
             },
             {
               "type": "item",
               "behaviour": "color",
               "title": "Primary Text",
               "defaultValue": "white",
-              "variables": ["primary-text"]
+              "variables": ["primary-text", "primary-font-color"]
             },
             {
               "type": "item",
               "behaviour": "color-background",
               "title": "Main background",
               "defaultValue": "white",
-              "selectors": ["background-main"]
+              "variables": ["background-main", "widget-background"]
             },
             {
               "type": "item",
               "behaviour": "color-background",
               "title": "Content background",
               "defaultValue": "white",
-              "selectors": ["background-content"]
+              "variables": ["background-content", "popup-background"]
             }
           ]
         },
@@ -173,7 +173,7 @@
                   "type": "image",
                   "title": "Icon",
                   "variables": ["activation-button-img"],
-                  "defaultValue": "https://deeto-widget-dev.s3.amazonaws.com/icons/Quote.svg"
+                  "defaultValue": "https://widget.deeto.ai/v2/icons/Quote.svg"
                 },
                 {
                   "type": "border",
