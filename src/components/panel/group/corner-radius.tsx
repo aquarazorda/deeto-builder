@@ -37,7 +37,7 @@ const Input = forwardRef<
 >(({ rotate, ...props }, ref) => {
   return (
     <FormControl>
-      <div className="min-w-0  max-w-fit relative flex flex-1 shadow-input p-4 rounded-2xl items-center gap-4">
+      <div className="min-w-0 max-w-fit relative flex flex-1 shadow-input p-4 rounded-2xl items-center gap-4">
         <div className="flex-1">
           <RadiusIcon
             style={{ transform: rotate ? `rotate(${rotate}deg)` : undefined }}
