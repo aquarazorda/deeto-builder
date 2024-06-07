@@ -61,6 +61,12 @@
           field.style.border = "1px solid red";
           return false;
         }
+        if (fieldName.includes("firstName") || fieldName.includes("lastName")) {
+          if (field.value.match(/\d+/g)) {
+            field.style.border = "1px solid red";
+            return false;
+          }
+        }
         field.style.border = "unset";
 
         return true;
@@ -474,7 +480,7 @@
                   />
                 </div>
                 <div
-                  style="display: flex; gap: 8px"
+                  style="display: flex; gap: 8px; position: relative"
                   id="form-group-1"
                   class="form-group"
                 >
@@ -487,7 +493,12 @@
                   />
                   <span
                     id="referrer_email_validationMessage"
-                    style="color: red; position: absolute"
+                    style="
+                      color: red;
+                      position: absolute;
+                      align-self: center;
+                      top: 0;
+                    "
                   ></span>
                 </div>
                 <div

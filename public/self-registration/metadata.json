@@ -145,29 +145,6 @@
     },
     {
       "type": "section",
-      "title": "Content",
-      "elements": [
-        {
-          "type": "group",
-          "title": "Page Title",
-          "elements": [
-            {
-              "type": "group",
-              "elements": [
-                {
-                  "type": "item",
-                  "behaviour": "text",
-                  "defaultValue": "Referral Program By",
-                  "selectors": ["title"]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "section",
       "title": "Advanced",
       "elements": [
         {
