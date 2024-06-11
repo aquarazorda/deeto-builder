@@ -59,7 +59,7 @@ export default function Images({
         * Image upload size and weight instructions
       </span>
       <span className="space-y-2">
-        <Label className="text-xs">{title} Url</Label>
+        <Label className="text-xs">{title} URL</Label>
         <Input
           value={clickHref}
           placeholder={defaultLink}

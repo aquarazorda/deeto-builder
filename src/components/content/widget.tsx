@@ -67,6 +67,7 @@ export default function WidgetContent({
 
         setUpdateExtra(() => setExtra);
 
+        document.getElementsByTagName("deeto-reference-popup")?.[0]?.remove?.();
         loadedElement = element;
         widgetRef.current = loadedElement;
         popupRef.current = popupElement;
