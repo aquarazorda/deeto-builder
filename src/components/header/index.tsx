@@ -5,25 +5,53 @@ import { useShallow } from "zustand/react/shallow";
 import { useHtml } from "@/state/html";
 import { useLocalStorage } from "@/lib/local-storage";
 import { useEffect, useState } from "react";
+import { useExtra } from "@/state/extra";
 
-export default function Header() {
+export default function Header({ isWidget }: { isWidget?: boolean }) {
   const { set, mobileMode } = useLocalStorage();
   const [state, setState] = useState(mobileMode);
+  const [extra, setExtra] = useExtra((state) => [state.state, state.set]);
+  const [previous, setPrevious] = useState({
+    history: [] as (typeof extra)[],
+    currentIdx: 0,
+    ignore: false,
+  });
 
   const onChange = (mobileMode: boolean) => {
     setState(mobileMode);
     set("mobileMode", mobileMode);
   };
 
-  const [undo, redo, history, idx] = useHtml(
-    useShallow((state) => [
-      state.undo,
-      state.redo,
-      state.history,
-      state.currentIdx,
-      state.save,
-    ]),
-  );
+  const [undo, redo, history, idx] = isWidget
+    ? [
+        () => {
+          setExtra(previous.history[previous.currentIdx - 1]);
+          setPrevious((prev) => ({
+            history: prev.history,
+            currentIdx: prev.currentIdx - 1,
+            ignore: true,
+          }));
+        },
+        () => {
+          setExtra(previous.history[previous.currentIdx + 1]);
+          setPrevious((prev) => ({
+            history: prev.history,
+            currentIdx: prev.currentIdx + 1,
+            ignore: true,
+          }));
+        },
+        previous.history,
+        previous.currentIdx,
+      ]
+    : useHtml(
+        useShallow((state) => [
+          state.undo,
+          state.redo,
+          state.history,
+          state.currentIdx,
+          state.save,
+        ]),
+      );
 
   useEffect(() => {
     const handleBeforeUnload = (event: Event) => {
@@ -40,6 +68,14 @@ export default function Header() {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [history]);
+
+  useEffect(() => {
+    setPrevious((prev) => ({
+      history: prev.ignore ? prev.history : [...prev.history, extra],
+      currentIdx: prev.ignore ? prev.currentIdx : prev.history.length,
+      ignore: false,
+    }));
+  }, [extra]);
 
   return (
     <div className="flex w-full justify-between items-center py-4 px-6">

@@ -146,11 +146,11 @@
     },
     {
       "type": "section",
-      "title": "Content",
+      "title": "Page",
       "elements": [
         {
           "type": "group",
-          "title": "Page Title",
+          "title": "Title",
           "elements": [
             {
               "type": "group",
