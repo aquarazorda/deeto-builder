@@ -1,6 +1,8 @@
 import { useExtra } from "@/state/extra";
 import { useEffect, useRef, useState } from "react";
 import { WIDGET_URL } from "@/config";
+import { useLocalStorage } from "@/lib/local-storage";
+import { cn } from "@/lib/utils";
 
 export default function WidgetContent({
   configurationId,
@@ -13,6 +15,8 @@ export default function WidgetContent({
   const popupRef = useRef<HTMLElement>();
   const mountRef = useRef<HTMLDivElement>(null);
   const { state } = useExtra();
+  const { mobileMode } = useLocalStorage();
+
   const [updateExtra, setUpdateExtra] =
     useState<(extra: Record<string, any>) => void>();
 
@@ -153,22 +157,27 @@ export default function WidgetContent({
   }, [state, updateExtra]);
 
   return (
-    <div
-      ref={mountRef}
-      className="relative w-full h-full bg-widget-background flex flex-col gap-8 p-10"
-    >
-      <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
-      <div className="flex-1 gap-10 flex flex-col">
-        {Array.from({ length: 2 }).map((_, index) => (
-          <div key={index} className="flex flex-1 flex-wrap gap-10">
-            {Array.from({ length: 3 }).map((_, idx) => (
-              <div
-                key={idx}
-                className="flex-1 border-[10px] border-white border-opacity-10 rounded-2xl"
-              />
-            ))}
-          </div>
-        ))}
+    <div className="w-full h-full flex">
+      <div
+        ref={mountRef}
+        className={cn(
+          "relative w-full h-[calc(100dvh-72px)] bg-widget-background flex flex-col gap-8 p-10",
+          mobileMode && "mx-auto p-6 w-[320px] h-[832px] mt-auto rounded-t-2xl",
+        )}
+      >
+        <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
+        <div className="flex-1 gap-10 flex flex-col">
+          {Array.from({ length: 2 }).map((_, index) => (
+            <div key={index} className="flex flex-1 flex-wrap gap-10">
+              {Array.from({ length: mobileMode ? 1 : 3 }).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="flex-1 border-[10px] border-white border-opacity-10 rounded-2xl"
+                />
+              ))}
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
