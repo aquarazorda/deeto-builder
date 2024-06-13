@@ -161,7 +161,7 @@ export default function WidgetContent({
       <div
         ref={mountRef}
         className={cn(
-          "relative w-full h-[calc(100dvh-72px)] bg-widget-background flex flex-col gap-8 p-10",
+          "relative w-full h-full bg-widget-background flex flex-col gap-8 p-10",
           mobileMode && "mx-auto p-6 w-[320px] h-[832px] mt-auto rounded-t-2xl",
         )}
       >
