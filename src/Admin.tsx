@@ -18,7 +18,7 @@ export default function Admin() {
   return (
     <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
       <QueryClientProvider client={queryClient}>
-        <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full p-2">
+        <div className="font-inter flex flex-col relative border rounded-lg w-full h-full p-2">
           <AdminMain />
         </div>
         <Toaster position="top-right" />

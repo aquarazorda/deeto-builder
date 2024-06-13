@@ -82,7 +82,7 @@ function App({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
-          minSize={20}
+          minSize={30}
           defaultSize={layout?.[1]}
           className="bg-[#F0EDF4] rounded-r-2xl"
         >
