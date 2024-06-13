@@ -13,7 +13,12 @@
               "behaviour": "color",
               "title": "Buttons & Accent",
               "defaultValue": "purple",
-              "variables": ["main-color", "arrow-color", "activation-button-bg"]
+              "variables": [
+                "main-color",
+                "arrow-color",
+                "activation-button-bg",
+                "activation-button-background"
+              ]
             },
             {
               "type": "item",
@@ -155,7 +160,19 @@
                   "type": "background",
                   "title": "Background",
                   "defaultValue": "#481453",
-                  "variables": ["activation-button-bg"]
+                  "variables": [
+                    "activation-button-background",
+                    "activation-button-bg"
+                  ]
+                },
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["see-more-text-color"],
+                  "defaultValue": "#e5e7eb",
+                  "extra": {
+                    "label": "Text color"
+                  }
                 },
                 {
                   "type": "corner-radius",
