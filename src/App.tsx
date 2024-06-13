@@ -11,7 +11,7 @@ import useDebouncedCallback from "./lib/debounced-callback";
 import { Metadata, usePanel } from "./state/panel";
 import { ScrollArea } from "./components/ui/scroll-area";
 import { useExtra, Extra } from "./state/extra";
-import { lazy, useEffect, useState, useTransition } from "react";
+import { lazy, useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 type Props = Partial<{
@@ -28,7 +28,7 @@ const WidgetContent = lazy(() => import("./components/content/widget"));
 
 const mockExtras = {
   isWidget: true,
-  widgetConfigurationId: "34e32793-22d7-42dd-9a5d-7aea795634d6",
+  widgetConfigurationId: "88dd4c4d-8537-4a52-8fa7-8f9e35be65d1",
   variables: {
     "main-color": "#481453",
   },
@@ -56,6 +56,7 @@ function App({
 
   useEffect(() => {
     extra && setExtra(extra);
+    // setExtra(mockExtras);
     setLoaded(true);
   }, [extra]);
 
@@ -63,7 +64,7 @@ function App({
 
   return (
     <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50">
-      <Header />
+      <Header isWidget={extraState?.isWidget} />
       <ResizablePanelGroup
         direction="horizontal"
         onLayout={(val) => debouncedSet("layout", val)}
