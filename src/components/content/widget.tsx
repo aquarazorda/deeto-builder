@@ -44,7 +44,6 @@ export default function WidgetContent({
           const widgetStyle = document.createElement("style");
           widgetStyle.innerHTML = `
             .cursor-pointer.fixed {
-              bottom: 140px;
               position: absolute;
             }
             .dt-floater-container {
@@ -61,7 +60,7 @@ export default function WidgetContent({
             .dt-embedded-reference-modal-index {
             width: 100%;
             position: absolute;
-            background-color: #00000038;
+            background-color: #000000ad;
             }
             .dt-embedded-reference-modal-index > div:first-child {
             display: none;
