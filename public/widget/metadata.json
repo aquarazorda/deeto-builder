@@ -96,13 +96,17 @@
         },
         {
           "type": "group",
-          "title": "Widget shape",
+          "title": "Shapes",
           "elements": [
             {
               "type": "item",
               "behaviour": "shape",
               "defaultValue": "teardrop",
-              "variables": ["activation-button-radius"],
+              "variables": [
+                "activation-button-radius",
+                "widget-radius",
+                "popup-radius"
+              ],
               "options": [
                 {
                   "type": "item",
