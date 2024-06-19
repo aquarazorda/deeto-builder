@@ -24,7 +24,10 @@ export const createSharedComponent =
 
     return () => {
       root.unmount();
-      useHtml.destroy();
-      usePanel.destroy();
+      useHtml.setState((state) => ({
+        ...state,
+        history: [],
+        currentIdx: 0,
+      }));
     };
   };
