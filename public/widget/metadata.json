@@ -153,7 +153,7 @@
       "elements": [
         {
           "type": "group",
-          "title": "Activation button",
+          "title": "Button",
           "elements": [
             {
               "type": "item",

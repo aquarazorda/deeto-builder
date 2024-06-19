@@ -5,9 +5,8 @@ import { ROOT_URL } from "@/config";
 export const createSharedComponent =
   (Component: FunctionComponent<any>) =>
   ({ renderIn, ...props }: { renderIn: HTMLElement; [key: string]: any }) => {
-    const root = ReactDOM.createRoot(renderIn);
-
-    root.render(
+    const root = ReactDOM.hydrateRoot(
+      renderIn,
       <>
         <style
           dangerouslySetInnerHTML={{
@@ -17,6 +16,17 @@ export const createSharedComponent =
         <Component {...props} />
       </>,
     );
+
+    // root.render(
+    //   <>
+    //     <style
+    //       dangerouslySetInnerHTML={{
+    //         __html: `@import "${ROOT_URL}/assets/html-builder.css"`,
+    //       }}
+    //     />
+    //     <Component {...props} />
+    //   </>,
+    // );
 
     // renderIn?.attachShadow({ mode: "open" });
 
