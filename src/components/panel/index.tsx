@@ -57,6 +57,13 @@ export default function Panel({ metadata }: Props) {
     load(metadata);
   }, [metadata]);
 
+  useEffect(() => {
+    return () => {
+      usePanel.destroy();
+      useHtml.destroy();
+    };
+  }, []);
+
   const Acc = useCallback(
     ({ group }: { group: Group }) =>
       group ? (
