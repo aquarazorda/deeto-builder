@@ -81,7 +81,7 @@ export const useHtml = create<HtmlState>((set) => ({
       },
     )
       .then((res) => res.text())
-      .then((html) => html.replace(/"\/html_builder/g, ROOT_URL));
+      .then((html) => html.replace(/\/html_builder/g, ROOT_URL));
 
     set((state) => ({
       ...state,
