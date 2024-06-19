@@ -52,10 +52,6 @@ function App({
 
   useEffect(() => {
     if (saveImage) setSaveFn(saveImage);
-    () => {
-      useExtra.destroy();
-      useLocalStorage.destroy();
-    };
   }, []);
 
   useEffect(() => {
