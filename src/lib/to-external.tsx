@@ -26,8 +26,10 @@ export const createSharedComponent =
       root.unmount();
       useHtml.setState((state) => ({
         ...state,
+        html: "",
         history: [],
         currentIdx: 0,
+        styles: {},
       }));
     };
   };
