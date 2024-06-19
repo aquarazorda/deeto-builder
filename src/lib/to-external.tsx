@@ -2,7 +2,6 @@ import { FunctionComponent } from "react";
 import ReactDOM from "react-dom/client";
 import { ROOT_URL } from "@/config";
 import { useHtml } from "@/state/html";
-import { usePanel } from "@/state/panel";
 
 export const createSharedComponent =
   (Component: FunctionComponent<any>) =>

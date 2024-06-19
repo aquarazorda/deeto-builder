@@ -25,7 +25,12 @@
               "behaviour": "color",
               "title": "Primary Text",
               "defaultValue": "white",
-              "variables": ["primary-text", "primary-font-color"]
+              "variables": [
+                "primary-text",
+                "primary-font-color",
+                "popup-name-color",
+                "widget-name-color"
+              ]
             },
             {
               "type": "item",
@@ -256,6 +261,15 @@
               "title": "Avatar & Name",
               "options": [
                 {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["widget-name-color"],
+                  "defaultValue": "#481453",
+                  "extra": {
+                    "label": "Name color"
+                  }
+                },
+                {
                   "type": "corner-radius",
                   "title": "Corner radius",
                   "defaultValue": "100px 100px 100px 100px",
@@ -351,6 +365,15 @@
               "behaviour": "component-group",
               "title": "Avatar & Name",
               "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["popup-name-color"],
+                  "defaultValue": "#481453",
+                  "extra": {
+                    "label": "Name color"
+                  }
+                },
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
