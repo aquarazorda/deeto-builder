@@ -98,6 +98,11 @@ export default function Header({ isWidget }: { isWidget?: boolean }) {
 
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
+      useHtml.setState((state) => ({
+        ...state,
+        history: [],
+        currentIdx: 0,
+      }));
     };
   }, [history]);
 
