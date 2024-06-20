@@ -35,7 +35,7 @@ jobs:
           aws-region: us-east-1
 
       - name: Deploy static site to S3 bucket
-        run: aws s3 sync ./build s3://deeto-frontend-prod/html_builder
+        run: aws s3 sync ./build s3://deeto-frontend-prod
 
       - name: Sync widget metadata to S3 bucket
         run: aws s3 cp public/widget/metadata.json s3://deeto-images/widgetData/metadata.json
