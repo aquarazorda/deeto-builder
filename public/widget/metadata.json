@@ -17,7 +17,9 @@
                 "main-color",
                 "arrow-color",
                 "activation-button-bg",
-                "activation-button-background"
+                "activation-button-background",
+                "close-button-color",
+                "close-button-color-popup"
               ]
             },
             {
@@ -316,6 +318,19 @@
                   }
                 }
               ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Close button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["close-button-color"],
+                  "defaultValue": "#e5e7eb"
+                }
+              ]
             }
           ]
         },
@@ -440,6 +455,19 @@
                     "color": "#481453",
                     "width": 0
                   }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Close button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["close-button-color-popup"],
+                  "defaultValue": "#e5e7eb"
                 }
               ]
             }
