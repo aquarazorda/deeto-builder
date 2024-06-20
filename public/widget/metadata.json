@@ -328,7 +328,7 @@
                   "type": "color",
                   "title": "Color",
                   "variables": ["close-button-color"],
-                  "defaultValue": "#e5e7eb"
+                  "defaultValue": "#b5a4bb"
                 }
               ]
             }
@@ -467,7 +467,7 @@
                   "type": "color",
                   "title": "Color",
                   "variables": ["close-button-color-popup"],
-                  "defaultValue": "#e5e7eb"
+                  "defaultValue": "#b5a4bb"
                 }
               ]
             }
