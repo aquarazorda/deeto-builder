@@ -36,3 +36,17 @@ jobs:
 
       - name: Deploy static site to S3 bucket
         run: aws s3 sync ./build s3://deeto-frontend-dev
+
+      - name: Sync widget metadata to S3 bucket
+        run: aws s3 cp public/widget/metadata.json s3://deeto-images-dev/widgetData/metadata.json
+
+      - name: Sync widget metadata to S3 bucket
+        run: aws s3 cp public/widget/metadata.json s3://deeto-images-dev/widgetData/metadata.json
+
+      - name: Sync self registration to S3 bucket
+        run: aws s3 cp public/self-registration/ s3://deeto-images-dev/self-registration-content/ --recursive
+
+      - name: Sync referral program to S3 bucket
+        run: |
+          aws s3 cp public/affiliate_v1.html s3://deeto-images-dev/referralProgramTemplates/affiliate_v1.html 
+          aws s3 cp public/referral_v1.html s3://deeto-images-dev/referralProgramTemplates/referral_v1.html
