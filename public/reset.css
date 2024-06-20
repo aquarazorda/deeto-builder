@@ -173,3 +173,33 @@ button {
 textarea {
   resize: none;
 }
+
+@media screen and (max-width: 800px) {
+  inner {
+    flex-direction: column;
+    padding: 20px;
+  }
+
+  article h1 {
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 120%;
+  }
+
+  article div {
+    gap: 16px;
+  }
+
+  article h2 { 
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .form-title {
+    text-align: start;
+  }
+
+  .form-group {
+    flex-direction: column;
+  }
+}
