@@ -40,9 +40,6 @@ jobs:
       - name: Sync widget metadata to S3 bucket
         run: aws s3 cp public/widget/metadata.json s3://deeto-images-dev/widgetData/metadata.json
 
-      - name: Sync widget metadata to S3 bucket
-        run: aws s3 cp public/widget/metadata.json s3://deeto-images-dev/widgetData/metadata.json
-
       - name: Sync self registration to S3 bucket
         run: aws s3 cp public/self-registration/ s3://deeto-images-dev/self-registration-content/ --recursive
 
