@@ -13,14 +13,26 @@
               "behaviour": "color",
               "title": "Buttons & Accent",
               "defaultValue": "purple",
-              "variables": ["main-color", "arrow-color", "activation-button-bg"]
+              "variables": [
+                "main-color",
+                "arrow-color",
+                "activation-button-bg",
+                "activation-button-background",
+                "close-button-color",
+                "close-button-color-popup"
+              ]
             },
             {
               "type": "item",
               "behaviour": "color",
               "title": "Primary Text",
               "defaultValue": "white",
-              "variables": ["primary-text", "primary-font-color"]
+              "variables": [
+                "primary-text",
+                "primary-font-color",
+                "popup-name-color",
+                "widget-name-color"
+              ]
             },
             {
               "type": "item",
@@ -91,23 +103,27 @@
         },
         {
           "type": "group",
-          "title": "Widget shape",
+          "title": "Shapes",
           "elements": [
             {
               "type": "item",
               "behaviour": "shape",
               "defaultValue": "teardrop",
-              "variables": ["activation-button-radius"],
+              "variables": [
+                "activation-button-radius",
+                "widget-radius",
+                "popup-radius"
+              ],
               "options": [
                 {
                   "type": "item",
                   "title": "Teardrop",
                   "behaviour": "teardrop",
                   "defaultValue": {
-                    "top-right": "1.5rem",
-                    "top-left": "0",
-                    "bottom-right": "1.5rem",
-                    "bottom-left": "1.5rem"
+                    "tr": "1.5rem",
+                    "tl": "0",
+                    "br": "1.5rem",
+                    "bl": "1.5rem"
                   }
                 },
                 {
@@ -115,10 +131,10 @@
                   "title": "Ellipse",
                   "behaviour": "ellipse",
                   "defaultValue": {
-                    "top-right": "1.5rem",
-                    "top-left": "1.5rem",
-                    "bottom-right": "1.5rem",
-                    "bottom-left": "1.5rem"
+                    "tr": "1.5rem",
+                    "tl": "1.5rem",
+                    "br": "1.5rem",
+                    "bl": "1.5rem"
                   }
                 },
                 {
@@ -126,10 +142,10 @@
                   "title": "Square",
                   "behaviour": "square",
                   "defaultValue": {
-                    "top-right": "0",
-                    "top-left": "0",
-                    "bottom-right": "0",
-                    "bottom-left": "0"
+                    "tr": "0",
+                    "tl": "0",
+                    "br": "0",
+                    "bl": "0"
                   }
                 }
               ]
@@ -144,7 +160,7 @@
       "elements": [
         {
           "type": "group",
-          "title": "Activation button",
+          "title": "Button",
           "elements": [
             {
               "type": "item",
@@ -155,7 +171,19 @@
                   "type": "background",
                   "title": "Background",
                   "defaultValue": "#481453",
-                  "variables": ["activation-button-bg"]
+                  "variables": [
+                    "activation-button-background",
+                    "activation-button-bg"
+                  ]
+                },
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["see-more-text-color"],
+                  "defaultValue": "#e5e7eb",
+                  "extra": {
+                    "label": "Text color"
+                  }
                 },
                 {
                   "type": "corner-radius",
@@ -235,6 +263,15 @@
               "title": "Avatar & Name",
               "options": [
                 {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["widget-name-color"],
+                  "defaultValue": "#481453",
+                  "extra": {
+                    "label": "Name color"
+                  }
+                },
+                {
                   "type": "corner-radius",
                   "title": "Corner radius",
                   "defaultValue": "100px 100px 100px 100px",
@@ -279,6 +316,19 @@
                   "extra": {
                     "label": "Background color"
                   }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Close button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["close-button-color"],
+                  "defaultValue": "#b5a4bb"
                 }
               ]
             }
@@ -330,6 +380,15 @@
               "behaviour": "component-group",
               "title": "Avatar & Name",
               "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["popup-name-color"],
+                  "defaultValue": "#481453",
+                  "extra": {
+                    "label": "Name color"
+                  }
+                },
                 {
                   "type": "corner-radius",
                   "title": "Corner radius",
@@ -396,6 +455,19 @@
                     "color": "#481453",
                     "width": 0
                   }
+                }
+              ]
+            },
+            {
+              "type": "item",
+              "behaviour": "component-group",
+              "title": "Close button",
+              "options": [
+                {
+                  "type": "color",
+                  "title": "Color",
+                  "variables": ["close-button-color-popup"],
+                  "defaultValue": "#b5a4bb"
                 }
               ]
             }

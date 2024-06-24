@@ -44,7 +44,6 @@ export default function WidgetContent({
           const widgetStyle = document.createElement("style");
           widgetStyle.innerHTML = `
             .cursor-pointer.fixed {
-              bottom: 140px;
               position: absolute;
             }
             .dt-floater-container {
@@ -61,7 +60,7 @@ export default function WidgetContent({
             .dt-embedded-reference-modal-index {
             width: 100%;
             position: absolute;
-            background-color: #00000038;
+            background-color: #000000ad;
             }
             .dt-embedded-reference-modal-index > div:first-child {
             display: none;
@@ -161,7 +160,7 @@ export default function WidgetContent({
       <div
         ref={mountRef}
         className={cn(
-          "relative w-full h-[calc(100dvh-72px)] bg-widget-background flex flex-col gap-8 p-10",
+          "relative w-full h-full bg-widget-background flex flex-col gap-8 p-10",
           mobileMode && "mx-auto p-6 w-[320px] h-[832px] mt-auto rounded-t-2xl",
         )}
       >

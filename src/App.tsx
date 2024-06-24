@@ -63,7 +63,7 @@ function App({
   if (!loaded) return null;
 
   return (
-    <div className="font-inter min-h-[100dvh] flex flex-col relative border rounded-lg w-full h-full bg-gray-50">
+    <div className="font-inter flex flex-col relative border rounded-lg w-full h-full bg-gray-50">
       <Header isWidget={extraState?.isWidget} />
       <ResizablePanelGroup
         direction="horizontal"
@@ -82,7 +82,7 @@ function App({
         </ResizablePanel>
         <ResizableHandle withHandle />
         <ResizablePanel
-          minSize={20}
+          minSize={30}
           defaultSize={layout?.[1]}
           className="bg-[#F0EDF4] rounded-r-2xl"
         >

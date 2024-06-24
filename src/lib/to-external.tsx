@@ -1,6 +1,7 @@
 import { FunctionComponent } from "react";
 import ReactDOM from "react-dom/client";
 import { ROOT_URL } from "@/config";
+import { useHtml } from "@/state/html";
 
 export const createSharedComponent =
   (Component: FunctionComponent<any>) =>
@@ -20,5 +21,14 @@ export const createSharedComponent =
 
     // renderIn?.attachShadow({ mode: "open" });
 
-    return () => root.unmount();
+    return () => {
+      root.unmount();
+      useHtml.setState((state) => ({
+        ...state,
+        html: "",
+        history: [],
+        currentIdx: 0,
+        styles: {},
+      }));
+    };
   };

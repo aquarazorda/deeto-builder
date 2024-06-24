@@ -77,9 +77,9 @@ export const usePanel = create<PanelState>((set) => ({
   loadMetadata: async (metadata?: Metadata) => {
     const res =
       metadata ??
-      (await fetch(ROOT_URL + "/widget/metadata.json").then(
-        (res) => res.json() as Promise<Metadata>,
-      ));
+      (await fetch(ROOT_URL + "/widget/metadata.json", {
+        cache: "no-store",
+      }).then((res) => res.json() as Promise<Metadata>));
     set((state) => ({ ...state, metadata: res }));
   },
 }));

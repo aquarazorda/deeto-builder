@@ -39,11 +39,8 @@ export default function Shape({
     let newValue = {} as Record<string, string>;
 
     variables.forEach((variable) => {
-      if (variable.includes("-radius")) {
-        newValue[variable] =
-          `${value["top-left"]} ${value["top-right"]} ${value["bottom-right"]} ${value["bottom-left"]}`;
-        return;
-      }
+      newValue[variable] =
+        `${value["tl"]} ${value["tr"]} ${value["br"]} ${value["bl"]}`;
 
       Object.keys(value).forEach((key) => {
         newValue[variable + "-" + key] = value[key];
@@ -74,10 +71,10 @@ export default function Shape({
           <div
             className="w-[70px] h-[48px] bg-[#C2B7D0] border border-solid border-white group-[.active]:border-4 group-[.active]:bg-[#00C2E9] group-[.active]:border-[#FFC400]"
             style={{
-              borderTopRightRadius: defaultValue["top-right"],
-              borderTopLeftRadius: defaultValue["top-left"],
-              borderBottomRightRadius: defaultValue["bottom-right"],
-              borderBottomLeftRadius: defaultValue["bottom-left"],
+              borderTopRightRadius: defaultValue["tr"],
+              borderTopLeftRadius: defaultValue["tl"],
+              borderBottomRightRadius: defaultValue["br"],
+              borderBottomLeftRadius: defaultValue["bl"],
             }}
           />
           <span className="w-full text-center group-[.active]:font-medium">

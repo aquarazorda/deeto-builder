@@ -102,6 +102,7 @@ export default function Panel({ metadata }: Props) {
             ))
             .otherwise(() => null),
         )}
+      <div style={{ height: 400 }}></div>
     </Accordion>
   );
 }

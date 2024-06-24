@@ -46,7 +46,7 @@ export default function GroupColor({ item }: { item: Item }) {
       <Popover>
         <PopoverTrigger>
           <div
-            className="rounded-2xl rounded-tl-none items-center p-4"
+            className="rounded-2xl rounded-tl-none items-center p-4 min-h-14"
             style={{ backgroundColor: value ?? "black" }}
           >
             <span

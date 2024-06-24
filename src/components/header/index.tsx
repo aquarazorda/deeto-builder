@@ -25,20 +25,35 @@ export default function Header({ isWidget }: { isWidget?: boolean }) {
   const [undo, redo, history, idx] = isWidget
     ? [
         () => {
-          setExtra(previous.history[previous.currentIdx - 1]);
-          setPrevious((prev) => ({
-            history: prev.history,
-            currentIdx: prev.currentIdx - 1,
-            ignore: true,
-          }));
+          setPrevious((prev) => {
+            const newIdx = Math.max(prev.currentIdx - 1, 0);
+            return {
+              ...prev,
+              currentIdx: newIdx,
+              ignore: true,
+            };
+          });
+          setExtra({
+            ...previous.history[Math.max(previous.currentIdx - 1, 0)],
+          });
         },
         () => {
-          setExtra(previous.history[previous.currentIdx + 1]);
-          setPrevious((prev) => ({
-            history: prev.history,
-            currentIdx: prev.currentIdx + 1,
-            ignore: true,
-          }));
+          setPrevious((prev) => {
+            const newIdx = Math.min(
+              prev.currentIdx + 1,
+              prev.history.length - 1,
+            );
+            return {
+              ...prev,
+              currentIdx: newIdx,
+              ignore: true,
+            };
+          });
+          setExtra({
+            ...previous.history[
+              Math.min(previous.currentIdx + 1, previous.history.length - 1)
+            ],
+          });
         },
         previous.history,
         previous.currentIdx,
@@ -52,6 +67,23 @@ export default function Header({ isWidget }: { isWidget?: boolean }) {
           state.save,
         ]),
       );
+
+  useEffect(() => {
+    setPrevious((prev) => {
+      const newHistory = prev.ignore
+        ? prev.history
+        : [
+            ...prev.history.slice(0, prev.currentIdx + 1),
+            JSON.parse(JSON.stringify(extra)),
+          ];
+
+      return {
+        history: newHistory,
+        currentIdx: prev.ignore ? prev.currentIdx : newHistory.length - 1,
+        ignore: false,
+      };
+    });
+  }, [extra]);
 
   useEffect(() => {
     const handleBeforeUnload = (event: Event) => {
@@ -68,14 +100,6 @@ export default function Header({ isWidget }: { isWidget?: boolean }) {
       window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [history]);
-
-  useEffect(() => {
-    setPrevious((prev) => ({
-      history: prev.ignore ? prev.history : [...prev.history, extra],
-      currentIdx: prev.ignore ? prev.currentIdx : prev.history.length,
-      ignore: false,
-    }));
-  }, [extra]);
 
   return (
     <div className="flex w-full justify-between items-center py-4 px-6">
