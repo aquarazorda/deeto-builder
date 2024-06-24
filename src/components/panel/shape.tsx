@@ -40,7 +40,7 @@ export default function Shape({
 
     variables.forEach((variable) => {
       newValue[variable] =
-        `${value["top-left"]} ${value["top-right"]} ${value["bottom-right"]} ${value["bottom-left"]}`;
+        `${value["tl"]} ${value["tr"]} ${value["br"]} ${value["bl"]}`;
 
       Object.keys(value).forEach((key) => {
         newValue[variable + "-" + key] = value[key];

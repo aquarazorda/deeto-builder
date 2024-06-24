@@ -120,10 +120,10 @@
                   "title": "Teardrop",
                   "behaviour": "teardrop",
                   "defaultValue": {
-                    "top-right": "1.5rem",
-                    "top-left": "0",
-                    "bottom-right": "1.5rem",
-                    "bottom-left": "1.5rem"
+                    "tr": "1.5rem",
+                    "tl": "0",
+                    "br": "1.5rem",
+                    "bl": "1.5rem"
                   }
                 },
                 {
@@ -131,10 +131,10 @@
                   "title": "Ellipse",
                   "behaviour": "ellipse",
                   "defaultValue": {
-                    "top-right": "1.5rem",
-                    "top-left": "1.5rem",
-                    "bottom-right": "1.5rem",
-                    "bottom-left": "1.5rem"
+                    "tr": "1.5rem",
+                    "tl": "1.5rem",
+                    "br": "1.5rem",
+                    "bl": "1.5rem"
                   }
                 },
                 {
@@ -142,10 +142,10 @@
                   "title": "Square",
                   "behaviour": "square",
                   "defaultValue": {
-                    "top-right": "0",
-                    "top-left": "0",
-                    "bottom-right": "0",
-                    "bottom-left": "0"
+                    "tr": "0",
+                    "tl": "0",
+                    "br": "0",
+                    "bl": "0"
                   }
                 }
               ]
