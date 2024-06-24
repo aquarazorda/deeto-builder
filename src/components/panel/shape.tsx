@@ -71,10 +71,10 @@ export default function Shape({
           <div
             className="w-[70px] h-[48px] bg-[#C2B7D0] border border-solid border-white group-[.active]:border-4 group-[.active]:bg-[#00C2E9] group-[.active]:border-[#FFC400]"
             style={{
-              borderTopRightRadius: defaultValue["top-right"],
-              borderTopLeftRadius: defaultValue["top-left"],
-              borderBottomRightRadius: defaultValue["bottom-right"],
-              borderBottomLeftRadius: defaultValue["bottom-left"],
+              borderTopRightRadius: defaultValue["tr"],
+              borderTopLeftRadius: defaultValue["tl"],
+              borderBottomRightRadius: defaultValue["br"],
+              borderBottomLeftRadius: defaultValue["bl"],
             }}
           />
           <span className="w-full text-center group-[.active]:font-medium">
