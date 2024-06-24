@@ -39,11 +39,8 @@ export default function Shape({
     let newValue = {} as Record<string, string>;
 
     variables.forEach((variable) => {
-      if (variable.includes("-radius")) {
-        newValue[variable] =
-          `${value["top-left"]} ${value["top-right"]} ${value["bottom-right"]} ${value["bottom-left"]}`;
-        return;
-      }
+      newValue[variable] =
+        `${value["top-left"]} ${value["top-right"]} ${value["bottom-right"]} ${value["bottom-left"]}`;
 
       Object.keys(value).forEach((key) => {
         newValue[variable + "-" + key] = value[key];
