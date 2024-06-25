@@ -13,7 +13,9 @@ export default function WidgetContent({
 }) {
   const widgetRef = useRef<HTMLElement>();
   const popupRef = useRef<HTMLElement>();
-  const mountRef = useRef<HTMLDivElement>(null);
+  const mountRef = useRef<HTMLIFrameElement>(null);
+
+  const [iframeDoc, setIframeDoc] = useState<Document | undefined | null>(null);
   const { state } = useExtra();
   const { mobileMode } = useLocalStorage();
 
@@ -21,6 +23,8 @@ export default function WidgetContent({
     useState<(extra: Record<string, any>) => void>();
 
   useEffect(() => {
+    if (!iframeDoc) return;
+
     const script = document.createElement("script");
     script.src = WIDGET_URL + "main.js";
     script.async = true;
@@ -29,34 +33,35 @@ export default function WidgetContent({
 
     script.onload = () => {
       // @ts-ignore
-      window.deeto.registerFloatingReferenceWidget().then((dt: any) => {
-        dt.element.configurationId = configurationId;
-        dt.element.mountTarget = mountRef.current;
-        const { element, popupElement, setExtra } = dt.mountWidget(
-          mountRef.current,
-        ) as {
-          element: HTMLElement;
-          popupElement: HTMLElement;
-          setExtra: (extra: Record<string, any>) => void;
-        };
+      window[0].deeto.registerFloatingReferenceWidget().then((dt: any) => {
+        setTimeout(() => {
+          dt.element.configurationId = configurationId;
+          dt.element.mountTarget = iframeDoc.getElementById("iframe-root");
+          const { element, popupElement, setExtra } = dt.mountWidget(
+            dt.element.mountTarget,
+          ) as {
+            element: HTMLElement;
+            popupElement: HTMLElement;
+            setExtra: (extra: Record<string, any>) => void;
+          };
 
-        customElements.whenDefined(`deeto-floating-reference`).then(() => {
-          const widgetStyle = document.createElement("style");
-          widgetStyle.innerHTML = `
+          customElements.whenDefined(`deeto-floating-reference`).then(() => {
+            const widgetStyle = document.createElement("style");
+            widgetStyle.innerHTML = `
             .cursor-pointer.fixed {
               position: absolute;
             }
             .dt-floater-container {
               bottom: 120px;
             }`;
-          element.shadowRoot?.appendChild(widgetStyle);
-        });
+            element.shadowRoot?.appendChild(widgetStyle);
+          });
 
-        customElements
-          .whenDefined("deeto-floating-reference-popup")
-          .then(() => {
-            const popupStyle = document.createElement("style");
-            popupStyle.innerHTML = `
+          customElements
+            .whenDefined("deeto-floating-reference-popup")
+            .then(() => {
+              const popupStyle = document.createElement("style");
+              popupStyle.innerHTML = `
             .dt-embedded-reference-modal-index {
             width: 100%;
             position: absolute;
@@ -65,27 +70,30 @@ export default function WidgetContent({
             .dt-embedded-reference-modal-index > div:first-child {
             display: none;
             }`;
-            popupElement.shadowRoot?.appendChild(popupStyle);
-          });
+              popupElement.shadowRoot?.appendChild(popupStyle);
+            });
 
-        setUpdateExtra(() => setExtra);
+          setUpdateExtra(() => setExtra);
 
-        document.getElementsByTagName("deeto-reference-popup")?.[0]?.remove?.();
-        loadedElement = element;
-        widgetRef.current = loadedElement;
-        popupRef.current = popupElement;
+          document
+            .getElementsByTagName("deeto-reference-popup")?.[0]
+            ?.remove?.();
+          loadedElement = element;
+          widgetRef.current = loadedElement;
+          popupRef.current = popupElement;
+        }, 1000);
       });
     };
 
-    document.body.appendChild(script);
+    iframeDoc.head.appendChild(script);
 
     return () => {
       try {
-        document.body.removeChild(script);
-        document.body.removeChild(loadedElement);
+        iframeDoc.head.removeChild(script);
+        iframeDoc.head.removeChild(loadedElement);
       } catch {}
     };
-  }, []);
+  }, [iframeDoc]);
 
   useEffect(() => {
     if (!updateExtra) return;
@@ -151,32 +159,59 @@ export default function WidgetContent({
     template.innerHTML = `*{${styles}}`;
     templatePopup.innerHTML = `*{${styles}}`;
 
-    widgetRef.current?.shadowRoot?.appendChild(template);
-    popupRef.current?.shadowRoot?.appendChild(templatePopup);
+    iframeDoc?.getElementById("iframe-root")?.appendChild(template);
+    iframeDoc?.getElementById("iframe-root")?.appendChild(templatePopup);
+    // widgetRef.current?.shadowRoot?.appendChild(template);
+    // popupRef.current?.shadowRoot?.appendChild(templatePopup);
   }, [state, updateExtra]);
 
+  useEffect(() => {
+    console.log(mobileMode);
+  }, [mobileMode]);
+
+  useEffect(() => {
+    const iframeDocument = mountRef.current?.contentDocument;
+    setIframeDoc(iframeDocument);
+    iframeDocument?.open();
+    iframeDocument?.write(`
+			<!DOCTYPE html>
+			<html lang="en">
+						<body id="iframe-root">
+			</body>
+			</html>
+		`);
+    iframeDocument?.close();
+  }, []);
+
   return (
-    <div className="w-full h-full flex">
+    <div className="relative w-full h-full flex">
       <div
-        ref={mountRef}
         className={cn(
-          "relative w-full h-full bg-widget-background flex flex-col gap-8 p-10",
-          mobileMode && "mx-auto p-6 w-[320px] h-[832px] mt-auto rounded-t-2xl",
+          "relative w-full h-full bg-widget-background flex flex-col",
+          mobileMode && "mx-auto w-[420px] h-[832px] mt-auto rounded-t-2xl",
         )}
       >
-        <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
-        <div className="flex-1 gap-10 flex flex-col">
-          {Array.from({ length: 2 }).map((_, index) => (
-            <div key={index} className="flex flex-1 flex-wrap gap-10">
-              {Array.from({ length: mobileMode ? 1 : 3 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="flex-1 border-[10px] border-white border-opacity-10 rounded-2xl"
-                />
-              ))}
-            </div>
-          ))}
+        <div
+          className={cn(
+            "h-full w-full flex flex-col gap-8 p-10",
+            mobileMode && "p-6",
+          )}
+        >
+          <div className="border-[10px] border-white border-opacity-10 flex-1 rounded-2xl" />
+          <div className="flex-1 gap-10 flex flex-col">
+            {Array.from({ length: 2 }).map((_, index) => (
+              <div key={index} className="flex flex-1 flex-wrap gap-10">
+                {Array.from({ length: mobileMode ? 1 : 3 }).map((_, idx) => (
+                  <div
+                    key={idx}
+                    className="flex-1 border-[10px] border-white border-opacity-10 rounded-2xl"
+                  />
+                ))}
+              </div>
+            ))}
+          </div>
         </div>
+        <iframe ref={mountRef} className={cn("absolute w-full h-full")} />
       </div>
     </div>
   );
