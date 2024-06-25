@@ -52,7 +52,7 @@ export default function WidgetContent({
               position: absolute;
             }
             .dt-floater-container {
-              bottom: 120px;
+              bottom: 120px !important;
             }`;
             element.shadowRoot?.appendChild(widgetStyle);
           });
@@ -63,12 +63,12 @@ export default function WidgetContent({
               const popupStyle = document.createElement("style");
               popupStyle.innerHTML = `
             .dt-embedded-reference-modal-index {
-            width: 100%;
-            position: absolute;
-            background-color: #000000ad;
+              width: 100%;
+              position: absolute;
+              background-color: #000000ad;
             }
             .dt-embedded-reference-modal-index > div:first-child {
-            display: none;
+              display: none;
             }`;
               popupElement.shadowRoot?.appendChild(popupStyle);
             });
