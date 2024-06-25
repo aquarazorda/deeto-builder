@@ -180,7 +180,7 @@ export default function WidgetContent({
   }, []);
 
   return (
-    <div className="relative w-full h-full flex">
+    <div className="relative w-full h-full flex overflow-y-auto">
       <div
         className={cn(
           "relative w-full h-full bg-widget-background flex flex-col",
