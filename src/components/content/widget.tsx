@@ -33,35 +33,37 @@ export default function WidgetContent({
 
     script.onload = () => {
       // @ts-ignore
-      window[0].deeto.registerFloatingReferenceWidget().then((dt: any) => {
-        setTimeout(() => {
-          dt.element.configurationId = configurationId;
-          dt.element.mountTarget = iframeDoc.getElementById("iframe-root");
-          const { element, popupElement, setExtra } = dt.mountWidget(
-            dt.element.mountTarget,
-          ) as {
-            element: HTMLElement;
-            popupElement: HTMLElement;
-            setExtra: (extra: Record<string, any>) => void;
-          };
+      iframeDoc.defaultView.deeto
+        .registerFloatingReferenceWidget()
+        .then((dt: any) => {
+          setTimeout(() => {
+            dt.element.configurationId = configurationId;
+            dt.element.mountTarget = iframeDoc.getElementById("iframe-root");
+            const { element, popupElement, setExtra } = dt.mountWidget(
+              dt.element.mountTarget,
+            ) as {
+              element: HTMLElement;
+              popupElement: HTMLElement;
+              setExtra: (extra: Record<string, any>) => void;
+            };
 
-          customElements.whenDefined(`deeto-floating-reference`).then(() => {
-            const widgetStyle = document.createElement("style");
-            widgetStyle.innerHTML = `
+            customElements.whenDefined(`deeto-floating-reference`).then(() => {
+              const widgetStyle = document.createElement("style");
+              widgetStyle.innerHTML = `
             .cursor-pointer.fixed {
               position: absolute;
             }
             .dt-floater-container {
               bottom: 120px !important;
             }`;
-            element.shadowRoot?.appendChild(widgetStyle);
-          });
+              element.shadowRoot?.appendChild(widgetStyle);
+            });
 
-          customElements
-            .whenDefined("deeto-floating-reference-popup")
-            .then(() => {
-              const popupStyle = document.createElement("style");
-              popupStyle.innerHTML = `
+            customElements
+              .whenDefined("deeto-floating-reference-popup")
+              .then(() => {
+                const popupStyle = document.createElement("style");
+                popupStyle.innerHTML = `
             .dt-embedded-reference-modal-index {
               width: 100%;
               position: absolute;
@@ -70,19 +72,19 @@ export default function WidgetContent({
             .dt-embedded-reference-modal-index > div:first-child {
               display: none;
             }`;
-              popupElement.shadowRoot?.appendChild(popupStyle);
-            });
+                popupElement.shadowRoot?.appendChild(popupStyle);
+              });
 
-          setUpdateExtra(() => setExtra);
+            setUpdateExtra(() => setExtra);
 
-          document
-            .getElementsByTagName("deeto-reference-popup")?.[0]
-            ?.remove?.();
-          loadedElement = element;
-          widgetRef.current = loadedElement;
-          popupRef.current = popupElement;
-        }, 1000);
-      });
+            document
+              .getElementsByTagName("deeto-reference-popup")?.[0]
+              ?.remove?.();
+            loadedElement = element;
+            widgetRef.current = loadedElement;
+            popupRef.current = popupElement;
+          }, 1000);
+        });
     };
 
     iframeDoc.head.appendChild(script);
@@ -96,7 +98,7 @@ export default function WidgetContent({
   }, [iframeDoc]);
 
   useEffect(() => {
-    if (!updateExtra) return;
+    if (!updateExtra || !iframeDoc) return;
 
     onSubmit?.(state);
     updateExtra(state);
@@ -111,16 +113,16 @@ export default function WidgetContent({
         return link;
       };
 
-      const oldLinks = document.body.querySelectorAll("-link");
+      const oldLinks = iframeDoc.body.querySelectorAll("-link");
 
       oldLinks?.forEach((link) => {
         try {
-          document.body.removeChild(link);
+          iframeDoc.body.removeChild(link);
         } catch {}
       });
 
       state.fonts.forEach((link: string) => {
-        document.body.appendChild(createFontLink(link));
+        iframeDoc.body.appendChild(createFontLink(link));
       });
     }
 
@@ -161,13 +163,7 @@ export default function WidgetContent({
 
     iframeDoc?.getElementById("iframe-root")?.appendChild(template);
     iframeDoc?.getElementById("iframe-root")?.appendChild(templatePopup);
-    // widgetRef.current?.shadowRoot?.appendChild(template);
-    // popupRef.current?.shadowRoot?.appendChild(templatePopup);
-  }, [state, updateExtra]);
-
-  useEffect(() => {
-    console.log(mobileMode);
-  }, [mobileMode]);
+  }, [state, updateExtra, iframeDoc]);
 
   useEffect(() => {
     const iframeDocument = mountRef.current?.contentDocument;
