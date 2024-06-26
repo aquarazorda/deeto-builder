@@ -5,12 +5,13 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ColorResult, SketchPicker } from "react-color";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
 import { useExtra } from "@/state/extra";
 import { useShallow } from "zustand/react/shallow";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 export default function Border({ item }: { item: Item }) {
+  const [colorState, setColorState] = useState<RGBColor>();
   const [extra, set] = useExtra(
     useShallow((state) => [state.state, state.set]),
   );
@@ -33,14 +34,17 @@ export default function Border({ item }: { item: Item }) {
   }, [item, extra.variables]);
 
   const bgChange = (color: ColorResult) => {
+    const rgba = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
+
     const newStyles = item.variables?.reduce(
       (acc, key) => {
-        acc[key + "-color"] = color.hex;
+        acc[key + "-color"] = rgba;
         return acc;
       },
       {} as Record<string, string>,
     );
 
+    setColorState(color.rgb);
     set({
       ...extra,
       variables: {
@@ -91,7 +95,7 @@ export default function Border({ item }: { item: Item }) {
           <PopoverContent style={{ zIndex: 1000 }}>
             <SketchPicker
               onChangeComplete={bgChange}
-              color={value.color ?? undefined}
+              color={colorState ?? value.color ?? undefined}
             />
           </PopoverContent>
         </Popover>

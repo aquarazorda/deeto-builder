@@ -4,15 +4,16 @@ import ImageIcon from "@/assets/image-icon.svg?react";
 import ColorIcon from "@/assets/color-icon.svg?react";
 import { useExtra } from "@/state/extra";
 import { useShallow } from "zustand/react/shallow";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ColorResult, SketchPicker } from "react-color";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
 
 export default function Background({ item }: { item: Item }) {
+  const [colorState, setColorState] = useState<RGBColor>();
   const [set, extra] = useExtra(
     useShallow((state) => [state.set, state.state]),
   );
@@ -23,13 +24,16 @@ export default function Background({ item }: { item: Item }) {
   );
 
   const onChange = (color: ColorResult) => {
+    const rgba = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
     const newStyles = item.variables?.reduce(
       (acc, key) => {
-        acc[key] = color.hex;
+        acc[key] = rgba;
         return acc;
       },
       {} as Record<string, string>,
     );
+
+    setColorState(color.rgb);
 
     set({
       ...extra,
@@ -69,7 +73,10 @@ export default function Background({ item }: { item: Item }) {
               />
             </PopoverTrigger>
             <PopoverContent style={{ zIndex: 1000 }}>
-              <SketchPicker onChangeComplete={onChange} color={value} />
+              <SketchPicker
+                onChangeComplete={onChange}
+                color={colorState ?? value}
+              />
             </PopoverContent>
           </Popover>
         </TabsContent>

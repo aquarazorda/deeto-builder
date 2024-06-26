@@ -5,7 +5,7 @@ import { useShallow } from "zustand/react/shallow";
 import { Toggle } from "../ui/toggle";
 import { Popover, PopoverContent } from "../ui/popover";
 import { PopoverTrigger } from "@radix-ui/react-popover";
-import { ColorResult, SketchPicker } from "react-color";
+import { ColorResult, RGBColor, SketchPicker } from "react-color";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import UploadImageDialog from "../dialogs/upload-image";
 import LoadingSpinner from "../ui/loading-spinner";
@@ -15,18 +15,21 @@ export default function Background({
 }: {
   item: Item;
 }) {
+  const [colorState, setColorState] = useState<RGBColor>();
   const [mode, setMode] = useState("color");
   const [styles, swap] = useHtml(
     useShallow((state) => [state.styles, state.swapStyles]),
   );
 
   const bgChange = useDebouncedCallback((color: ColorResult) => {
+    const rgba = `rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b}, ${color.rgb.a})`;
     const newStyles = { ...styles };
 
     selectors?.forEach((selector) => {
-      newStyles[selector].background = color.hex;
+      newStyles[selector].background = rgba;
     });
 
+    setColorState(color.rgb);
     swap(newStyles);
   }, 200);
 
@@ -94,7 +97,10 @@ export default function Background({
             />
           </PopoverTrigger>
           <PopoverContent style={{ zIndex: 1000 }}>
-            <SketchPicker onChangeComplete={bgChange} color={bgColor} />
+            <SketchPicker
+              onChangeComplete={bgChange}
+              color={colorState ?? bgColor}
+            />
           </PopoverContent>
         </Popover>
       ) : (
