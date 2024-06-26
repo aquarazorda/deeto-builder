@@ -8,7 +8,6 @@ import { PopoverTrigger } from "@radix-ui/react-popover";
 import { ColorResult, RGBColor, SketchPicker } from "react-color";
 import useDebouncedCallback from "@/lib/debounced-callback";
 import UploadImageDialog from "../dialogs/upload-image";
-import LoadingSpinner from "../ui/loading-spinner";
 
 export default function Background({
   item: { selectors, title, defaultValue },
@@ -59,13 +58,9 @@ export default function Background({
       };
     }
 
-    const rgbRegex = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/;
-
     return {
       isImage: false,
-      color: bg?.startsWith("#")
-        ? bg
-        : bg?.match(rgbRegex)?.[0] ?? defaultValue,
+      color: bg ?? defaultValue,
     };
   }, [styles]);
 
