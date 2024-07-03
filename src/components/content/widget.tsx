@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import { WIDGET_URL } from "@/config";
 import { useLocalStorage } from "@/lib/local-storage";
 import { cn } from "@/lib/utils";
+import { usePanel } from "@/state/panel";
 
 export default function WidgetContent({
   configurationId,
@@ -18,6 +19,7 @@ export default function WidgetContent({
   const [iframeDoc, setIframeDoc] = useState<Document | undefined | null>(null);
   const { state } = useExtra();
   const { mobileMode } = useLocalStorage();
+  const { addAction } = usePanel();
 
   const [updateExtra, setUpdateExtra] =
     useState<(extra: Record<string, any>) => void>();
@@ -88,6 +90,14 @@ export default function WidgetContent({
     };
 
     iframeDoc.head.appendChild(script);
+
+    iframeDoc.addEventListener("addAction", (e) => {
+      // @ts-ignore
+      addAction({
+        // @ts-ignore
+        [e.detail.action]: e.detail.fn,
+      });
+    });
 
     return () => {
       try {

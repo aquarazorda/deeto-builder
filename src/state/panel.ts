@@ -64,10 +64,13 @@ type PanelState = {
   set: (active: string) => void;
   loadMetadata: (metadata?: Metadata) => Promise<void>;
   saveImage?: (name: string, blob: Blob) => Promise<string>;
+  actions: Record<string, () => void>;
   setSaveImgFn: (fn: (name: string, blob: Blob) => Promise<string>) => void;
+  addAction: (actions: Record<string, () => void>) => void;
 };
 
 export const usePanel = create<PanelState>((set) => ({
+  actions: {},
   setSaveImgFn: (fn) => {
     set((state) => ({ ...state, saveImage: fn }));
   },
@@ -81,5 +84,8 @@ export const usePanel = create<PanelState>((set) => ({
         cache: "no-store",
       }).then((res) => res.json() as Promise<Metadata>));
     set((state) => ({ ...state, metadata: res }));
+  },
+  addAction: (action) => {
+    set((state) => ({ ...state, actions: { ...state.actions, ...action } }));
   },
 }));

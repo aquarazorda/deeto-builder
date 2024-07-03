@@ -25,16 +25,19 @@ export default function Panel({ metadata }: Props) {
     useShallow((state) => [state.html, state.setParentHtml]),
   );
 
-  const [active, set, load, meta] = usePanel(
+  const [active, set, load, meta, actions] = usePanel(
     useShallow((state) => [
       state.active,
       state.set,
       state.loadMetadata,
       state.metadata,
+      state.actions,
     ]),
   );
 
   const changeTab = (tab: string) => {
+    console.log(tab);
+    actions[tab]?.();
     setLocalStorage("activeTab", tab);
     set(tab);
   };
