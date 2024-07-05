@@ -1,5 +1,5 @@
 import { useHtml } from "@/state/html";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 import { cn } from "@/lib/utils";
 import { useLocalStorage } from "@/lib/local-storage";
@@ -33,6 +33,7 @@ export default function Content({
   const { mobileMode } = useLocalStorage();
   const state = useExtra(useShallow((state) => state.state));
   const meta = usePanel(useShallow((state) => state.metadata));
+  const [docHtml, setDocHtml] = useState("");
   const [html, $, loadHtml, setMutable, setHtml] = useHtml(
     useShallow((state) => [
       state.html,
@@ -45,6 +46,12 @@ export default function Content({
   const debouncedSetHtml = useDebouncedCallback(setHtml, 800);
 
   const iframeHost = useRef<HTMLIFrameElement>(null);
+
+  useEffect(() => {
+    if (!docHtml && html) {
+      setDocHtml(html);
+    }
+  }, [html]);
 
   useEffect(() => {
     loadHtml(htmlUrl).then(({ html, set }) => {
@@ -84,8 +91,7 @@ export default function Content({
 
     if (iframeHost && $) {
       const doc = iframeHost.current?.contentDocument?.documentElement;
-      if (doc) {
-        // innerHTML(doc, $.html());
+      if (doc && doc.getElementsByTagName("body").length) {
         morphdom(doc, $.html());
 
         const editables = doc.querySelectorAll("[contenteditable]");
@@ -125,8 +131,8 @@ export default function Content({
           mobileMode && "p-14 w-[570px] h-[832px]",
         )}
         ref={iframeHost}
-        // srcDoc={html}
-      />
+        srcDoc={docHtml}
+      ></iframe>
     </div>
   );
 }
