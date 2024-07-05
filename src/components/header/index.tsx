@@ -129,7 +129,11 @@ export default function Header({ isWidget }: { isWidget?: boolean }) {
         </Button>
         <Button
           variant="outline"
-          disabled={!history.length || history.length - idx === 1}
+          disabled={
+            !history.length ||
+            history.length - idx === 1 ||
+            (history.length === 1 && idx === 1)
+          }
           onClick={redo}
         >
           <Redo />

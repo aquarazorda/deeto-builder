@@ -36,7 +36,6 @@ export default function Panel({ metadata }: Props) {
   );
 
   const changeTab = (tab: string) => {
-    console.log(tab);
     actions[tab]?.();
     setLocalStorage("activeTab", tab);
     set(tab);
