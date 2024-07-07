@@ -85,11 +85,13 @@ export const useHtml = create<HtmlState>((set) => ({
 
     set((state) => ({
       ...state,
+      history: [html],
       styles: parseStyleTag(html),
     }));
 
     return {
       html,
+      history: [html],
       set: set as ((state: HtmlState) => HtmlState) &
         ((fn: (state: HtmlState) => HtmlState | Partial<HtmlState>) => void),
     };
